@@ -5,8 +5,8 @@ A Spigot **Minecraft Java 26.3 / Java 25** raid plugin made for Yuuki's concept.
 ## Test on your Windows PC
 
 1. Extract the complete `DurcheinanderMobArmy-1.0.0-local-test.zip` to a normal folder (not inside the ZIP).
-2. Install a **Java 25 JDK** and **Git for Windows** if needed. Restart your terminal after installation.
-3. Double-click `local-test/setup.bat`. It downloads official Spigot BuildTools and builds Spigot 26.3. First setup requires internet and can take several minutes. Read the Minecraft EULA and answer the acceptance prompt yourself.
+2. No Java or Git installation is needed. Setup downloads its own **portable Java 25** and **portable Git with Git Bash**, verifies their checksums, and keeps them in `local-test/runtime`. It requires 64-bit Windows and changes no system PATH or registry settings.
+3. Double-click `local-test/setup.bat`. It downloads the portable tools and official Spigot BuildTools, then builds Spigot 26.3. First setup requires internet and can take several minutes. Read the Minecraft EULA and answer the acceptance prompt yourself.
 4. Double-click `local-test/start-server.bat`. Wait for `Done`.
 5. Start Minecraft **Java 26.3**, choose Multiplayer → Direct Connection → `localhost:25565`.
 6. In the **server console**, type `op YOUR_MINECRAFT_NAME` (without `/`).
@@ -28,7 +28,7 @@ Install `resource-pack/MobArmy-resource-pack-26.3.zip` in your Minecraft client'
 
 **After setup and the first successful server start**, the server can run without internet on your PC. Minecraft must also be available and launchable offline already. The test server binds to `127.0.0.1` and uses `online-mode=false`, so it is a PC-only test. Use `online-mode=true` and your usual network settings when deploying a real server.
 
-Use `stop` in the server console to shut down cleanly. The launchers do not download a server or accept the EULA for you during later offline runs.
+Use `stop` in the server console to shut down cleanly. Later launches use the portable Java directly, without downloading anything. Keep `local-test/runtime/java` when moving the server folder. The setup downloads dependencies on demand; the small test ZIP itself does not contain the Java/Git binaries.
 
 ## Included gameplay
 

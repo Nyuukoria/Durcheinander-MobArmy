@@ -4,6 +4,19 @@ on:
   pull_request:
   workflow_dispatch:
 jobs:
+  windows-setup:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download and verify private Java, Git and Bash
+        shell: powershell
+        run: .\local-test\setup.ps1 -DependenciesOnly
+      - name: Verify repeat setup works without downloads
+        shell: powershell
+        run: |
+          function global:Invoke-RestMethod { throw 'Unexpected metadata request on repeat setup' }
+          function global:Invoke-WebRequest { throw 'Unexpected download on repeat setup' }
+          .\local-test\setup.ps1 -DependenciesOnly
   build:
     runs-on: ubuntu-latest
     steps:

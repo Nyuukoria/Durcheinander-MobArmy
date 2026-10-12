@@ -21,7 +21,7 @@ with ZipFile(OUTPUT, 'w', ZIP_DEFLATED) as archive:
         if file.is_file(): archive.write(file, 'local-test/' + file.name)
     for file in sorted(ROOT.rglob('*')):
         relative = file.relative_to(ROOT)
-        if not file.is_file() or relative.parts[0] in {'.git', 'target'} or any(p in {'server', 'buildtools', '__pycache__'} for p in relative.parts): continue
+        if not file.is_file() or relative.parts[0] in {'.git', 'target'} or any(p in {'server', 'buildtools', 'runtime', '__pycache__'} for p in relative.parts): continue
         archive.write(file, 'source/' + str(relative))
     manifest = {'version': '1.0.0', 'minecraft': '26.3', 'java': 25, 'sha256': {JAR.name: hashlib.sha256(JAR.read_bytes()).hexdigest(), PACK.name: hashlib.sha256(PACK.read_bytes()).hexdigest()}}
     archive.writestr('checksums.json', json.dumps(manifest, indent=2) + '\n')

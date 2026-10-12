@@ -2,7 +2,7 @@
 
 Run on a separate localhost server with your test inventory. This checklist is manual; automated rule/config checks do not verify GUI rendering, pathfinding, resource-pack appearance, or multiplayer balance.
 
-1. **Boot:** plugin enables, three demo worlds appear, no exceptions in console. Install and enable the resource pack in Minecraft 26.3.
+1. **Setup / boot:** on 64-bit Windows with no Java/Git installed, `local-test/setup.bat` downloads portable Java 25 and Git, checks their SHA-256 hashes, and builds Spigot. `start-server.bat` uses that Java even if a different Java is on the system PATH. After first startup, disconnect the internet and confirm the launcher still works. Plugin enables, three demo worlds appear, no exceptions in console. Install and enable the resource pack in Minecraft 26.3.
 2. **Solo:** OP yourself, `/raid test on`, `/raid kit`, `/raid demo w1`, choose 60 minutes. Enter, Ready, then walk into the arena. Gate remains open until entry and shuts before wave 1.
 3. **Wave structure:** clear 3 waves and miniboss. Lobby return and stage increment happen once. Repeat through stage 5, whose fifth wave contains only the custom boss. Model tracks the invisible husk; bossbar follows HP.
 4. **Rewards:** stage-1 miniboss produces Chaosfragment. First boss crown goes to leader. Repeat with full inventory: crown appears in `/raid loot` and cannot be duplicated with shift-click, number keys, dragging, or rapid clicking.
