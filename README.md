@@ -13,7 +13,6 @@ A Spigot **Minecraft Java 26.3 / Java 25** raid plugin made for Yuuki's concept.
 7. In-game, on safe ground, run:
 
    ```text
-   /raid test on
    /raid kit
    /raid demo w1
    ```
@@ -22,7 +21,11 @@ A Spigot **Minecraft Java 26.3 / Java 25** raid plugin made for Yuuki's concept.
 9. Open `/raid`, click **Ready**, then walk south through the five-block opening from the waiting room into the arena. Waves begin when every party member is inside. Between stages, use `/raid` → **Ready** again.
 10. To try other weeks, finish or `/raid leave`, then `/raid demo w2` or `/raid demo w3`.
 
-`/raid test off` restores player minimums (2 / 3 / 5) and teamwork caps. Change test mode only with no active party. Solo mode is OFF in the production config.
+The Windows localhost launcher automatically enables solo testing and disables player PvP in **all worlds**, including the default world. No `/raid test on` command is needed. These demo flags are also applied when updating an existing test server; other raid config entries and saved progress are preserved.
+
+To update an existing localhost demo, stop the server, extract the new ZIP over the same folder, then run `local-test/start-server.bat`. The launcher copies the updated plugin JAR and applies the demo flags; you do not need to download Java or rebuild Spigot again.
+
+`/raid test off` restores player minimums (2 / 3 / 5) and teamwork caps until the next localhost launch. Change test mode only with no active party. Solo mode and global PvP overrides are OFF in the production JAR's default config; raid-world PvP is always disabled.
 
 Install `resource-pack/MobArmy-resource-pack-26.3.zip` in your Minecraft client's resource-pack folder and enable it. The custom boss uses an original static purple voxel golem model with vanilla texture references. Without the pack, its item display will use a missing-model appearance. A client resource pack is required for custom visuals; the plugin alone cannot supply them offline.
 

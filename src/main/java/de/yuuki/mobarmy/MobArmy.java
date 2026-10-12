@@ -40,6 +40,7 @@ public final class MobArmy extends JavaPlugin {
             Objects.requireNonNull(getCommand("raid")).setExecutor(commands);getCommand("raid").setTabCompleter(commands);
             getServer().getPluginManager().registerEvents(new Protection(this),this);
             getServer().getPluginManager().registerEvents(menus,this);
+            applyDemoPvp();
             getServer().getScheduler().runTaskTimer(this,engine::tick,20,20);
             for(Player player:Bukkit.getOnlinePlayers())recover(player);
             saveState();getLogger().info("Loaded "+arenas.size()+" raid arenas for Spigot 26.3.");
@@ -57,6 +58,7 @@ public final class MobArmy extends JavaPlugin {
         catch(IOException e){getLogger().log(java.util.logging.Level.SEVERE,"Could not save raid state",e);}
     }
     LocalDate today(){return LocalDate.now(zone);}
+    void applyDemoPvp(){if(getConfig().getBoolean("testing.disable-pvp"))Bukkit.getWorlds().forEach(w->w.setPVP(false));}
     Arena arena(World w){return arenas.values().stream().filter(a->a.world.equals(w)).findFirst().orElse(null);}
     Session session(UUID id){return portals.values().stream().map(p->p.session).filter(Objects::nonNull).filter(s->s.members.contains(id)).findFirst().orElse(null);}
     Portal portalAt(Location l){return portals.values().stream().filter(p->p.region.contains(l)).findFirst().orElse(null);}

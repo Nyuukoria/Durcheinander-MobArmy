@@ -27,6 +27,7 @@ public final class Arena {
         if(!lobby.contains(lobbySpawn)||!bounds.contains(arenaSpawn)||spawns.stream().anyMatch(l->!bounds.contains(l)))throw new IllegalArgumentException("Spawns outside configured regions: "+id);
         world.setGameRule(GameRule.KEEP_INVENTORY,true); world.setGameRule(GameRule.SPAWN_MOBS,false);
         world.setGameRule(GameRule.MOB_GRIEFING,false); world.setGameRule(GameRule.ADVANCE_TIME,false);
+        world.setPVP(false);
         for(int x=bounds.x1()>>4;x<=bounds.x2()>>4;x++)for(int z=bounds.z1()>>4;z<=bounds.z2()>>4;z++)world.addPluginChunkTicket(x,z,org.bukkit.plugin.java.JavaPlugin.getPlugin(MobArmy.class));
         world.setTime(18000);
     }

@@ -40,6 +40,7 @@ enable-command-block=false
 motd=Yuuki - Durcheinander MobArmy Local Test
 '@ | Set-Content -Encoding ASCII $Properties
 }
+& (Join-Path $PSScriptRoot 'demo-settings.ps1') -ServerDirectory $Server
 $Eula = Join-Path $Server 'eula.txt'
 if (-not (Test-Path $Eula) -or (Get-Content $Eula -Raw) -notmatch 'eula=true') {
     Write-Host 'Read the Minecraft EULA: https://aka.ms/MinecraftEULA'

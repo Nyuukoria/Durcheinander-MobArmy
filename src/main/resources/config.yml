@@ -9,6 +9,7 @@ ritual-world: world
 maximum-ritual-mobs: 20
 testing:
   solo: false
+  disable-pvp: false
 balance:
   hit-cap: 0.2
   mace-cap: 0.05

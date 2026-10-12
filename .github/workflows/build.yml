@@ -8,6 +8,9 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Verify fresh and existing demo settings
+        shell: powershell
+        run: .\tools\test_demo_settings.ps1
       - name: Download and verify private Java, Git and Bash
         shell: powershell
         run: .\local-test\setup.ps1 -DependenciesOnly

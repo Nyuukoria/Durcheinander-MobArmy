@@ -14,7 +14,8 @@ final class Protection implements Listener {
     final MobArmy p;
     final Map<UUID,Location> deathReturns=new HashMap<>();
     Protection(MobArmy p){this.p=p;}
-    Entity source(Entity e){if(e instanceof Projectile pr&&pr.getShooter() instanceof Entity owner)return owner;return e;}
+    Entity source(Entity e){if(e instanceof Projectile pr&&pr.getShooter() instanceof Entity owner)return owner;if(e instanceof AreaEffectCloud cloud&&cloud.getSource() instanceof Entity owner)return owner;if(e instanceof TNTPrimed tnt&&tnt.getSource()!=null)return tnt.getSource();return e;}
+    @EventHandler public void worldLoaded(org.bukkit.event.world.WorldLoadEvent e){if(p.getConfig().getBoolean("testing.disable-pvp"))e.getWorld().setPVP(false);}
     boolean raid(World w){return p.arena(w)!=null;}
     @EventHandler(ignoreCancelled=true) public void move(PlayerMoveEvent e){
         if(e.getTo()==null)return;Player player=e.getPlayer();Session s=p.session(player.getUniqueId());
@@ -50,7 +51,7 @@ final class Protection implements Listener {
         if(raid(e.getEntity().getWorld())&&(e.getCause()==EntityDamageEvent.DamageCause.BLOCK_EXPLOSION||e.getCause()==EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)){e.setCancelled(true);return;}
         if(victim!=null&&!(e instanceof EntityDamageByEntityEvent)){e.setCancelled(true);return;}
         if(!(e instanceof EntityDamageByEntityEvent by))return;Entity attacker=source(by.getDamager());
-        if(raid(e.getEntity().getWorld())&&attacker instanceof Player&&e.getEntity() instanceof Player){e.setCancelled(true);return;}
+        if((raid(e.getEntity().getWorld())||p.getConfig().getBoolean("testing.disable-pvp"))&&attacker instanceof Player&&e.getEntity() instanceof Player){e.setCancelled(true);return;}
         if(victim!=null){
             if(!(attacker instanceof Player player)||!victim.members.contains(player.getUniqueId())||victim.phase!=Session.Phase.FIGHT){e.setCancelled(true);return;}
             LivingEntity mob=(LivingEntity)e.getEntity();boolean boss=victim.contribution.containsKey(mob.getUniqueId());
