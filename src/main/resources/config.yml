@@ -1,0 +1,1215 @@
+# Demo arenas generate once. Set generate-demo: false for hand-built worlds.
+# Rewards are chosen in the portal GUI; no automatic timer is applied.
+timezone: Europe/Berlin
+entry-timeout-seconds: 120
+loot-timeout-seconds: 120
+wave-delay-seconds: 4
+wipe-cooldown-minutes: 30
+ritual-world: world
+maximum-ritual-mobs: 20
+testing:
+  solo: false
+balance:
+  hit-cap: 0.2
+  mace-cap: 0.05
+  boss-player-share: 0.4
+  count-per-extra-player: 0.25
+  health-per-extra-player: 0.04
+  maximum-wave-mobs: 250
+  minimum-spawn-distance: 8
+  maximum-build-height: 2
+  pearl-cooldown-seconds: 10
+  apple-cooldown-seconds: 30
+  apples-per-stage: 3
+  potions-per-stage: 3
+  totems-per-stage: 1
+messages:
+  join: '&dEine Gruppe hat das Portal betreten'
+  stage: '&dStage {stage} ist abgeschlossen'
+items:
+  chaos_fragment:
+    material: AMETHYST_SHARD
+    name: '&dChaosfragment'
+    lore:
+    - '&7Miniboss-Beute'
+    - '&7Rechtsklick auf einen Kessel in der Default-Welt'
+    item-model: mobarmy:chaos_fragment
+    drops:
+    - source: miniboss
+      stage: 1
+      amount: 1
+      chance: 1.0
+    ritual:
+      type: HUSK
+      health: 80
+      damage: 6
+      name: '&5Fragmentwächter'
+      result: ritual_core
+  ritual_core:
+    material: HEART_OF_THE_SEA
+    name: '&bRitualkern'
+    lore:
+    - '&7Belohnung eines Kesselrituals'
+    item-model: mobarmy:ritual_core
+  chaos_crown:
+    material: NETHER_STAR
+    name: '&6Krone des Durcheinanders'
+    lore:
+    - '&7Beute des ersten Chaoswächter-Abschlusses'
+    item-model: mobarmy:chaos_crown
+    drops:
+    - source: boss
+      amount: 1
+      chance: 1.0
+  raid_shard:
+    material: PRISMARINE_SHARD
+    name: '&5Raidsplitter'
+    drops:
+    - source: mob
+      amount: 1
+      chance: 0.15
+    - source: miniboss
+      amount: 3
+      chance: 1.0
+  boss_model:
+    material: PAPER
+    name: '&dChaoswächter-Modell'
+    item-model: mobarmy:chaos_guardian
+weeks:
+  w1:
+    world: raid_w1
+    minimum-players: 2
+    strength: 1.0
+    stage-strength-step: 0.15
+    generate-demo: true
+    demo-floor: DEEPSLATE_TILES
+    arena:
+      min:
+      - -23
+      - 64
+      - -23
+      max:
+      - 23
+      - 84
+      - 23
+    lobby:
+      min:
+      - -23
+      - 64
+      - -30
+      max:
+      - 23
+      - 69
+      - -25
+    door:
+      min:
+      - -2
+      - 64
+      - -24
+      max:
+      - 2
+      - 68
+      - -24
+    lobby-spawn:
+    - 0.5
+    - 64.0
+    - -28.5
+    - 0.0
+    arena-spawn:
+    - 0.5
+    - 64.0
+    - -20.5
+    - 0.0
+    spawn-points:
+    - -20.5,64.0,-20.5
+    - 20.5,64.0,-20.5
+    - -20.5,64.0,20.5
+    - 20.5,64.0,20.5
+    - 0.5,64.0,20.5
+    stages:
+      '1':
+        name: Woche 1 – Stage 1
+        waves:
+          '1':
+            mobs:
+            - type: ZOMBIE
+              count: 4
+              health: 25
+              damage: 4
+              speed: 0.228
+              armor: 1
+              knockback-resistance: 0.1
+          '2':
+            mobs:
+            - type: ZOMBIE
+              count: 5
+              health: 30
+              damage: 5
+              speed: 0.236
+              armor: 2
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 1
+              health: 26
+              damage: 5
+              speed: 0.23
+              equipment:
+                hand: BOW
+          '3':
+            mobs:
+            - type: ZOMBIE
+              count: 6
+              health: 35
+              damage: 6
+              speed: 0.244
+              armor: 3
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 2
+              health: 30
+              damage: 6
+              speed: 0.23
+              equipment:
+                hand: BOW
+            - type: SPIDER
+              count: 1
+              health: 39
+              damage: 6
+              speed: 0.26
+              rider: SKELETON
+        miniboss:
+          type: HUSK
+          name: '&cChaos-Vorhut 1'
+          health: 75
+          damage: 6.5
+          speed: 0.25
+          armor: 4
+          knockback-resistance: 0.5
+          equipment:
+            hand: IRON_SWORD
+            chestplate: IRON_CHESTPLATE
+      '2':
+        name: Woche 1 – Stage 2
+        waves:
+          '1':
+            mobs:
+            - type: ZOMBIE
+              count: 4
+              health: 25
+              damage: 4
+              speed: 0.228
+              armor: 1
+              knockback-resistance: 0.1
+          '2':
+            mobs:
+            - type: ZOMBIE
+              count: 5
+              health: 30
+              damage: 5
+              speed: 0.236
+              armor: 2
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 1
+              health: 26
+              damage: 5
+              speed: 0.23
+              equipment:
+                hand: BOW
+          '3':
+            mobs:
+            - type: ZOMBIE
+              count: 6
+              health: 35
+              damage: 6
+              speed: 0.244
+              armor: 3
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 2
+              health: 30
+              damage: 6
+              speed: 0.23
+              equipment:
+                hand: BOW
+            - type: SPIDER
+              count: 1
+              health: 39
+              damage: 6
+              speed: 0.26
+              rider: SKELETON
+        miniboss:
+          type: HUSK
+          name: '&cChaos-Vorhut 2'
+          health: 85
+          damage: 7.0
+          speed: 0.25
+          armor: 4
+          knockback-resistance: 0.5
+          equipment:
+            hand: IRON_SWORD
+            chestplate: IRON_CHESTPLATE
+      '3':
+        name: Woche 1 – Stage 3
+        waves:
+          '1':
+            mobs:
+            - type: ZOMBIE
+              count: 4
+              health: 25
+              damage: 4
+              speed: 0.228
+              armor: 1
+              knockback-resistance: 0.1
+          '2':
+            mobs:
+            - type: ZOMBIE
+              count: 5
+              health: 30
+              damage: 5
+              speed: 0.236
+              armor: 2
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 1
+              health: 26
+              damage: 5
+              speed: 0.23
+              equipment:
+                hand: BOW
+          '3':
+            mobs:
+            - type: ZOMBIE
+              count: 6
+              health: 35
+              damage: 6
+              speed: 0.244
+              armor: 3
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 2
+              health: 30
+              damage: 6
+              speed: 0.23
+              equipment:
+                hand: BOW
+            - type: SPIDER
+              count: 2
+              health: 39
+              damage: 6
+              speed: 0.26
+              rider: SKELETON
+        miniboss:
+          type: HUSK
+          name: '&cChaos-Vorhut 3'
+          health: 95
+          damage: 7.5
+          speed: 0.25
+          armor: 4
+          knockback-resistance: 0.5
+          equipment:
+            hand: IRON_SWORD
+            chestplate: IRON_CHESTPLATE
+      '4':
+        name: Woche 1 – Stage 4
+        waves:
+          '1':
+            mobs:
+            - type: ZOMBIE
+              count: 4
+              health: 25
+              damage: 4
+              speed: 0.228
+              armor: 1
+              knockback-resistance: 0.1
+          '2':
+            mobs:
+            - type: ZOMBIE
+              count: 5
+              health: 30
+              damage: 5
+              speed: 0.236
+              armor: 2
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 1
+              health: 26
+              damage: 5
+              speed: 0.23
+              equipment:
+                hand: BOW
+          '3':
+            mobs:
+            - type: ZOMBIE
+              count: 6
+              health: 35
+              damage: 6
+              speed: 0.244
+              armor: 3
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 2
+              health: 30
+              damage: 6
+              speed: 0.23
+              equipment:
+                hand: BOW
+            - type: SPIDER
+              count: 2
+              health: 39
+              damage: 6
+              speed: 0.26
+              rider: SKELETON
+        miniboss:
+          type: HUSK
+          name: '&cChaos-Vorhut 4'
+          health: 105
+          damage: 8.0
+          speed: 0.25
+          armor: 4
+          knockback-resistance: 0.5
+          equipment:
+            hand: IRON_SWORD
+            chestplate: IRON_CHESTPLATE
+      '5':
+        name: Woche 1 – Stage 5
+        waves:
+          '1':
+            mobs:
+            - type: ZOMBIE
+              count: 4
+              health: 25
+              damage: 4
+              speed: 0.228
+              armor: 1
+              knockback-resistance: 0.1
+          '2':
+            mobs:
+            - type: ZOMBIE
+              count: 5
+              health: 30
+              damage: 5
+              speed: 0.236
+              armor: 2
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 1
+              health: 26
+              damage: 5
+              speed: 0.23
+              equipment:
+                hand: BOW
+          '3':
+            mobs:
+            - type: ZOMBIE
+              count: 6
+              health: 35
+              damage: 6
+              speed: 0.244
+              armor: 3
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 2
+              health: 30
+              damage: 6
+              speed: 0.23
+              equipment:
+                hand: BOW
+            - type: SPIDER
+              count: 2
+              health: 39
+              damage: 6
+              speed: 0.26
+              rider: SKELETON
+          '4':
+            mobs:
+            - type: ZOMBIE
+              count: 7
+              health: 40
+              damage: 7
+              speed: 0.252
+              armor: 4
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 3
+              health: 34
+              damage: 7
+              speed: 0.23
+              equipment:
+                hand: BOW
+            - type: SPIDER
+              count: 2
+              health: 44
+              damage: 7
+              speed: 0.26
+              rider: SKELETON
+        boss:
+          type: HUSK
+          name: '&5Chaoswächter'
+          health: 250
+          damage: 10
+          speed: 0.24
+          armor: 6
+          knockback-resistance: 0.65
+          model-item: boss_model
+          equipment:
+            hand: AIR
+            helmet: AIR
+  w2:
+    world: raid_w2
+    minimum-players: 3
+    strength: 1.75
+    stage-strength-step: 0.15
+    generate-demo: true
+    demo-floor: NETHER_BRICKS
+    arena:
+      min:
+      - -23
+      - 64
+      - -23
+      max:
+      - 23
+      - 84
+      - 23
+    lobby:
+      min:
+      - -23
+      - 64
+      - -30
+      max:
+      - 23
+      - 69
+      - -25
+    door:
+      min:
+      - -2
+      - 64
+      - -24
+      max:
+      - 2
+      - 68
+      - -24
+    lobby-spawn:
+    - 0.5
+    - 64.0
+    - -28.5
+    - 0.0
+    arena-spawn:
+    - 0.5
+    - 64.0
+    - -20.5
+    - 0.0
+    spawn-points:
+    - -20.5,64.0,-20.5
+    - 20.5,64.0,-20.5
+    - -20.5,64.0,20.5
+    - 20.5,64.0,20.5
+    - 0.5,64.0,20.5
+    stages:
+      '1':
+        name: Woche 2 – Stage 1
+        waves:
+          '1':
+            mobs:
+            - type: ZOMBIE
+              count: 4
+              health: 25
+              damage: 4
+              speed: 0.228
+              armor: 1
+              knockback-resistance: 0.1
+          '2':
+            mobs:
+            - type: ZOMBIE
+              count: 5
+              health: 30
+              damage: 5
+              speed: 0.236
+              armor: 2
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 1
+              health: 26
+              damage: 5
+              speed: 0.23
+              equipment:
+                hand: BOW
+          '3':
+            mobs:
+            - type: ZOMBIE
+              count: 6
+              health: 35
+              damage: 6
+              speed: 0.244
+              armor: 3
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 2
+              health: 30
+              damage: 6
+              speed: 0.23
+              equipment:
+                hand: BOW
+            - type: SPIDER
+              count: 1
+              health: 39
+              damage: 6
+              speed: 0.26
+              rider: SKELETON
+        miniboss:
+          type: HUSK
+          name: '&cChaos-Vorhut 1'
+          health: 75
+          damage: 6.5
+          speed: 0.25
+          armor: 4
+          knockback-resistance: 0.5
+          equipment:
+            hand: IRON_SWORD
+            chestplate: IRON_CHESTPLATE
+      '2':
+        name: Woche 2 – Stage 2
+        waves:
+          '1':
+            mobs:
+            - type: ZOMBIE
+              count: 4
+              health: 25
+              damage: 4
+              speed: 0.228
+              armor: 1
+              knockback-resistance: 0.1
+          '2':
+            mobs:
+            - type: ZOMBIE
+              count: 5
+              health: 30
+              damage: 5
+              speed: 0.236
+              armor: 2
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 1
+              health: 26
+              damage: 5
+              speed: 0.23
+              equipment:
+                hand: BOW
+          '3':
+            mobs:
+            - type: ZOMBIE
+              count: 6
+              health: 35
+              damage: 6
+              speed: 0.244
+              armor: 3
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 2
+              health: 30
+              damage: 6
+              speed: 0.23
+              equipment:
+                hand: BOW
+            - type: SPIDER
+              count: 1
+              health: 39
+              damage: 6
+              speed: 0.26
+              rider: SKELETON
+        miniboss:
+          type: HUSK
+          name: '&cChaos-Vorhut 2'
+          health: 85
+          damage: 7.0
+          speed: 0.25
+          armor: 4
+          knockback-resistance: 0.5
+          equipment:
+            hand: IRON_SWORD
+            chestplate: IRON_CHESTPLATE
+      '3':
+        name: Woche 2 – Stage 3
+        waves:
+          '1':
+            mobs:
+            - type: ZOMBIE
+              count: 4
+              health: 25
+              damage: 4
+              speed: 0.228
+              armor: 1
+              knockback-resistance: 0.1
+          '2':
+            mobs:
+            - type: ZOMBIE
+              count: 5
+              health: 30
+              damage: 5
+              speed: 0.236
+              armor: 2
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 1
+              health: 26
+              damage: 5
+              speed: 0.23
+              equipment:
+                hand: BOW
+          '3':
+            mobs:
+            - type: ZOMBIE
+              count: 6
+              health: 35
+              damage: 6
+              speed: 0.244
+              armor: 3
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 2
+              health: 30
+              damage: 6
+              speed: 0.23
+              equipment:
+                hand: BOW
+            - type: SPIDER
+              count: 2
+              health: 39
+              damage: 6
+              speed: 0.26
+              rider: SKELETON
+        miniboss:
+          type: HUSK
+          name: '&cChaos-Vorhut 3'
+          health: 95
+          damage: 7.5
+          speed: 0.25
+          armor: 4
+          knockback-resistance: 0.5
+          equipment:
+            hand: IRON_SWORD
+            chestplate: IRON_CHESTPLATE
+      '4':
+        name: Woche 2 – Stage 4
+        waves:
+          '1':
+            mobs:
+            - type: ZOMBIE
+              count: 4
+              health: 25
+              damage: 4
+              speed: 0.228
+              armor: 1
+              knockback-resistance: 0.1
+          '2':
+            mobs:
+            - type: ZOMBIE
+              count: 5
+              health: 30
+              damage: 5
+              speed: 0.236
+              armor: 2
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 1
+              health: 26
+              damage: 5
+              speed: 0.23
+              equipment:
+                hand: BOW
+          '3':
+            mobs:
+            - type: ZOMBIE
+              count: 6
+              health: 35
+              damage: 6
+              speed: 0.244
+              armor: 3
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 2
+              health: 30
+              damage: 6
+              speed: 0.23
+              equipment:
+                hand: BOW
+            - type: SPIDER
+              count: 2
+              health: 39
+              damage: 6
+              speed: 0.26
+              rider: SKELETON
+        miniboss:
+          type: HUSK
+          name: '&cChaos-Vorhut 4'
+          health: 105
+          damage: 8.0
+          speed: 0.25
+          armor: 4
+          knockback-resistance: 0.5
+          equipment:
+            hand: IRON_SWORD
+            chestplate: IRON_CHESTPLATE
+      '5':
+        name: Woche 2 – Stage 5
+        waves:
+          '1':
+            mobs:
+            - type: ZOMBIE
+              count: 4
+              health: 25
+              damage: 4
+              speed: 0.228
+              armor: 1
+              knockback-resistance: 0.1
+          '2':
+            mobs:
+            - type: ZOMBIE
+              count: 5
+              health: 30
+              damage: 5
+              speed: 0.236
+              armor: 2
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 1
+              health: 26
+              damage: 5
+              speed: 0.23
+              equipment:
+                hand: BOW
+          '3':
+            mobs:
+            - type: ZOMBIE
+              count: 6
+              health: 35
+              damage: 6
+              speed: 0.244
+              armor: 3
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 2
+              health: 30
+              damage: 6
+              speed: 0.23
+              equipment:
+                hand: BOW
+            - type: SPIDER
+              count: 2
+              health: 39
+              damage: 6
+              speed: 0.26
+              rider: SKELETON
+          '4':
+            mobs:
+            - type: ZOMBIE
+              count: 7
+              health: 40
+              damage: 7
+              speed: 0.252
+              armor: 4
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 3
+              health: 34
+              damage: 7
+              speed: 0.23
+              equipment:
+                hand: BOW
+            - type: SPIDER
+              count: 2
+              health: 44
+              damage: 7
+              speed: 0.26
+              rider: SKELETON
+        boss:
+          type: HUSK
+          name: '&5Chaoswächter'
+          health: 250
+          damage: 10
+          speed: 0.24
+          armor: 6
+          knockback-resistance: 0.65
+          model-item: boss_model
+          equipment:
+            hand: AIR
+            helmet: AIR
+  w3:
+    world: raid_w3
+    minimum-players: 5
+    strength: 2.5
+    stage-strength-step: 0.15
+    generate-demo: true
+    demo-floor: END_STONE_BRICKS
+    arena:
+      min:
+      - -23
+      - 64
+      - -23
+      max:
+      - 23
+      - 84
+      - 23
+    lobby:
+      min:
+      - -23
+      - 64
+      - -30
+      max:
+      - 23
+      - 69
+      - -25
+    door:
+      min:
+      - -2
+      - 64
+      - -24
+      max:
+      - 2
+      - 68
+      - -24
+    lobby-spawn:
+    - 0.5
+    - 64.0
+    - -28.5
+    - 0.0
+    arena-spawn:
+    - 0.5
+    - 64.0
+    - -20.5
+    - 0.0
+    spawn-points:
+    - -20.5,64.0,-20.5
+    - 20.5,64.0,-20.5
+    - -20.5,64.0,20.5
+    - 20.5,64.0,20.5
+    - 0.5,64.0,20.5
+    stages:
+      '1':
+        name: Woche 3 – Stage 1
+        waves:
+          '1':
+            mobs:
+            - type: ZOMBIE
+              count: 4
+              health: 25
+              damage: 4
+              speed: 0.228
+              armor: 1
+              knockback-resistance: 0.1
+          '2':
+            mobs:
+            - type: ZOMBIE
+              count: 5
+              health: 30
+              damage: 5
+              speed: 0.236
+              armor: 2
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 1
+              health: 26
+              damage: 5
+              speed: 0.23
+              equipment:
+                hand: BOW
+          '3':
+            mobs:
+            - type: ZOMBIE
+              count: 6
+              health: 35
+              damage: 6
+              speed: 0.244
+              armor: 3
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 2
+              health: 30
+              damage: 6
+              speed: 0.23
+              equipment:
+                hand: BOW
+            - type: SPIDER
+              count: 1
+              health: 39
+              damage: 6
+              speed: 0.26
+              rider: SKELETON
+        miniboss:
+          type: HUSK
+          name: '&cChaos-Vorhut 1'
+          health: 75
+          damage: 6.5
+          speed: 0.25
+          armor: 4
+          knockback-resistance: 0.5
+          equipment:
+            hand: IRON_SWORD
+            chestplate: IRON_CHESTPLATE
+      '2':
+        name: Woche 3 – Stage 2
+        waves:
+          '1':
+            mobs:
+            - type: ZOMBIE
+              count: 4
+              health: 25
+              damage: 4
+              speed: 0.228
+              armor: 1
+              knockback-resistance: 0.1
+          '2':
+            mobs:
+            - type: ZOMBIE
+              count: 5
+              health: 30
+              damage: 5
+              speed: 0.236
+              armor: 2
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 1
+              health: 26
+              damage: 5
+              speed: 0.23
+              equipment:
+                hand: BOW
+          '3':
+            mobs:
+            - type: ZOMBIE
+              count: 6
+              health: 35
+              damage: 6
+              speed: 0.244
+              armor: 3
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 2
+              health: 30
+              damage: 6
+              speed: 0.23
+              equipment:
+                hand: BOW
+            - type: SPIDER
+              count: 1
+              health: 39
+              damage: 6
+              speed: 0.26
+              rider: SKELETON
+        miniboss:
+          type: HUSK
+          name: '&cChaos-Vorhut 2'
+          health: 85
+          damage: 7.0
+          speed: 0.25
+          armor: 4
+          knockback-resistance: 0.5
+          equipment:
+            hand: IRON_SWORD
+            chestplate: IRON_CHESTPLATE
+      '3':
+        name: Woche 3 – Stage 3
+        waves:
+          '1':
+            mobs:
+            - type: ZOMBIE
+              count: 4
+              health: 25
+              damage: 4
+              speed: 0.228
+              armor: 1
+              knockback-resistance: 0.1
+          '2':
+            mobs:
+            - type: ZOMBIE
+              count: 5
+              health: 30
+              damage: 5
+              speed: 0.236
+              armor: 2
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 1
+              health: 26
+              damage: 5
+              speed: 0.23
+              equipment:
+                hand: BOW
+          '3':
+            mobs:
+            - type: ZOMBIE
+              count: 6
+              health: 35
+              damage: 6
+              speed: 0.244
+              armor: 3
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 2
+              health: 30
+              damage: 6
+              speed: 0.23
+              equipment:
+                hand: BOW
+            - type: SPIDER
+              count: 2
+              health: 39
+              damage: 6
+              speed: 0.26
+              rider: SKELETON
+        miniboss:
+          type: HUSK
+          name: '&cChaos-Vorhut 3'
+          health: 95
+          damage: 7.5
+          speed: 0.25
+          armor: 4
+          knockback-resistance: 0.5
+          equipment:
+            hand: IRON_SWORD
+            chestplate: IRON_CHESTPLATE
+      '4':
+        name: Woche 3 – Stage 4
+        waves:
+          '1':
+            mobs:
+            - type: ZOMBIE
+              count: 4
+              health: 25
+              damage: 4
+              speed: 0.228
+              armor: 1
+              knockback-resistance: 0.1
+          '2':
+            mobs:
+            - type: ZOMBIE
+              count: 5
+              health: 30
+              damage: 5
+              speed: 0.236
+              armor: 2
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 1
+              health: 26
+              damage: 5
+              speed: 0.23
+              equipment:
+                hand: BOW
+          '3':
+            mobs:
+            - type: ZOMBIE
+              count: 6
+              health: 35
+              damage: 6
+              speed: 0.244
+              armor: 3
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 2
+              health: 30
+              damage: 6
+              speed: 0.23
+              equipment:
+                hand: BOW
+            - type: SPIDER
+              count: 2
+              health: 39
+              damage: 6
+              speed: 0.26
+              rider: SKELETON
+        miniboss:
+          type: HUSK
+          name: '&cChaos-Vorhut 4'
+          health: 105
+          damage: 8.0
+          speed: 0.25
+          armor: 4
+          knockback-resistance: 0.5
+          equipment:
+            hand: IRON_SWORD
+            chestplate: IRON_CHESTPLATE
+      '5':
+        name: Woche 3 – Stage 5
+        waves:
+          '1':
+            mobs:
+            - type: ZOMBIE
+              count: 4
+              health: 25
+              damage: 4
+              speed: 0.228
+              armor: 1
+              knockback-resistance: 0.1
+          '2':
+            mobs:
+            - type: ZOMBIE
+              count: 5
+              health: 30
+              damage: 5
+              speed: 0.236
+              armor: 2
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 1
+              health: 26
+              damage: 5
+              speed: 0.23
+              equipment:
+                hand: BOW
+          '3':
+            mobs:
+            - type: ZOMBIE
+              count: 6
+              health: 35
+              damage: 6
+              speed: 0.244
+              armor: 3
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 2
+              health: 30
+              damage: 6
+              speed: 0.23
+              equipment:
+                hand: BOW
+            - type: SPIDER
+              count: 2
+              health: 39
+              damage: 6
+              speed: 0.26
+              rider: SKELETON
+          '4':
+            mobs:
+            - type: ZOMBIE
+              count: 7
+              health: 40
+              damage: 7
+              speed: 0.252
+              armor: 4
+              knockback-resistance: 0.1
+            - type: SKELETON
+              count: 3
+              health: 34
+              damage: 7
+              speed: 0.23
+              equipment:
+                hand: BOW
+            - type: SPIDER
+              count: 2
+              health: 44
+              damage: 7
+              speed: 0.26
+              rider: SKELETON
+        boss:
+          type: HUSK
+          name: '&5Chaoswächter'
+          health: 250
+          damage: 10
+          speed: 0.24
+          armor: 6
+          knockback-resistance: 0.65
+          model-item: boss_model
+          equipment:
+            hand: AIR
+            helmet: AIR

@@ -1,0 +1,21 @@
+name: DurcheinanderMobArmy
+version: 1.0.0
+main: de.yuuki.mobarmy.MobArmy
+api-version: '26.3'
+author: Yuuki
+description: Configurable multi-week raids with parties, voting, loot and rituals.
+commands:
+  raid:
+    description: Raid menu and administration
+    usage: /raid help
+permissions:
+  mobarmy.play:
+    default: true
+  mobarmy.admin:
+    default: op
+  mobarmy.timer:
+    default: op
+  mobarmy.item:
+    default: op
+  mobarmy.build:
+    default: op
