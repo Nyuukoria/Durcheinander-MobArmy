@@ -1,8 +1,10 @@
-# Demo arenas generate once. Set generate-demo: false for hand-built worlds.
-# Rewards are chosen in the portal GUI; no automatic timer is applied.
+# Generated demo layout v2: separate lobby and roofed dungeon.
+# Production minimums stay 2/3/5; the localhost launcher enables solo mode.
+configuration-version: 2
 timezone: Europe/Berlin
 entry-timeout-seconds: 120
 loot-timeout-seconds: 120
+stage-loot-timeout-seconds: 12
 wave-delay-seconds: 4
 wipe-cooldown-minutes: 30
 ritual-world: world
@@ -10,10 +12,10 @@ maximum-ritual-mobs: 20
 testing:
   solo: false
   disable-pvp: false
+  disable-wipe-cooldown: false
 balance:
   hit-cap: 0.2
   mace-cap: 0.05
-  boss-player-share: 0.4
   count-per-extra-player: 0.25
   health-per-extra-player: 0.04
   maximum-wave-mobs: 250
@@ -24,16 +26,23 @@ balance:
   apples-per-stage: 3
   potions-per-stage: 3
   totems-per-stage: 1
+  wind-charge-multiplier: 0.65
+  wind-charge-max-horizontal: 0.9
+  wind-charge-max-upward: 0.75
 messages:
   join: '&dEine Gruppe hat das Portal betreten'
   stage: '&dStage {stage} ist abgeschlossen'
+  private-join: '&dWillkommen im Vorraum! &fMach &e/raid &fum den Leader zu wählen.
+    Nur der Leader startet die Stage mit Ready.'
 items:
   chaos_fragment:
     material: AMETHYST_SHARD
     name: '&dChaosfragment'
     lore:
-    - '&7Miniboss-Beute'
-    - '&7Rechtsklick auf einen Kessel in der Default-Welt'
+    - '&8Ritual-Zutat'
+    - '&7Rechtsklick auf einen Kessel in der Default-Welt.'
+    - '&dErweckt einen Ritualwächter nach 6 Sekunden.'
+    - '&7Seine Beute: ein nutzbarer Ritualkern.'
     item-model: mobarmy:chaos_fragment
     drops:
     - source: miniboss
@@ -50,18 +59,48 @@ items:
     material: HEART_OF_THE_SEA
     name: '&bRitualkern'
     lore:
-    - '&7Belohnung eines Kesselrituals'
+    - '&8Verbrauchbares Schutzrelikt'
+    - '&7Rechtsklick: Resistenz I + Regeneration I (8s).'
+    - '&bAbklingzeit: 60 Sekunden.'
+    - '&7Wird bei Benutzung verbraucht.'
     item-model: mobarmy:ritual_core
+    use:
+      consume: 1
+      radius: 0
+      cooldown-seconds: 60
+      message: '&bDer Ritualkern schützt und heilt dich.'
+      effects:
+      - type: RESISTANCE
+        seconds: 8
+        amplifier: 0
+      - type: REGENERATION
+        seconds: 8
+        amplifier: 0
   chaos_crown:
     material: NETHER_STAR
     name: '&6Krone des Durcheinanders'
     lore:
-    - '&7Beute des ersten Chaoswächter-Abschlusses'
+    - '&8Wiederverwendbares Gruppenrelikt'
+    - '&7Rechtsklick: Tempo I + Eile I (10s).'
+    - '&dWirkt auf deine Gruppe im Umkreis von 8 Blöcken.'
+    - '&7Abklingzeit: 75 Sekunden.'
     item-model: mobarmy:chaos_crown
     drops:
     - source: boss
       amount: 1
       chance: 1.0
+    use:
+      consume: 0
+      radius: 8
+      cooldown-seconds: 75
+      message: '&dDie Chaos-Krone stärkt deine Gruppe.'
+      effects:
+      - type: SPEED
+        seconds: 10
+        amplifier: 0
+      - type: HASTE
+        seconds: 10
+        amplifier: 0
   raid_shard:
     material: PRISMARINE_SHARD
     name: '&5Raidsplitter'
@@ -72,6 +111,13 @@ items:
     - source: miniboss
       amount: 3
       chance: 1.0
+    item-model: mobarmy:raid_shard
+    shop-token: true
+    lore:
+    - '&8Handelsware · Dungeon-Währung'
+    - '&7Für den Verkauf in einem kompatiblen NPC-Shop.'
+    - '&7Den Verkaufspreis bestimmt der jeweilige Shop.'
+    - '&bSammeln, aufbewahren und später verkaufen.'
   boss_model:
     material: PAPER
     name: '&dChaoswächter-Modell'
@@ -91,17 +137,17 @@ weeks:
       - -23
       max:
       - 23
-      - 84
+      - 75
       - 23
     lobby:
       min:
-      - -23
+      - 80
       - 64
-      - -30
+      - -8
       max:
-      - 23
-      - 69
-      - -25
+      - 96
+      - 70
+      - 8
     door:
       min:
       - -2
@@ -112,10 +158,10 @@ weeks:
       - 68
       - -24
     lobby-spawn:
-    - 0.5
+    - 88.5
     - 64.0
-    - -28.5
-    - 0.0
+    - 0.5
+    - 90.0
     arena-spawn:
     - 0.5
     - 64.0
@@ -470,17 +516,17 @@ weeks:
       - -23
       max:
       - 23
-      - 84
+      - 75
       - 23
     lobby:
       min:
-      - -23
+      - 80
       - 64
-      - -30
+      - -8
       max:
-      - 23
-      - 69
-      - -25
+      - 96
+      - 70
+      - 8
     door:
       min:
       - -2
@@ -491,10 +537,10 @@ weeks:
       - 68
       - -24
     lobby-spawn:
-    - 0.5
+    - 88.5
     - 64.0
-    - -28.5
-    - 0.0
+    - 0.5
+    - 90.0
     arena-spawn:
     - 0.5
     - 64.0
@@ -849,17 +895,17 @@ weeks:
       - -23
       max:
       - 23
-      - 84
+      - 75
       - 23
     lobby:
       min:
-      - -23
+      - 80
       - 64
-      - -30
+      - -8
       max:
-      - 23
-      - 69
-      - -25
+      - 96
+      - 70
+      - 8
     door:
       min:
       - -2
@@ -870,10 +916,10 @@ weeks:
       - 68
       - -24
     lobby-spawn:
-    - 0.5
+    - 88.5
     - 64.0
-    - -28.5
-    - 0.0
+    - 0.5
+    - 90.0
     arena-spawn:
     - 0.5
     - 64.0
@@ -1214,3 +1260,8 @@ weeks:
           equipment:
             hand: AIR
             helmet: AIR
+presentation:
+  entry-countdown-seconds: 3
+  portal-particle-range: 28
+ritual-animation:
+  duration-seconds: 6

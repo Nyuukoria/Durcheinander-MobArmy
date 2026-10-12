@@ -17,8 +17,12 @@ def box(a, b, texture):
 
 def build():
     write('pack.mcmeta', {'pack': {'description': 'Yuuki • MobArmy 26.3 • Chaos Guardian', 'min_format': [97, 1], 'max_format': [97, 1]}})
-    for item, model in {'chaos_fragment': 'minecraft:item/amethyst_shard', 'ritual_core': 'minecraft:item/heart_of_the_sea', 'chaos_crown': 'minecraft:item/nether_star', 'chaos_guardian': 'mobarmy:item/chaos_guardian'}.items():
+    for item, model in {'chaos_fragment': 'mobarmy:item/chaos_fragment', 'ritual_core': 'mobarmy:item/ritual_core', 'chaos_crown': 'mobarmy:item/chaos_crown', 'raid_shard': 'mobarmy:item/raid_shard', 'chaos_guardian': 'mobarmy:item/chaos_guardian'}.items():
         write(f'assets/mobarmy/items/{item}.json', {'model': {'type': 'minecraft:model', 'model': model}})
+    for item in ['chaos_fragment', 'ritual_core', 'chaos_crown', 'raid_shard']:
+        texture = PACK / f'assets/mobarmy/textures/item/{item}.png'
+        if not texture.is_file(): raise SystemExit(f'Missing item texture: {texture}')
+        write(f'assets/mobarmy/models/item/{item}.json', {'parent': 'minecraft:item/generated', 'textures': {'layer0': f'mobarmy:item/{item}'}})
     elements = [
         box([4, 2, 5], [7.5, 10, 11], 'stone'), box([8.5, 2, 5], [12, 10, 11], 'stone'),
         box([3, 10, 4], [13, 21, 12], 'armor'), box([5, 21, 5], [11, 27, 11], 'stone'),

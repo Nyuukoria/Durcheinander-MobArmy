@@ -19,7 +19,8 @@ final class Session {
     int stage=1,wave=0,misses=0,stagePlayers=0;
     long phaseSince=System.currentTimeMillis();
     boolean miniboss;
-    BossBar bar;
+    BossBar bar, hud;
+    int waveStartMobs;
     Session(Portal portal,Arena arena,UUID leader){this.portal=portal;this.arena=arena;this.leader=leader;}
     boolean active(){return phase==Phase.ENTERING||phase==Phase.FIGHT;}
     Phase phase=Phase.LOBBY;

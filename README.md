@@ -1,96 +1,99 @@
-# Durcheinander MobArmy
+# Durcheinander MobArmy 1.1.0
 
-A Spigot **Minecraft Java 26.3 / Java 25** raid plugin made for Yuuki's concept. Uses Bukkit/Spigot APIs only. No Paper-only methods, NMS, WorldEdit, economy plugin, ModelEngine, or client mod is required.
+Spigot **Minecraft Java 26.3 / Java 25**. Konfigurierbare Raids mit drei Wochen, fünf Stages, Gruppen, Leader-Voting, Bossen, eigenen Items und Kesselritualen. Verwendet nur Bukkit/Spigot-APIs.
 
-## Test on your Windows PC
+## Auf deinem Windows-PC testen
 
-1. Extract the complete `DurcheinanderMobArmy-1.0.0-local-test.zip` to a normal folder (not inside the ZIP).
-2. No Java or Git installation is needed. Setup downloads its own **portable Java 25** and **portable Git with Git Bash**, verifies their checksums, and keeps them in `local-test/runtime`. It requires 64-bit Windows and changes no system PATH or registry settings.
-3. Double-click `local-test/setup.bat`. It downloads the portable tools and official Spigot BuildTools, then builds Spigot 26.3. First setup requires internet and can take several minutes. Read the Minecraft EULA and answer the acceptance prompt yourself.
-4. Double-click `local-test/start-server.bat`. Wait for `Done`.
-5. Start Minecraft **Java 26.3**, choose Multiplayer → Direct Connection → `localhost:25565`.
-6. In the **server console**, type `op YOUR_MINECRAFT_NAME` (without `/`).
-7. In-game, on safe ground, run:
+1. ZIP vollständig entpacken. Java und Git werden bei Bedarf automatisch als portable Tools heruntergeladen.
+2. Bei einer neuen Installation `local-test/setup.bat` mit Internet starten. Setup baut Spigot und fragt dich selbst nach der Minecraft-EULA.
+3. `local-test/start-server.bat` starten. Auf `Done` warten und Minecraft Java **26.3** mit `localhost:25565` verbinden.
+4. In der Serverkonsole `op DEIN_NAME` eingeben.
+5. Im Spiel `/raid kit` und `/raid demo w1` benutzen. Die Reward-Zeit im Admin-Menü auswählen.
+6. In das animierte Portal gehen oder `/raid join demo_w1` benutzen. Du landest im **getrennten Vorraum**. Das Menü öffnet sich nur durch `/raid`.
+7. In `/raid` den Leader wählen und als Leader **Ready** drücken. Nach drei Sekunden wird die gesamte Gruppe in die überdachte Arena teleportiert. Die Wave beginnt erst, wenn alle angekommen sind.
+8. Nach einer Stage kurz Beute einsammeln, dann geht es automatisch zurück in den Vorraum. Mit `/raid` und Ready die nächste Stage starten.
 
-   ```text
-   /raid kit
-   /raid demo w1
-   ```
+**Die lokale Demo startet solo, ohne Wipe-Sperren und mit PvP aus in allen Welten.** Java muss nicht manuell installiert werden. Nach der ersten vollständigen Einrichtung und dem ersten erfolgreichen Serverstart geht der Server auch offline; Minecraft muss bereits offline startbar sein.
 
-8. Choose a reward duration in the GUI. A purple particle portal appears four blocks to your right. Walk into it, or use `/raid join demo_w1`.
-9. Open `/raid`, click **Ready**, then walk south through the five-block opening from the waiting room into the arena. Waves begin when every party member is inside. Between stages, use `/raid` → **Ready** again.
-10. To try other weeks, finish or `/raid leave`, then `/raid demo w2` or `/raid demo w3`.
+Installiere `resource-pack/MobArmy-resource-pack-26.3.zip` im Minecraft-Ordner `resourcepacks` und aktiviere das Pack. Bei Updates das alte Pack ersetzen und Minecrafts Ressourcen neu laden (F3+T), damit die vier neuen Item-Texturen sichtbar werden.
 
-The Windows localhost launcher automatically enables solo testing and disables player PvP in **all worlds**, including the default world. No `/raid test on` command is needed. These demo flags are also applied when updating an existing test server; other raid config entries and saved progress are preserved.
+### Eine vorhandene Demo aktualisieren
 
-To update an existing localhost demo, stop the server, extract the new ZIP over the same folder, then run `local-test/start-server.bat`. The launcher copies the updated plugin JAR and applies the demo flags; you do not need to download Java or rebuild Spigot again.
+Server mit `stop` beenden, neue ZIP über denselben Ordner entpacken, dann `local-test/start-server.bat` starten. Der Launcher ersetzt das Plugin automatisch und setzt die Demo-Flags. Java/Git/Spigot werden dabei wiederverwendet.
 
-`/raid test off` restores player minimums (2 / 3 / 5) and teamwork caps until the next localhost launch. Change test mode only with no active party. Solo mode and global PvP overrides are OFF in the production JAR's default config; raid-world PvP is always disabled.
+Die alten **generierten Demo-Arenen** werden beim ersten Start auf Layout 2 umgebaut: separater geschlossener Vorraum, Decke, Beleuchtung und Vorbereitungseinrichtung. Eigene Welten mit `generate-demo: false` werden nicht gebaut. Andere Konfigurationen, Loot-Postfach und Fortschritt bleiben erhalten.
 
-Install `resource-pack/MobArmy-resource-pack-26.3.zip` in your Minecraft client's resource-pack folder and enable it. The custom boss uses an original static purple voxel golem model with vanilla texture references. Without the pack, its item display will use a missing-model appearance. A client resource pack is required for custom visuals; the plugin alone cannot supply them offline.
+## Was sich in 1.1 geändert hat
 
-**After setup and the first successful server start**, the server can run without internet on your PC. Minecraft must also be available and launchable offline already. The test server binds to `127.0.0.1` and uses `online-mode=false`, so it is a PC-only test. Use `online-mode=true` and your usual network settings when deploying a real server.
+- Private Nachricht beim Betreten: „Mach /raid, um den Leader zu wählen.“ Kein automatisch geöffnetes Gruppen-Menü.
+- Vorraum räumlich getrennt: Ready teleportiert alle hinein, Stage-Abschluss teleportiert zurück. Keine begehbare Verbindung zwischen Vorraum und Kampf.
+- Überdachter Dungeon und eigener Vorraum mit Quarz, violetten Fenstern, Sitzbank, Werkbank, Amboss und Endertruhe.
+- **Boss-/Miniboss-Anteil = 100 % / erforderliche Mindestspielerzahl.** Woche 1: 50 % pro Spieler, Woche 2: 33⅓ %, Woche 3: 20 %. Größere Gruppen machen diese Obergrenze nicht kleiner. In der Solo-Demo sind es 100 %.
+- Normale Treffer bleiben auf 20 %, Mace-Treffer auf 5 % des Mob-Maximallebens pro Treffer begrenzt.
+- Wind Charges funktionieren mit **65 % Schub**, maximal 0,9 horizontal / 0,75 aufwärts (Blöcke pro Tick), über Config änderbar. Explosionsschaden und Blockzerstörung bleiben gesperrt.
+- Spinnen dürfen an Spielerblöcken klettern, an ursprünglichen Arena-Wänden und Pfeilern wird das Hochklettern tickweise verhindert. Reiter bleiben dabei erhalten. Keine NMS-Abhängigkeit.
+- Animierte Portalringe, wandernde Partikel, farbiger Status und lesbares Textdisplay mit Restzeit bis auf Sekunden.
+- Raid-Bossbar und Actionbar mit Stage, Wave, Gegnern, Leader, Spielerzahl, Reward-Zeit und deinem Boss-Anteil.
+- Vier eigene transparente 128×128-Item-Texturen, neue Lore und nutzbare Relikte. Siehe `ITEMS.md`.
+- Kesselritual in drei Phasen mit schwebendem Kern, rotierenden Runen, Energie-Spirale, Sounds und finalem Ausbruch. Abbruch gibt das Fragment ins Loot-Postfach zurück; angefangene Rituale werden beim Neustart erstattet.
+- Kontextabhängige Tab-Vervollständigung für Wochen, Portale, Aktionen, Zeitangaben, Item-IDs, Spieler und Mengen; respektiert Permissions.
+- Demo-Sperren aus; `/raid cooldown clear` und `/raid demo reset` zum manuellen Zurücksetzen.
+- `/raid portal remove <id>` beendet auch laufende Gruppen und entfernt Portaltext, Partikel-Trigger und Portal-Fortschritt. `remove all` entfernt sämtliche Plugin-Portale. Selbst gebaute dekorative Rahmen sind normale Weltblöcke.
 
-Use `stop` in the server console to shut down cleanly. Later launches use the portable Java directly, without downloading anything. Keep `local-test/runtime/java` when moving the server folder. The setup downloads dependencies on demand; the small test ZIP itself does not contain the Java/Git binaries.
+## Gruppen, Stages und Rewards
 
-## Included gameplay
+Eine Gruppe pro Portal und gleichzeitig nur eine Gruppe pro physischer Arena. Ein erster Leader wird automatisch bestimmt. Jede Person hat eine Stimme; eine strikte Mehrheit wählt den Leader. Nur der Leader startet. Beim Verlassen/Disconnect wird ein neuer Leader zufällig bestimmt und der Fortschritt weitergeführt.
 
-- Three generated 49×56 demo structures in independent void worlds (`raid_w1`, `raid_w2`, `raid_w3`); the actual combat region is 47×47.
-- Five stages per week: stages 1–4 each have three waves plus a miniboss; stage 5 has four ordinary waves and the custom boss as wave 5.
-- Configurable mob counts, health, attack damage, movement speed, armor, knockback resistance, equipment, and riders. Riders first appear in wave 3. Week strength: 1.0 / 1.75 / 2.5; later stages and waves are stronger.
-- One party per portal and one active party per physical arena. No upper party-size limit; a configurable safety limit prevents excessive mob spawning.
-- Automatic first leader, paginated party GUI, one vote per member, strict-majority leader election. Only the leader starts. The arena gate waits for all members.
-- No joining during entry/combat/loot; new players may join between stages. Random leadership handover on leaving/disconnecting; saved stage follows the new leader.
-- Death preserves inventory and XP and eliminates the player from that run. Full wipes reset progress and apply a configurable event-day cooldown.
-- Shared reward deadline chosen in the admin GUI, a timer hologram, midnight cutoff in `Europe/Berlin`, and no drops after the first boss completion. Portals remain playable without rewards unless manually closed.
-- Only two public announcements: party entry and stage completion, only while rewards are available. Command feedback and instructions remain private.
-- First boss loot goes directly to the leader; overflow persists in `/raid loot`. Right-click stored loot to distribute it to a party member. The winning party roster is saved so the leader can distribute stored loot after leaving, including to offline members' mailboxes.
-- Boss exit waits for remaining item entities or the configured 120-second timeout.
-- Final-damage caps: normal attacks ≤20% mob max HP; direct mace attacks ≤5%. Boss/miniboss contribution defaults to 40%, with a 50% minimum for a two-person stage to make week 1 possible. Solo test mode permits 100%. The stage's starting party size determines this exception, so leaving does not lift the teamwork requirement.
-- Golden apples, potions (drinking/splash/lingering), and totems have per-stage limits; apples and pearls also have cooldowns. Raid PvP, gliding, fireworks, wind charges, explosions, and mob friendly fire are blocked.
-- Arena structures are protected. Each member can place at most two layers above the floor and break only their own placements. Temporary blocks and filled shulker boxes are returned to their owner at cleanup, with inventory overflow going to the mailbox.
-- PDC-authenticated items and cauldron rituals in the configured default world. Rituals remain usable after the raid timer expires.
+Stages 1–4: drei Waves und Miniboss. Stage 5: vier Waves, dann Custom-Boss als Wave 5. Reiter frühestens ab Wave 3. Werte, Ausrüstung und Spawnpunkte sind konfigurierbar. Die nächste Wave wartet auf alle Mob-Tode; fehlende/entfernte Entities werden nicht als Sieg gewertet.
 
-The supplied loot list is sample content because the concept does not define final items. There is no automatic Discord posting or fixed weekly scheduler; admins open the appropriate week on the announced event day. Demo balancing is a starting point, not a guarantee of fight difficulty.
+Neue Spieler dürfen im Vorraum zwischen Stages beitreten. Während Teleport, Kampf und Beutesammlung ist das Portal gesperrt. Tote behalten Items/XP, scheiden aber aus dem Durchlauf aus. Ein vollständiger Wipe setzt die Gruppe auf Stage 1 zurück. Produktions-Sperre: 30 Minuten am Event-Tag; in der Demo deaktiviert.
 
-## Commands and permissions
+Rewards gelten für alle bis zum gewählten Timer, spätestens bis Mitternacht in `Europe/Berlin`, und enden nach dem ersten Boss-Abschluss. Danach ist Wiederholung ohne neue Drops möglich. Nur Gruppen-Eintritt und Stage-Abschluss werden öffentlich angekündigt und nur bei aktiven Rewards. Hinweise, Voting und HUD sind privat.
 
-| Command | Permission | Purpose |
-|---|---|---|
-| `/raid`, `/raid start`, `/raid join <portal>`, `/raid loot` | `mobarmy.play` (everyone) | Party GUI, leader start, portal entry, mailbox |
-| `/raid leave`, `/raid status`, `/raid help` | Everyone | Leave and inspect |
-| `/raid portal pos1`, `pos2` | `mobarmy.admin` (OP) | Select your current block coordinates |
-| `/raid portal create <week> [id]` | `mobarmy.admin` | Create the selection as a particle portal and choose its timer |
-| `/raid portal remove [id]` | `mobarmy.admin` | Remove an idle portal |
-| `/raid open [id]`, `/raid close [id]`, `/raid stop [id]` | `mobarmy.admin` | Toggle admission or end a party |
-| `/raid timer set <duration> [id]` | `mobarmy.timer` (OP) | Set deadline from now |
-| `/raid timer add <duration> [id]`, `/raid timer clear [id]` | `mobarmy.timer` | Extend deadline / disable drops |
-| `/raid item give <item> [player] [amount]` | `mobarmy.item` (OP) | Give authenticated items |
-| `/raid demo <week>`, `/raid test on\|off`, `/raid kit`, `/raid reload` | `mobarmy.admin` | Testing and configuration |
-| `/raid build`, `/raid visit <week>` | `mobarmy.build` (OP) | Explicit building bypass while no parties are active |
+Nach Minibossen bleiben bis zu 12 Sekunden zum Einsammeln. Verbliebene **Custom-Raid-Items** werden vor dem Rückteleport ins Leader-Inventar/Postfach gerettet. Nach dem Endboss gilt die gemeinsame Beutesammlung bis maximal 120 Sekunden. Boss-Loot geht an den Leader; volle Inventare werden durch `/raid loot` abgefangen. Gespeicherte Gewinner-Gruppen erlauben das Verteilen auch nach dem Verlassen an offline Mitglieder.
 
-Durations: `90s`, `30m`, `2h`; plain numbers mean minutes. Where an ID is omitted, the current party's portal or sole configured portal is used. Remove/recreate with a **new portal ID** for a new rewarded event. Extending the timer does not reset a completed boss.
+PvP in Raid-Welten, Elytra-Boosts, Feuerwerke und schädliche Explosionen sind gesperrt. Golden Apples, Tränke und Totems haben Stage-Limits. Enderperlen brauchen ein freies, gültiges Ziel innerhalb der Arena und haben Cooldown. Ursprüngliche Blöcke sind geschützt. Temporäre Spielerblöcke dürfen maximal zwei Schichten über dem Boden stehen; nur der Platzierende darf sie abbauen. Bei Cleanup werden sie einschließlich gefüllter Shulker-Boxen zurückgegeben.
 
-Portal selections are axis-aligned cuboids with movement detection, particles, portal sound, and a floating label. Build your own decorative portal frame around the region. A single region is rectangular; nonrectangular visual frames work as long as the chosen trigger covers their entrance.
+## Befehle
 
-## Configuration / custom arenas
+| Befehl | Bedeutung / Permission |
+|---|---|
+| `/raid` | Gruppen-Menü mit Voting, Ready und Loot — `mobarmy.play` |
+| `/raid join <portal>`, `/raid start`, `/raid ready`, `/raid loot` | Beitreten, als Leader starten, Postfach — `mobarmy.play` |
+| `/raid leave`, `/raid status`, `/raid help` | Verlassen, Status und Hilfe |
+| `/raid portal pos1`, `/raid portal pos2` | Eigene Blockpositionen auswählen — `mobarmy.admin` |
+| `/raid portal create <week> [id]` | Trigger erstellen, danach Reward-Zeit wählen — `mobarmy.admin` |
+| `/raid portal info [id]` | Details anzeigen — `mobarmy.admin` |
+| `/raid portal remove <id\|all>` | Komplett entfernen, laufende Gruppe wird evakuiert — `mobarmy.admin` |
+| `/raid open [id]`, `/raid close [id]`, `/raid stop [id]` | Zugang oder Gruppe steuern — `mobarmy.admin` |
+| `/raid timer set\|add <dauer> [id]`, `/raid timer clear [id]` | Rewards setzen/verlängern/ausschalten — `mobarmy.timer` |
+| `/raid demo <week>` | Testportal erstellen — `mobarmy.admin` |
+| `/raid demo reset [id\|all]` | Demo auf Stage 1 und Rewards-Status zurücksetzen, Sperren löschen; Timer anschließend neu setzen — `mobarmy.admin` |
+| `/raid demo rebuild <week>` | Eine generierte Demo-Arena neu bauen; vorher Gruppen beenden — `mobarmy.admin` |
+| `/raid cooldown clear [spieler\|all]` | Wipe-Sperre und Ausscheiden zurücksetzen; ohne Spieler: du selbst — `mobarmy.admin` |
+| `/raid test on\|off` | Solo-/Wipe-Regeln während der laufenden Demo ändern — `mobarmy.admin` |
+| `/raid kit`, `/raid reload` | Ausrüstung / Config laden — `mobarmy.admin` |
+| `/raid build`, `/raid visit <week>` | Expliziter Bau-Modus; nur ohne aktive Gruppen — `mobarmy.build` |
+| `/raid item give\|take <id> [spieler] [anzahl]` | Echte Custom-Items geben/entfernen — `mobarmy.item` |
+| `/raid item count <id> [spieler]` | Echte Custom-Items zählen — `mobarmy.item` |
 
-First start writes `plugins/DurcheinanderMobArmy/config.yml` and `state.yml`.
+Dauer: `90s`, `30m`, `2h`; nur eine Zahl bedeutet Minuten. OP hat Admin-Rechte. Normale Spieler haben `mobarmy.play`. Ohne Portal-ID wird das Portal deiner Gruppe oder das einzige vorhandene Portal verwendet.
 
-- `weeks.<id>` supplies world, minimum players, strength, lobby and arena bounds, gate region, spawn points, and `stages.1` through `stages.5`. Duplicate a week entry and change its ID/world to add further versions.
-- `generate-demo: true` builds each default demo once. Set it to `false` before introducing a hand-built world; `/raid build` + `/raid visit <week>` lets you edit, or import your own schematic with a separate tool. Schematic loading is not built into this plugin.
-- `arena.min/max`, `lobby.min/max`, `door.min/max` use inclusive block coordinates. The arena is limited to 100×100. Its `min.y` is the first standing layer directly above the floor.
-- `spawn-points` are `x,y,z` strings; each must have a solid floor and two passable standing blocks. Spawns prefer the farthest eligible point and wait if the minimum distance cannot be met. After 30 failed attempts the current stage returns to the lobby without awarding completion.
-- `items.<id>` defines material, display name, lore, `item-model` (preferred), optional legacy `custom-model-data`, `drops`, and optional `ritual`. Drop fields: `source` (`mob`, `miniboss`, `boss`), optional `stage`, optional `week`, `amount`, `chance` (0–1).
-- Ritual fields: `type`, `health`, `damage`, `name`, `result` (another item ID). Recognized by PDC, not by renamed display names.
-- `balance` holds all limits. Minecraft/Spigot's maximum mob-health attribute is clamped to 1024.
-- `state.yml` holds portal deadlines/event days/first-boss status, leader progress, cooldowns, return positions and loot mailboxes. Do not edit it while running. Stop all parties before `/raid reload`; avoid Bukkit's global `/reload`.
+Die Portalregion ist ein Quader mit Partikeln und Betretens-Erkennung. Dekorative Formen/Rahmen kannst du darum bauen. Ein neuer Event-Durchlauf benötigt einen neuen Portalnamen; ein verlängerter Timer hebt einen normalen abgeschlossenen Boss nicht auf. Demo-Reset ist die ausdrückliche Test-Ausnahme.
 
-On a clean server shutdown, parties are evacuated and the current stage is saved; restarting a party begins that stage at wave 1. Return positions and temporary gate/placement snapshots are persisted for disconnect/crash recovery. A crash during inventory mutations cannot guarantee atomicity with Minecraft's separate player-data saves; use regular world/player/plugin backups.
+## Konfiguration und Erweiterung
 
-## Build and validation
+`plugins/DurcheinanderMobArmy/config.yml` enthält `weeks`, `items`, `balance`, `presentation`, `ritual-animation`, `messages` und `testing`. `state.yml` speichert Fortschritt, Deadline, Boss-Status, Cooldowns, Rückkehrpositionen, Loot und vorübergehende Block-/Ritual-Recovery.
 
-With Java 25 and Maven 3.9+:
+Neue Woche: vorhandenen `weeks.<id>`-Eintrag kopieren, eigene Welt und fünf Stages eintragen. Eine eigene Arena mit `generate-demo: false` bauen/importieren. `arena` und `lobby` sind unabhängige, inklusive Blockregionen; `min.y` steht direkt über dem Boden. Arena höchstens 100×100. Spawnpunkte benötigen einen soliden Boden und zwei freie Blöcke; bevorzugt wird der am weitesten entfernte Punkt mit Mindestabstand.
+
+Neue Items: Material, `name`, `lore`, `item-model`, Drop-Quellen und optional `ritual` oder `use` hinzufügen. Drop-Quellen: `mob`, `miniboss`, `boss`, optional Stage/Woche, Menge und Chance. Relikt-`use`: Verbrauch, Radius auf aktuelle Gruppenmitglieder, Cooldown, Nachricht und Liste von Potion-Effekten mit Sekunden/Amplifier. Items werden über PDC-ID erkannt, Namen lassen sich daher nicht als Ersatz fälschen.
+
+Vor `/raid reload` sämtliche Gruppen und laufenden Rituale beenden. Für globale Bukkit-Reloads ist der normale Server-Neustart vorzuziehen. Regelmäßige Server-Backups sind sinnvoll, da Minecraft-Spielerdaten und Plugin-YAML getrennt gespeichert werden.
+
+## Bauen und prüfen
+
+Mit Java 25 und Maven 3.9+:
 
 ```sh
 mvn clean verify
@@ -98,8 +101,8 @@ python3 tools/build_pack.py
 python3 tools/build_release.py
 ```
 
-The JAR is `target/DurcheinanderMobArmy-1.0.0.jar`. Put it in your server's `plugins` folder, restart, and enable the client resource pack. The resource-pack builder uses Python's standard library only. GitHub Actions builds and uploads the JAR and resource pack automatically.
+JAR: `target/DurcheinanderMobArmy-1.1.0.jar`. Resource Pack: `target/MobArmy-resource-pack-26.3.zip`. Das Pack verwendet Format 97.1. GitHub Actions baut JAR, Pack und ZIP und prüft die Windows-Setup-Skripte.
 
-Tests cover reward deadline/midnight/first-boss cutoff, hit/share limits, repeated boss hits, player scaling, duration validation, leader majorities, and the complete shipped wave/rider/minimum configuration. Follow `TESTING.md` for in-game acceptance checks before opening a public event.
+Automatische Tests prüfen Timer/Mitternacht/Boss-Abschluss, Schaden und Mindestspieler-Anteile, Waves/Reiter, komplette Tab-Grammatik, Spinnen-Regelausnahme, GUI-freien Eintritt und den Gruppen-Teleport. Sichtbarkeit, native Wind-Charge-Physik, Spinnen-Bewegung und Multiplayer-Balance bitte mit `TESTING.md` im Spiel prüfen.
 
-Version sources: [Spigot 26.3 announcement](https://www.spigotmc.org/threads/spigot-bungeecord-26-3.724398/), [Spigot API documentation](https://hub.spigotmc.org/javadocs/spigot/), [official Minecraft 26.3 changes](https://feedback.minecraft.net/hc/en-us/articles/48913133328013-Minecraft-Java-Edition-26-3). Resource pack targets format **97.1**.
+Versionsquellen: [Spigot 26.3](https://www.spigotmc.org/threads/spigot-bungeecord-26-3.724398/), [Spigot API](https://hub.spigotmc.org/javadocs/spigot/), [Minecraft 26.3](https://feedback.minecraft.net/hc/en-us/articles/48913133328013-Minecraft-Java-Edition-26-3).

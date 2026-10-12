@@ -28,7 +28,8 @@ final class Menus implements Listener {
             v.inventory.setItem(i-start,button(Material.PLAYER_HEAD,(id.equals(s.leader)?"&6★ ":"&f")+name,"&7Klicken: Leader wählen","&7Stimmen: "+votes));
         }
         v.inventory.setItem(45,button(Material.ARROW,"&fZurück"));v.inventory.setItem(46,button(Material.ARROW,"&fWeiter"));
-        v.inventory.setItem(48,button(Material.EMERALD_BLOCK,"&aReady / Stage starten","&7Minimum: "+s.arena.minimum(),"&7Aktuell: "+s.members.size(),"&7Phase: "+s.phase));
+        v.inventory.setItem(47,button(Material.BOOK,"&dStage "+s.stage+" / 5","&7Leader wird per Mehrheit gewählt.",String.format(Locale.ROOT,"&7Boss-Anteil pro Spieler: %.1f%%",100*Rules.bossShare(s.arena.minimum()))));
+        v.inventory.setItem(48,button(Material.EMERALD_BLOCK,"&aReady / Stage starten","&7Minimum: "+s.arena.minimum(),"&7Aktuell: "+s.members.size(),"&7Nach Ready: Teleport in die Arena.","&7Phase: "+s.phase));
         v.inventory.setItem(50,button(Material.CHEST,"&dLoot-Postfach","&7Deine Items abholen / verteilen"));
         v.inventory.setItem(53,button(Material.BARRIER,"&cDungeon verlassen"));player.openInventory(v.inventory);
     }

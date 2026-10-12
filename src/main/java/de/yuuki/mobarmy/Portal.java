@@ -29,11 +29,11 @@ final class Portal {
         World w=Bukkit.getWorld(region.world());if(w==null)return;
         if(label==null||!label.isValid()) {
             // Remove persisted labels from a previous server process.
-            for(Entity e:w.getNearbyEntities(region.center(),2,3,2))if(e instanceof TextDisplay&&e.getPersistentDataContainer().has(plugin.entityKey))e.remove();
-            label=w.spawn(region.center(),TextDisplay.class);label.setBillboard(Display.Billboard.CENTER);label.setPersistent(false);label.getPersistentDataContainer().set(plugin.entityKey,org.bukkit.persistence.PersistentDataType.STRING,"portal");
+            for(Entity e:w.getNearbyEntities(region.center(),3,3,3))if(e instanceof TextDisplay&&("portal:"+id).equals(e.getPersistentDataContainer().get(plugin.entityKey,org.bukkit.persistence.PersistentDataType.STRING)))e.remove();
+            label=w.spawn(region.center(),TextDisplay.class);Presentation.style(label);label.getPersistentDataContainer().set(plugin.entityKey,org.bukkit.persistence.PersistentDataType.STRING,"portal:"+id);
         }
-        String timer=rewards()?Math.max(0,(deadline-System.currentTimeMillis())/1000)/60+" min":"Keine Rewards";
-        label.setText(MobArmy.color("&d"+id+" &7• "+week+"\n"+(open?"&aOffen":"&cGeschlossen")+" &7• "+timer+(session!=null&&session.phase!=Session.Phase.LOBBY?"\n&cStage läuft":"")));
-        if(open)for(int i=0;i<8;i++){Location l=new Location(w,region.x1()+Math.random()*(region.x2()-region.x1()+1),region.y1()+Math.random()*(region.y2()-region.y1()+1),region.z1()+Math.random()*(region.z2()-region.z1()+1));w.spawnParticle(Particle.PORTAL,l,2,0,0,0,0.1);}
+        String timer=rewards()?"&aRewards &f"+Rules.clock((deadline-System.currentTimeMillis())/1000):bossKilled?"&7Boss bereits abgeschlossen":"&7Training · keine Rewards";
+        String status=!open?"&cGESCHLOSSEN":session!=null&&session.phase!=Session.Phase.LOBBY?"&cSTAGE "+session.stage+" LÄUFT":"&aBETRETEN";
+        label.setText(MobArmy.color("&d&l◆ MOB ARMY ◆\n&f"+id+" &8· &b"+week+"\n"+status+"\n"+timer+"\n&7Hineingehen → Vorraum"));
     }
 }

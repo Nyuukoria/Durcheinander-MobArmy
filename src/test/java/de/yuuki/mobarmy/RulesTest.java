@@ -30,4 +30,17 @@ class RulesTest {
         assertThrows(IllegalArgumentException.class,()->Rules.duration("0m"));assertThrows(IllegalArgumentException.class,()->Rules.duration("8d"));assertThrows(RuntimeException.class,()->Rules.duration(""));
     }
     @Test void votingNeedsStrictMajority(){assertFalse(Rules.majority(2,4));assertTrue(Rules.majority(3,4));assertTrue(Rules.majority(2,3));}
+    @Test void exactlyMinimumPlayersCanFinishBossEvenWithFractionalShares(){
+        for(int minimum:new int[]{1,2,3,5,10}){
+            double health=317,total=0,share=Rules.bossShare(minimum);
+            for(int player=0;player<minimum;player++){
+                double dealt=0;for(int hit=0;hit<100;hit++)dealt+=Rules.damage(1000,health,dealt,false,true,.2,.05,share);
+                assertEquals(health/minimum,dealt,1e-8);total+=dealt;
+            }
+            assertEquals(health,total,1e-8);
+        }
+    }
+    @Test void extraPartyMembersDoNotChangeMinimumBasedShare(){assertEquals(.5,Rules.bossShare(2));assertEquals(1.0/3,Rules.bossShare(3));assertEquals(.2,Rules.bossShare(5));}
+    @Test void spiderClimbExceptionOnlyAppliesToPlayerWalls(){assertTrue(Rules.mayClimb(true,false));assertFalse(Rules.mayClimb(false,true));assertFalse(Rules.mayClimb(true,true));assertFalse(Rules.mayClimb(false,false));}
+    @Test void clockKeepsSecondsAndHours(){assertEquals("00:00",Rules.clock(-1));assertEquals("00:59",Rules.clock(59));assertEquals("01:00",Rules.clock(60));assertEquals("1:01:01",Rules.clock(3661));}
 }

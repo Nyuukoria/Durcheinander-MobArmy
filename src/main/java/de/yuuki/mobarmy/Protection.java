@@ -39,7 +39,7 @@ final class Protection implements Listener {
     }
     @EventHandler(ignoreCancelled=true) public void vanillaPortal(PlayerPortalEvent e){if(p.portalAt(e.getFrom())!=null||raid(e.getFrom().getWorld()))e.setCancelled(true);}
     @EventHandler(ignoreCancelled=true) public void pearlHit(ProjectileHitEvent e){if(e.getEntity() instanceof EnderPearl&&p.portalAt(e.getEntity().getLocation())!=null){e.setCancelled(true);e.getEntity().remove();}}
-    @EventHandler public void login(PlayerJoinEvent e){Bukkit.getScheduler().runTask(p,()->{p.recover(e.getPlayer());if(raid(e.getPlayer().getWorld())&&p.session(e.getPlayer().getUniqueId())==null)e.getPlayer().teleport(Bukkit.getWorlds().getFirst().getSpawnLocation());});}
+    @EventHandler public void login(PlayerJoinEvent e){Bukkit.getScheduler().runTask(p,()->{p.items.refresh(e.getPlayer());p.recover(e.getPlayer());if(raid(e.getPlayer().getWorld())&&p.session(e.getPlayer().getUniqueId())==null)e.getPlayer().teleport(Bukkit.getWorlds().getFirst().getSpawnLocation());});}
     @EventHandler public void quit(PlayerQuitEvent e){p.commands.builders.remove(e.getPlayer().getUniqueId());Session s=p.session(e.getPlayer().getUniqueId());if(s!=null){Location exit=s.portal.exit.clone();p.engine.leave(e.getPlayer(),false);p.returns.put(e.getPlayer().getUniqueId(),exit);p.saveState();}}
     @EventHandler(priority=EventPriority.HIGHEST) public void death(PlayerDeathEvent e){
         if(!raid(e.getEntity().getWorld()))return;e.setKeepInventory(true);e.setKeepLevel(true);e.setDroppedExp(0);e.getDrops().clear();e.setDeathMessage(null);
@@ -57,8 +57,8 @@ final class Protection implements Listener {
             LivingEntity mob=(LivingEntity)e.getEntity();boolean boss=victim.contribution.containsKey(mob.getUniqueId());
             boolean mace=by.getDamager() instanceof Player&&player.getInventory().getItemInMainHand().getType()==Material.MACE;
             double dealt=boss?victim.contribution.get(mob.getUniqueId()).getOrDefault(player.getUniqueId(),0.0):0;
-            double share=Math.max(p.getConfig().getDouble("balance.boss-player-share",0.4),1.0/Math.max(2,victim.stagePlayers));
-            if(p.getConfig().getBoolean("testing.solo"))share=1;
+            double share=Rules.bossShare(victim.arena.minimum());
+            if(boss&&mob.getHealth()<0.0001&&victim.contribution.get(mob.getUniqueId()).values().stream().mapToDouble(Double::doubleValue).sum()>=mob.getAttribute(Attribute.MAX_HEALTH).getValue()-0.001){e.setCancelled(true);mob.setHealth(0);return;}
             double cap=Rules.damage(e.getFinalDamage(),mob.getAttribute(Attribute.MAX_HEALTH).getValue(),dealt,mace,boss,p.getConfig().getDouble("balance.hit-cap",0.2),p.getConfig().getDouble("balance.mace-cap",0.05),share);
             if(cap<=0){e.setCancelled(true);return;}
             // Bukkit re-evaluates armor modifiers after setDamage. Binary search caps FINAL damage.
@@ -66,20 +66,22 @@ final class Protection implements Listener {
         }
     }
     @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true) public void contributed(EntityDamageByEntityEvent e){Session s=p.engine.find(e.getEntity().getUniqueId());Entity attacker=source(e.getDamager());if(s!=null&&attacker instanceof Player player&&s.contribution.containsKey(e.getEntity().getUniqueId())){double actual=Math.min(e.getFinalDamage(),((LivingEntity)e.getEntity()).getHealth());s.contribution.get(e.getEntity().getUniqueId()).merge(player.getUniqueId(),actual,Double::sum);}}
+    @EventHandler(priority=EventPriority.HIGHEST,ignoreCancelled=true) public void healMob(EntityRegainHealthEvent e){if(p.engine.find(e.getEntity().getUniqueId())!=null)e.setCancelled(true);}
     @EventHandler(priority=EventPriority.HIGHEST) public void mobDeath(EntityDeathEvent e){if(p.engine.find(e.getEntity().getUniqueId())!=null||p.engine.rituals.containsKey(e.getEntity().getUniqueId())){e.setDroppedExp(0);p.engine.killed(e.getEntity(),e.getDrops());}}
     @EventHandler(ignoreCancelled=true) public void itemSpawn(ItemSpawnEvent e){Arena a=p.arena(e.getEntity().getWorld());if(a==null)return;for(Portal portal:p.portals.values())if(portal.session!=null&&portal.session.arena==a)portal.session.drops.add(e.getEntity().getUniqueId());}
     @EventHandler(ignoreCancelled=true) public void target(EntityTargetLivingEntityEvent e){Session s=p.engine.find(e.getEntity().getUniqueId());if(s!=null&&(!(e.getTarget() instanceof Player player)||!s.members.contains(player.getUniqueId())))e.setCancelled(true);}
     @EventHandler(ignoreCancelled=true) public void launch(ProjectileLaunchEvent e){
         if(!raid(e.getEntity().getWorld()))return;
-        if(e.getEntity() instanceof WindCharge||e.getEntity() instanceof Firework){e.setCancelled(true);return;}
+        if(e.getEntity() instanceof Firework){e.setCancelled(true);return;}
         if(e.getEntity() instanceof AbstractArrow arrow&&arrow.getShooter() instanceof Mob mob&&p.engine.find(mob.getUniqueId())!=null&&mob.getAttribute(Attribute.ATTACK_DAMAGE)!=null)arrow.setDamage(mob.getAttribute(Attribute.ATTACK_DAMAGE).getValue()/2);
         if(e.getEntity() instanceof ThrownPotion potion&&potion.getShooter() instanceof Player player&&!use(player,"potion",p.getConfig().getInt("balance.potions-per-stage",3)))e.setCancelled(true);
     }
     @EventHandler(ignoreCancelled=true) public void interact(PlayerInteractEvent e){
         Player player=e.getPlayer();ItemStack item=e.getItem();
         if(e.getHand()==EquipmentSlot.HAND&&e.getAction()==Action.RIGHT_CLICK_BLOCK&&e.getClickedBlock()!=null&&e.getClickedBlock().getType().name().endsWith("CAULDRON")&&p.items.ritual(player,e.getClickedBlock(),item)){e.setCancelled(true);return;}
+        if(e.getHand()==EquipmentSlot.HAND&&(e.getAction()==Action.RIGHT_CLICK_AIR||e.getAction()==Action.RIGHT_CLICK_BLOCK)&&p.items.activate(player,item)){e.setCancelled(true);return;}
         if(!raid(player.getWorld()))return;
-        if(item!=null&&(item.getType()==Material.WIND_CHARGE||item.getType()==Material.FIREWORK_ROCKET||item.getType()==Material.END_CRYSTAL||item.getType()==Material.TNT||item.getType()==Material.TNT_MINECART))e.setCancelled(true);
+        if(item!=null&&(item.getType()==Material.FIREWORK_ROCKET||item.getType()==Material.END_CRYSTAL||item.getType()==Material.TNT||item.getType()==Material.TNT_MINECART))e.setCancelled(true);
         if(e.getClickedBlock()!=null&&e.getClickedBlock().getType()==Material.RESPAWN_ANCHOR)e.setCancelled(true);
     }
     @EventHandler(ignoreCancelled=true) public void glide(EntityToggleGlideEvent e){if(e.isGliding()&&raid(e.getEntity().getWorld()))e.setCancelled(true);}
@@ -105,7 +107,7 @@ final class Protection implements Listener {
         if(s==null||!e.getPlayer().getUniqueId().equals(s.blocks.get(l))){e.setCancelled(true);return;}
     }
     @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true) public void broken(BlockBreakEvent e){Session s=p.session(e.getPlayer().getUniqueId());if(s!=null){s.blocks.remove(e.getBlock().getLocation());s.blockOriginal.remove(e.getBlock().getLocation());p.saveState();}}
-    @EventHandler(ignoreCancelled=true) public void explode(EntityExplodeEvent e){if(raid(e.getLocation().getWorld())){e.blockList().clear();e.setCancelled(true);}}
+    @EventHandler(ignoreCancelled=true) public void explode(EntityExplodeEvent e){if(raid(e.getLocation().getWorld())){e.blockList().clear();if(!(e.getEntity() instanceof AbstractWindCharge))e.setCancelled(true);}}
     @EventHandler(ignoreCancelled=true) public void explode(BlockExplodeEvent e){if(raid(e.getBlock().getWorld())){e.blockList().clear();e.setCancelled(true);}}
     @EventHandler(ignoreCancelled=true) public void burn(BlockBurnEvent e){if(raid(e.getBlock().getWorld()))e.setCancelled(true);}
     @EventHandler(ignoreCancelled=true) public void ignite(BlockIgniteEvent e){if(raid(e.getBlock().getWorld()))e.setCancelled(true);}

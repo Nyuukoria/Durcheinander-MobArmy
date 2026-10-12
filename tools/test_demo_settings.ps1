@@ -9,6 +9,7 @@ try {
     $Properties = Join-Path $Temporary 'server.properties'
     $Text = [IO.File]::ReadAllText($Config)
     if ($Text -notmatch '(?m)^  solo: true\s*$' -or $Text -notmatch '(?m)^  disable-pvp: true\s*$') { throw 'Fresh demo does not enable solo mode and disable PvP.' }
+    if ($Text -notmatch '(?m)^  disable-wipe-cooldown: true\s*$') { throw 'Fresh demo leaves wipe cooldown enabled.' }
     if ($Text -notmatch 'minimum-players: 5') { throw 'Demo settings rewrote the production week settings.' }
     if ([IO.File]::ReadAllText($Properties) -notmatch '(?m)^pvp=false\s*$') { throw 'Demo properties did not disable PvP.' }
 

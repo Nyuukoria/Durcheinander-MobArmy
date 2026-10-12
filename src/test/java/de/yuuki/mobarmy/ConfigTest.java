@@ -23,5 +23,12 @@ class ConfigTest {
         assertFalse(cfg.getBoolean("testing.solo"));
         assertEquals(2,cfg.getInt("weeks.w1.minimum-players"));assertEquals(3,cfg.getInt("weeks.w2.minimum-players"));assertEquals(5,cfg.getInt("weeks.w3.minimum-players"));
         assertNotNull(cfg.getConfigurationSection("items.chaos_fragment.ritual"));
+        assertFalse(cfg.getBoolean("testing.disable-wipe-cooldown"));
+        for(String week:cfg.getConfigurationSection("weeks").getKeys(false)){
+            var a=cfg.getConfigurationSection("weeks."+week);assertTrue(a.getIntegerList("lobby.min").getFirst()>a.getIntegerList("arena.max").getFirst());
+            assertEquals(75,a.getIntegerList("arena.max").get(1));
+        }
+        assertEquals("mobarmy:raid_shard",cfg.getString("items.raid_shard.item-model"));assertTrue(cfg.getBoolean("items.raid_shard.shop-token"));
+        assertFalse(cfg.getMapList("items.ritual_core.use.effects").isEmpty());assertEquals(1,cfg.getInt("items.ritual_core.use.consume"));
     }
 }

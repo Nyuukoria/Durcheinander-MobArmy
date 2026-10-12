@@ -36,6 +36,7 @@ if (-not (Test-Path $Config)) {
 $Text = [IO.File]::ReadAllText($Config)
 $Text = Set-MobArmyDemoFlag -Text $Text -Name 'solo'
 $Text = Set-MobArmyDemoFlag -Text $Text -Name 'disable-pvp'
+$Text = Set-MobArmyDemoFlag -Text $Text -Name 'disable-wipe-cooldown'
 [IO.File]::WriteAllText($Config, $Text, [Text.UTF8Encoding]::new($false))
 
 $Properties = Join-Path $ServerDirectory 'server.properties'

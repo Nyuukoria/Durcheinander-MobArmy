@@ -28,4 +28,7 @@ public final class Rules {
         return result;
     }
     public static boolean majority(int votes, int members) { return votes > members / 2; }
+    public static double bossShare(int minimum) { return 1.0 / Math.max(1, minimum); }
+    public static String clock(long seconds) { long s=Math.max(0,seconds);return s>=3600?String.format(Locale.ROOT,"%d:%02d:%02d",s/3600,(s/60)%60,s%60):String.format(Locale.ROOT,"%02d:%02d",s/60,s%60); }
+    public static boolean mayClimb(boolean playerBlocks,boolean originalBlocks){return playerBlocks&&!originalBlocks;}
 }

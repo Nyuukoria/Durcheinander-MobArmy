@@ -24,7 +24,7 @@ final class Engine {
         if(!portal.open){p.tell(player,"Portal geschlossen.");return false;}
         if(portal.session!=null&&portal.session.phase!=Session.Phase.LOBBY){p.tell(player,"Während einer Stage ist kein Beitritt möglich.");return false;}
         if(portal.session!=null&&portal.session.dead.contains(id)){p.tell(player,"Du bist in diesem Durchlauf ausgeschieden.");return false;}
-        if(portal.day.equals(p.today())&&p.state.getLong("cooldowns."+p.today()+"."+id)>now){p.tell(player,"Wipe-Sperre aktiv. /raid status zeigt die Portalinfos.");return false;}
+        if(!p.getConfig().getBoolean("testing.disable-wipe-cooldown")&&portal.day.equals(p.today())&&p.state.getLong("cooldowns."+p.today()+"."+id)>now){p.tell(player,"Wipe-Sperre aktiv. /raid status zeigt die Portalinfos.");return false;}
         // One physical arena can serve only one portal at a time.
         if(p.portals.values().stream().anyMatch(q->q!=portal&&q.week.equals(portal.week)&&q.session!=null)){p.tell(player,"Diese Arena wird schon benutzt.");return false;}
         if(portal.session==null){
@@ -36,8 +36,9 @@ final class Engine {
         Session s=portal.session;s.members.add(id);s.participants.add(id);
         p.returns.put(id,portal.exit.clone());p.saveState();
         if(!player.teleport(s.arena.lobbySpawn)){leave(player,false);return false;}
-        player.playSound(player.getLocation(),Sound.BLOCK_PORTAL_TRAVEL,0.4f,1.2f);
-        p.menus.party(player,0);return true;
+        p.presentation.transfer(player);
+        p.tell(player,p.getConfig().getString("messages.private-join","&dWillkommen im Vorraum! &fMach &e/raid &fum den Leader zu wählen. Nur der Leader startet die Stage mit Ready."));
+        p.presentation.hud(s);return true;
     }
     void ready(Player player){
         Session s=p.session(player.getUniqueId());if(s==null)return;
@@ -46,14 +47,21 @@ final class Engine {
         if(s.members.size()<s.arena.minimum()){p.tell(player,"Mindestens "+s.arena.minimum()+" Spieler erforderlich.");return;}
         s.uses.clear();s.appleTimes.clear();s.pearlTimes.clear();s.votes.clear();s.wave=0;s.miniboss=false;
         s.stagePlayers=s.members.size();s.arena.gate(false);s.phase(Session.Phase.ENTERING);
-        players(s).forEach(pl->{pl.closeInventory();pl.sendTitle("Stage "+s.stage,"Betretet die Arena – das Tor wartet auf alle.",10,70,10);});
+        players(s).forEach(pl->{pl.closeInventory();pl.sendTitle("Stage "+s.stage,"Die Gruppe wird in die Arena teleportiert …",10,50,10);});
     }
     void tick(){
         for(Portal portal:p.portals.values()){
             portal.tick();Session s=portal.session;if(s==null)continue;
             long now=System.currentTimeMillis();
+            p.presentation.hud(s);
             if(s.members.isEmpty()){finish(s);continue;}
             if(s.phase==Session.Phase.ENTERING){
+                if(now-s.phaseSince>=p.getConfig().getLong("presentation.entry-countdown-seconds",3)*1000){
+                    for(Player pl:players(s))if(!s.arena.bounds.contains(pl.getLocation())){
+                        Location target=s.arena.entryPoint(pl.getUniqueId().hashCode());
+                        if(pl.teleport(target))p.presentation.transfer(pl);
+                    }
+                }
                 boolean all=players(s).size()==s.members.size()&&players(s).stream().allMatch(pl->s.arena.bounds.contains(pl.getLocation()));
                 if(all){s.arena.gate(true);s.phase(Session.Phase.FIGHT);nextWave.put(s,now+2000);p.saveState();}
                 else if(now-s.phaseSince>p.getConfig().getLong("entry-timeout-seconds",120)*1000){s.phase(Session.Phase.LOBBY);players(s).forEach(pl->pl.teleport(s.arena.lobbySpawn));}
@@ -70,7 +78,11 @@ final class Engine {
             }
             if(s.phase==Session.Phase.LOOT){
                 s.drops.removeIf(id->{Entity e=Bukkit.getEntity(id);return e==null||!e.isValid();});
-                if(s.drops.isEmpty()||now-s.phaseSince>=p.getConfig().getLong("loot-timeout-seconds",120)*1000)finish(s);
+                long timeout=p.getConfig().getLong(s.stage<5?"stage-loot-timeout-seconds":"loot-timeout-seconds",s.stage<5?12:120)*1000;
+                if(s.drops.isEmpty()||now-s.phaseSince>=timeout){
+                    for(UUID id:new ArrayList<>(s.drops)){Entity e=Bukkit.getEntity(id);if(e instanceof Item item&&p.items.id(item.getItemStack())!=null){p.items.deliver(s.leader,item.getItemStack());item.remove();}}
+                    s.drops.clear();if(s.stage<5){s.stage++;s.phase(Session.Phase.LOBBY);players(s).forEach(pl->{pl.teleport(s.arena.lobbySpawn);p.tell(pl,"Stage geschafft! Mit /raid den Leader wählen und die nächste Stage starten.");});p.saveState();}else finish(s);
+                }
             }
         }
     }
@@ -118,7 +130,7 @@ final class Engine {
                 if(s.mobs.isEmpty())throw new IllegalArgumentException("Empty wave");
             }
             players(s).forEach(pl->pl.sendTitle("Stage "+s.stage,mini?"Miniboss":boss?"Chaoswächter":"Wave "+s.wave,5,40,5));
-            aggro(s);
+            s.waveStartMobs=s.mobs.size();aggro(s);
         }catch(Exception e){p.getLogger().log(java.util.logging.Level.SEVERE,"Failed to spawn wave",e);abortStage(s,"Fehler in der Wave-Config. Admin informieren.");}
     }
     Location spawnPoint(Session s){
@@ -174,7 +186,7 @@ final class Engine {
         if(wasRewarded)p.announcement(s.portal,"stage",s.arena.stage(s.stage).getString("name","Stage "+s.stage));
         s.arena.gate(false);restoreBlocks(s);
         if(s.stage==5){s.portal.bossKilled=true;s.phase(Session.Phase.LOOT);p.state.set("loot-recipients."+s.leader,s.participants.stream().map(UUID::toString).toList());for(UUID id:s.participants)p.state.set("progress."+s.portal.id+"."+id,1);}
-        else{s.stage++;p.state.set("progress."+s.portal.id+"."+s.leader,s.stage);s.phase(Session.Phase.LOBBY);players(s).forEach(pl->pl.teleport(s.arena.lobbySpawn));}
+        else{p.state.set("progress."+s.portal.id+"."+s.leader,s.stage+1);s.phase(Session.Phase.LOOT);}
         p.saveState();
     }
     void leave(Player player,boolean died){
@@ -182,10 +194,11 @@ final class Engine {
         s.members.remove(id);s.votes.remove(id);s.votes.values().removeIf(id::equals);
         if(died)s.dead.add(id);else{p.returns.remove(id);if(player.isOnline())player.teleport(s.portal.exit);}
         if(s.bar!=null)s.bar.removePlayer(player);
+        if(s.hud!=null)s.hud.removePlayer(player);
         if(s.members.isEmpty()){
-            if(died){long until=System.currentTimeMillis()+p.getConfig().getLong("wipe-cooldown-minutes",30)*60000;for(UUID member:s.participants){p.state.set("progress."+s.portal.id+"."+member,1);if(s.portal.day.equals(p.today()))p.state.set("cooldowns."+p.today()+"."+member,until);}}
+            if(died){long until=System.currentTimeMillis()+p.getConfig().getLong("wipe-cooldown-minutes",30)*60000;for(UUID member:s.participants){p.state.set("progress."+s.portal.id+"."+member,1);if(!p.getConfig().getBoolean("testing.disable-wipe-cooldown")&&s.portal.day.equals(p.today()))p.state.set("cooldowns."+p.today()+"."+member,until);}}
             finish(s);
-        }else if(s.leader.equals(id)){List<UUID> ids=new ArrayList<>(s.members);s.leader=ids.get(new Random().nextInt(ids.size()));p.state.set("progress."+s.portal.id+"."+s.leader,s.stage);}
+        }else if(s.leader.equals(id)){List<UUID> ids=new ArrayList<>(s.members);s.leader=ids.get(new Random().nextInt(ids.size()));p.state.set("progress."+s.portal.id+"."+s.leader,s.phase==Session.Phase.LOOT&&s.stage<5?s.stage+1:s.stage);}
         p.saveState();
     }
     void vote(Player voter,UUID candidate){Session s=p.session(voter.getUniqueId());if(s==null||s.phase!=Session.Phase.LOBBY||!s.members.contains(candidate))return;s.votes.put(voter.getUniqueId(),candidate);long votes=s.votes.values().stream().filter(candidate::equals).count();if(Rules.majority((int)votes,s.members.size())){s.leader=candidate;s.votes.clear();p.state.set("progress."+s.portal.id+"."+candidate,s.stage);p.saveState();}}
@@ -198,6 +211,6 @@ final class Engine {
         }
         s.blockOriginal.forEach((l,d)->l.getBlock().setBlockData(d,false));s.blocks.clear();s.blockOriginal.clear();p.saveState();
     }
-    void finish(Session s){clearMobs(s);s.arena.gate(false);restoreBlocks(s);for(UUID id:s.members){Player pl=Bukkit.getPlayer(id);if(pl!=null&&!pl.isDead()){pl.closeInventory();pl.teleport(s.portal.exit);p.returns.remove(id);}}s.portal.session=null;p.saveState();}
+    void finish(Session s){clearMobs(s);if(s.hud!=null){s.hud.removeAll();s.hud=null;}s.arena.gate(false);restoreBlocks(s);for(UUID id:s.members){Player pl=Bukkit.getPlayer(id);if(pl!=null&&!pl.isDead()){pl.closeInventory();pl.teleport(s.portal.exit);p.returns.remove(id);}}s.portal.session=null;p.saveState();}
     void shutdown(){for(Portal portal:p.portals.values())if(portal.session!=null)finish(portal.session);for(UUID id:rituals.keySet()){Entity e=Bukkit.getEntity(id);if(e!=null)e.remove();}}
 }

@@ -36,6 +36,6 @@ jobs:
         with:
           name: DurcheinanderMobArmy-26.3
           path: |
-            target/DurcheinanderMobArmy-1.0.0.jar
+            target/DurcheinanderMobArmy-1.1.0.jar
             target/MobArmy-resource-pack-26.3.zip
-            target/DurcheinanderMobArmy-1.0.0-local-test.zip
+            target/DurcheinanderMobArmy-1.1.0-local-test.zip
