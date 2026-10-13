@@ -14,6 +14,7 @@ final class Engine {
     final Map<UUID,String> rituals=new HashMap<>();
     final Map<Session,Long> nextWave=new HashMap<>();
     final Map<UUID,Long> entryTimes=new HashMap<>();
+    final Random random=new Random();
     Engine(MobArmy p){this.p=p;}
     List<Player> players(Session s){return s.members.stream().map(Bukkit::getPlayer).filter(Objects::nonNull).toList();}
     boolean join(Player player,Portal portal){
@@ -46,7 +47,7 @@ final class Engine {
         if(s.members.size()<s.arena.minimum()){p.tell(player,"Mindestens "+s.arena.minimum()+" Spieler erforderlich.");return;}
         s.uses.clear();s.appleTimes.clear();s.pearlTimes.clear();s.votes.clear();s.wave=0;s.miniboss=false;
         s.stagePlayers=s.members.size();s.arena.gate(false);s.phase(Session.Phase.ENTERING);
-        players(s).forEach(pl->{pl.closeInventory();pl.sendTitle("Stage "+s.stage,"Die Gruppe wird in die Arena teleportiert …",10,50,10);});
+        players(s).forEach(pl->{pl.closeInventory();pl.sendTitle(p.text(pl,"Stufe "+s.stage),p.text(pl,"Die Gruppe wird in die Arena teleportiert …"),10,50,10);});
     }
     void tick(){
         for(Portal portal:p.portals.values()){
@@ -93,6 +94,7 @@ final class Engine {
         boolean mini=s.stage<5&&next>3;
         boolean boss=s.stage==5&&next==5;
         var wave=mini?stage.getConfigurationSection("miniboss"):boss?stage.getConfigurationSection("boss"):stage.getConfigurationSection("waves."+next);
+        if((mini||boss)&&p.bosses!=null)wave=p.bosses.select(stage,boss,wave);
         if(wave==null){abortStage(s,"Wave fehlt in der Config.");return;}
         Location spawn=spawnPoint(s);
         if(spawn==null){
@@ -104,15 +106,7 @@ final class Engine {
             if(mini||boss){
                 LivingEntity mob=spawn(s,spawn,wave,true);
                 s.bar=Bukkit.createBossBar(MobArmy.color(wave.getString("name",boss?"&dChaoswächter":"&cMiniboss")),boss?BarColor.PURPLE:BarColor.RED,BarStyle.SEGMENTED_10);
-                players(s).forEach(s.bar::addPlayer);
-                if(boss){
-                    ItemStack model=p.items.make(wave.getString("model-item","boss_model"),1);
-                    ItemDisplay display=s.arena.world.spawn(mob.getLocation(),ItemDisplay.class);
-                    display.setItemStack(model);display.setItemDisplayTransform(ItemDisplay.ItemDisplayTransform.FIXED);
-                    display.setPersistent(false);display.getPersistentDataContainer().set(p.entityKey,PersistentDataType.STRING,s.portal.id);
-                    var transform=display.getTransformation();transform.getTranslation().set(0,-0.45f,0);display.setTransformation(transform);
-                    mob.addPassenger(display);mob.setInvisible(true);
-                }
+                if(p.bosses!=null)p.bosses.model(mob,wave,s.portal.id);
             }else{
                 var specs=wave.getMapList("mobs");int total=0;
                 for(var spec:specs){
@@ -128,18 +122,19 @@ final class Engine {
                 }
                 if(s.mobs.isEmpty())throw new IllegalArgumentException("Empty wave");
             }
-            players(s).forEach(pl->pl.sendTitle("Stage "+s.stage,mini?"Miniboss":boss?"Chaoswächter":"Wave "+s.wave,5,40,5));
+            players(s).forEach(pl->pl.sendTitle(p.text(pl,"Stufe "+s.stage),p.text(pl,mini?"Miniboss":boss?"Endboss":"Welle "+s.wave),5,40,5));
             s.waveStartMobs=s.mobs.size();aggro(s);
         }catch(Exception e){p.getLogger().log(java.util.logging.Level.SEVERE,"Failed to spawn wave",e);abortStage(s,"Fehler in der Wave-Config. Admin informieren.");}
     }
     Location spawnPoint(Session s){
-        double min=p.getConfig().getDouble("balance.minimum-spawn-distance",8);List<Player> ps=players(s);
-        return s.arena.spawns.stream().filter(l->l.getBlock().isPassable()&&l.clone().add(0,1,0).getBlock().isPassable()&&l.clone().subtract(0,1,0).getBlock().getType().isSolid())
-            .filter(l->ps.stream().allMatch(pl->pl.getWorld().equals(l.getWorld())&&pl.getLocation().distanceSquared(l)>=min*min))
-            .max(Comparator.comparingDouble(l->ps.stream().mapToDouble(pl->pl.getLocation().distanceSquared(l)).min().orElse(0))).map(Location::clone).orElse(null);
+        List<Location> candidates=s.arena.spawnCandidates();List<SpawnPlanner.Point> players=players(s).stream().map(pl->point(pl.getLocation())).toList();List<SpawnPlanner.Point> occupied=s.mobs.stream().map(Bukkit::getEntity).filter(Objects::nonNull).map(e->point(e.getLocation())).toList();
+        int index=SpawnPlanner.choose(candidates.stream().map(Engine::point).toList(),players,occupied,p.getConfig().getDouble("balance.minimum-spawn-distance",8),p.getConfig().getDouble("balance.mob-spawn-spacing",4),random);
+        return index<0?null:candidates.get(index).clone();
     }
+    static SpawnPlanner.Point point(Location l){return new SpawnPlanner.Point(l.getX(),l.getY(),l.getZ());}
     LivingEntity spawn(Session s,Location at,ConfigurationSection cfg,boolean boss){
         EntityType type=EntityType.valueOf(cfg.getString("type","ZOMBIE"));
+        if(!Bosses.permitted(type.name()))throw new IllegalArgumentException("Phantoms, Vex and Evokers are disabled");
         Entity e=at.getWorld().spawnEntity(at,type);
         if(!(e instanceof Mob mob)){e.remove();throw new IllegalArgumentException("Raid entities must be mobs: "+type);}
         s.mobs.add(e.getUniqueId());e.setPersistent(false);e.getPersistentDataContainer().set(p.entityKey,PersistentDataType.STRING,s.portal.id);
@@ -150,8 +145,11 @@ final class Engine {
         set(mob,Attribute.ARMOR,cfg.getDouble("armor",0));set(mob,Attribute.KNOCKBACK_RESISTANCE,cfg.getDouble("knockback-resistance",boss?0.5:0.1));set(mob,Attribute.FOLLOW_RANGE,80);
         set(mob,Attribute.SPAWN_REINFORCEMENTS,0);mob.setRemoveWhenFarAway(false);mob.setCanPickupItems(false);
         if(mob instanceof Zombie z)z.setBaby(false);
+        if(mob instanceof Slime slime)slime.setSize(2);
+        mob.addPotionEffect(new org.bukkit.potion.PotionEffect(org.bukkit.potion.PotionEffectType.GLOWING,200,0,true,true,true));
+        if(p.bosses!=null)p.bosses.attach(mob,cfg);
         EntityEquipment eq=mob.getEquipment();if(eq!=null){
-            eq.setHelmet(new ItemStack(Material.IRON_HELMET));eq.setHelmetDropChance(0);eq.setItemInMainHand(new ItemStack(type==EntityType.SKELETON?Material.BOW:Material.IRON_SWORD));eq.setItemInMainHandDropChance(0);
+            eq.setHelmet(new ItemStack(Material.IRON_HELMET));eq.setHelmetDropChance(0);eq.setItemInMainHand(new ItemStack(mob instanceof AbstractSkeleton?Material.BOW:type==EntityType.PILLAGER?Material.CROSSBOW:Material.IRON_SWORD));eq.setItemInMainHandDropChance(0);
             var equipment=cfg.getConfigurationSection("equipment");if(equipment!=null)for(String slot:equipment.getKeys(false)){
                 ItemStack item=new ItemStack(Material.valueOf(equipment.getString(slot)));switch(slot){case "helmet"->eq.setHelmet(item);case "chestplate"->eq.setChestplate(item);case "leggings"->eq.setLeggings(item);case "boots"->eq.setBoots(item);case "hand"->eq.setItemInMainHand(item);default->throw new IllegalArgumentException("Unknown equipment slot "+slot);}
             }
@@ -194,7 +192,7 @@ final class Engine {
         s.members.remove(id);s.votes.remove(id);s.votes.values().removeIf(id::equals);
         if(died)s.dead.add(id);else{p.returns.remove(id);if(player.isOnline())player.teleport(s.portal.exit);}
         if(s.bar!=null)s.bar.removePlayer(player);
-        if(s.hud!=null)s.hud.removePlayer(player);
+        if(s.hud!=null)s.hud.removePlayer(player);if(p.presentation!=null)p.presentation.remove(s,id);
         if(s.members.isEmpty()){
             if(died){long until=System.currentTimeMillis()+p.getConfig().getLong("wipe-cooldown-minutes",30)*60000;for(UUID member:s.participants){p.state.set("progress."+s.portal.id+"."+member,1);if(!p.getConfig().getBoolean("testing.disable-wipe-cooldown")&&s.portal.day.equals(p.today()))p.state.set("cooldowns."+p.today()+"."+member,until);}}
             finish(s);
@@ -204,6 +202,16 @@ final class Engine {
     void vote(Player voter,UUID candidate){Session s=p.session(voter.getUniqueId());if(s==null||s.phase!=Session.Phase.LOBBY||!s.members.contains(candidate))return;s.votes.put(voter.getUniqueId(),candidate);long votes=s.votes.values().stream().filter(candidate::equals).count();if(Rules.majority((int)votes,s.members.size())){s.leader=candidate;s.votes.clear();p.state.set("progress."+s.portal.id+"."+candidate,s.stage);p.saveState();}}
     void abortStage(Session s,String message){clearMobs(s);s.arena.gate(false);restoreBlocks(s);s.phase(Session.Phase.LOBBY);s.wave=0;players(s).forEach(pl->{pl.teleport(s.arena.lobbySpawn);p.tell(pl,message);});}
     void clearMobs(Session s){nextWave.remove(s);for(UUID id:s.mobs){Entity e=Bukkit.getEntity(id);if(e!=null){for(Entity passenger:e.getPassengers())passenger.remove();e.remove();}}s.mobs.clear();s.contribution.clear();if(s.bar!=null){s.bar.removeAll();s.bar=null;}}
+    void skipWave(Session s){
+        if(s.phase!=Session.Phase.FIGHT)throw new IllegalArgumentException("Wave-Skip benötigt eine laufende Kampfphase.");
+        if(s.miniboss||(s.stage==5&&s.wave>=5)){skipStage(s);return;}
+        clearMobs(s);spawnWave(s);p.saveState();
+    }
+    void skipStage(Session s){
+        clearMobs(s);for(UUID id:new ArrayList<>(s.drops)){Entity e=Bukkit.getEntity(id);if(e instanceof Item item&&p.items.id(item.getItemStack())!=null){p.items.deliver(s.leader,item.getItemStack());item.remove();}}s.drops.clear();
+        s.arena.gate(false);restoreBlocks(s);if(s.stage>=5){for(UUID id:s.participants)p.state.set("progress."+s.portal.id+"."+id,1);finish(s);return;}
+        s.stage++;s.wave=0;s.miniboss=false;s.phase(Session.Phase.LOBBY);p.state.set("progress."+s.portal.id+"."+s.leader,s.stage);players(s).forEach(pl->pl.teleport(s.arena.lobbySpawn));p.saveState();
+    }
     void restoreBlocks(Session s){
         for(var entry:s.blocks.entrySet()) {
             org.bukkit.block.Block block=entry.getKey().getBlock();ItemStack returned=Recovery.placedItem(block);
@@ -211,6 +219,6 @@ final class Engine {
         }
         s.blockOriginal.forEach((l,d)->l.getBlock().setBlockData(d,false));s.blocks.clear();s.blockOriginal.clear();p.saveState();
     }
-    void finish(Session s){clearMobs(s);if(s.hud!=null){s.hud.removeAll();s.hud=null;}s.arena.gate(false);restoreBlocks(s);for(UUID id:s.members){Player pl=Bukkit.getPlayer(id);if(pl!=null&&!pl.isDead()){pl.closeInventory();pl.teleport(s.portal.exit);p.returns.remove(id);}}s.portal.session=null;p.saveState();}
+    void finish(Session s){clearMobs(s);if(s.hud!=null){s.hud.removeAll();s.hud=null;}if(p.presentation!=null)p.presentation.clear(s);s.arena.gate(false);restoreBlocks(s);for(UUID id:s.members){Player pl=Bukkit.getPlayer(id);if(pl!=null&&!pl.isDead()){pl.closeInventory();pl.teleport(s.portal.exit);p.returns.remove(id);}}s.portal.session=null;p.saveState();}
     void shutdown(){for(Portal portal:p.portals.values())if(portal.session!=null)finish(portal.session);for(UUID id:rituals.keySet()){Entity e=Bukkit.getEntity(id);if(e!=null)e.remove();}}
 }

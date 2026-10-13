@@ -41,6 +41,11 @@ def build():
         'textures': {'stone': 'minecraft:block/obsidian', 'armor': 'minecraft:block/purple_concrete', 'crystal': 'minecraft:block/amethyst_block', 'eyes': 'minecraft:block/sea_lantern', 'particle': 'minecraft:block/amethyst_block'},
         'elements': elements, 'display': {'fixed': {'rotation': [0, 0, 0], 'translation': [0, -8, 0], 'scale': [1, 1, 1]}}
     })
+    for variant,color in [('frost','cyan_concrete'),('ember','orange_concrete')]:
+        base=json.loads((PACK/'assets/mobarmy/models/item/chaos_guardian.json').read_text())
+        base['textures'].update(armor='minecraft:block/'+color,crystal='minecraft:block/'+('blue_ice' if variant=='frost' else 'magma_block'))
+        write(f'assets/mobarmy/models/item/{variant}_guardian.json',base)
+        write(f'assets/mobarmy/items/{variant}_guardian.json',{'model':{'type':'minecraft:model','model':f'mobarmy:item/{variant}_guardian'}})
     paths=[path for path in sorted(PACK.rglob('*')) if path.is_file() and path.name!='index.txt']
     (PACK/'index.txt').write_text(''.join(str(path.relative_to(PACK))+'\n' for path in paths),encoding='utf-8')
     output = ROOT / 'target/MobArmy-resource-pack-26.3.zip'

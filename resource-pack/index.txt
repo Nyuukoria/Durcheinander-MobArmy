@@ -9,6 +9,8 @@ assets/mobarmy/items/chaos_fragment.json
 assets/mobarmy/items/chaos_guardian.json
 assets/mobarmy/items/echo_pickaxe.json
 assets/mobarmy/items/ember_charm.json
+assets/mobarmy/items/ember_guardian.json
+assets/mobarmy/items/frost_guardian.json
 assets/mobarmy/items/frost_talisman.json
 assets/mobarmy/items/gale_axe.json
 assets/mobarmy/items/gale_boots.json
@@ -44,6 +46,8 @@ assets/mobarmy/models/item/chaos_fragment.json
 assets/mobarmy/models/item/chaos_guardian.json
 assets/mobarmy/models/item/echo_pickaxe.json
 assets/mobarmy/models/item/ember_charm.json
+assets/mobarmy/models/item/ember_guardian.json
+assets/mobarmy/models/item/frost_guardian.json
 assets/mobarmy/models/item/frost_talisman.json
 assets/mobarmy/models/item/gale_axe.json
 assets/mobarmy/models/item/gale_boots.json

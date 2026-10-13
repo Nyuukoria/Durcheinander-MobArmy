@@ -1,6 +1,6 @@
 # Kesselrituale
 
-Ein wiederverwendbares **Chaosfragment** in die Haupthand nehmen und einen Kessel in der konfigurierten Default-Welt rechtsklicken. Das Menü zeigt Zutaten, Ergebnis und Cooldown. Alternativ den Kessel innerhalb sechs Blöcken anschauen und `/raid ritual <id>` ausführen. `/raid codex rituals` zeigt Rezepte, ohne etwas zu starten.
+Ein wiederverwendbares **Chaosfragment** in die Haupthand nehmen und einen Kessel in der konfigurierten Default-Welt rechtsklicken. Das Menü zeigt Zutaten, Ergebnis und Cooldown. Alternativ den Kessel innerhalb sechs Blöcken anschauen und `/raid ritual <id>` ausführen. `/rezepte rituals` zeigt Rezepte, ohne etwas zu starten.
 
 Während der acht Sekunden langen Zeremonie am Kessel bleiben und den Katalysator halten. Zwei gegenläufige Runenringe, ein schwebendes Ergebnis-Icon, eine Energiespirale, vier Phasen und Sounds zeigen den Fortschritt. Jedes Ritual hat seine eigene Farbe. Der Katalysator wird niemals verbraucht. Angegebene Zutaten werden bezahlt; umbenannte Vanilla-Splitter ersetzen keine echten Raidsplitter.
 

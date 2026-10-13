@@ -15,12 +15,13 @@ final class Portal {
     long deadline;
     LocalDate day;
     TextDisplay label;
+    final Map<String,TextDisplay> labels=new HashMap<>();final Map<UUID,String> shown=new HashMap<>();
     Session session;
     Portal(MobArmy plugin,String id,String week,Region region,Location exit){this.plugin=plugin;this.id=id;this.week=week;this.region=region;this.exit=exit;this.day=plugin.today();}
     boolean rewards(){return Rules.rewards(bossKilled,deadline,day,System.currentTimeMillis(),plugin.zone);}
     String lockReason(){
         if(!open)return "&cPortal geschlossen.";
-        if(session!=null&&session.phase!=Session.Phase.LOBBY)return "&cStage "+session.stage+" läuft – Beitritt gesperrt.";
+        if(session!=null&&session.phase!=Session.Phase.LOBBY)return "&cStufe "+session.stage+" läuft – Beitritt gesperrt.";
         if(plugin.portals.values().stream().anyMatch(q->q!=this&&q.week.equals(week)&&q.session!=null))return "&cArena belegt – Beitritt gesperrt.";
         return null;
     }
@@ -30,16 +31,29 @@ final class Portal {
         Portal out=new Portal(p,id,c.getString("week"),Region.read(c,"",c.getString("world")),c.getLocation("exit"));
         out.open=c.getBoolean("open");out.bossKilled=c.getBoolean("boss-killed");out.deadline=c.getLong("deadline");out.day=LocalDate.parse(c.getString("event-day"));return out;
     }
-    void removeLabel(){if(label!=null){label.remove();label=null;}}
+    void removeLabel(){labels.values().forEach(Entity::remove);labels.clear();shown.clear();if(label!=null)label.remove();label=null;}
+    boolean ownsLabel(UUID id){return labels.values().stream().anyMatch(e->e.getUniqueId().equals(id));}
+    void refreshVisibility(Player player){shown.remove(player.getUniqueId());visibility(player);}
+    void visibility(Player player){
+        String lang=plugin.language==null?"de":plugin.language.code(player);if(lang.equals(shown.get(player.getUniqueId())))return;
+        labels.forEach((code,text)->{if(code.equals(lang))player.showEntity(plugin,text);else player.hideEntity(plugin,text);});shown.put(player.getUniqueId(),lang);
+    }
     void tick(){
         World w=Bukkit.getWorld(region.world());if(w==null)return;
-        if(label==null||!label.isValid()) {
-            // Remove persisted labels from a previous server process.
-            for(Entity e:w.getNearbyEntities(region.center(),3,12,3))if(e instanceof TextDisplay){String tag=e.getPersistentDataContainer().get(plugin.entityKey,org.bukkit.persistence.PersistentDataType.STRING);if(("portal:"+id).equals(tag)||"portal".equals(tag))e.remove();}
-            label=w.spawn(region.center(),TextDisplay.class);Presentation.style(label);label.getPersistentDataContainer().set(plugin.entityKey,org.bukkit.persistence.PersistentDataType.STRING,"portal:"+id);
+        if(labels.size()!=2||labels.values().stream().anyMatch(e->!e.isValid())){
+            removeLabel();
+            for(Entity e:w.getNearbyEntities(region.center(),4,16,4))if(e instanceof TextDisplay||e instanceof ArmorStand){String tag=e.getPersistentDataContainer().get(plugin.entityKey,org.bukkit.persistence.PersistentDataType.STRING);if(("portal:"+id).equals(tag)||"portal".equals(tag)||tag!=null&&tag.startsWith("portal-v2:"+id+":"))e.remove();}
+            for(String lang:List.of("de","en")){
+                Location above=region.center();above.setY(region.y2()+2);
+                TextDisplay text=w.spawn(above,TextDisplay.class,e->{Presentation.style(e);e.setVisibleByDefault(false);e.setLineWidth(440);var t=e.getTransformation();t.getScale().set(.65f);e.setTransformation(t);e.getPersistentDataContainer().set(plugin.entityKey,org.bukkit.persistence.PersistentDataType.STRING,"portal-v2:"+id+":"+lang);});labels.put(lang,text);
+            }
+            label=labels.get("de");
         }
         String timer=rewards()?"&aRewards &f"+Rules.clock((deadline-System.currentTimeMillis())/1000):bossKilled?"&7Boss bereits abgeschlossen":"&7Training · keine Rewards";
-        String reason=lockReason();String status=reason==null?"&a&lOFFEN":!open?"&c&lGESCHLOSSEN":session!=null?"&c&lSTAGE "+session.stage+" · GESPERRT":"&c&lARENA BELEGT";
-        label.setText(MobArmy.color("&d&l◆ MOB ARMY ◆\n&f"+id+" &8· &b"+week+"\n"+status+"\n"+timer+"\n"+(reason==null?"&7Hineingehen → Vorraum":"&7Bitte hier warten")));
+        String reason=lockReason();String status=reason==null?"&a&lOFFEN":!open?"&c&lGESCHLOSSEN":session!=null?"&c&lSTUFE "+session.stage+" · GESPERRT":"&c&lARENA BELEGT";
+        String displayId=id.length()>20?id.substring(0,19)+"…":id;
+        String content="&d&l◆ MOB ARMY ◆\n&f"+displayId+" &8· &b"+week+"\n"+status+"\n"+timer+"\n"+(reason==null?"&7Hineingehen → Vorraum":"&7Bitte hier warten");
+        labels.forEach((lang,text)->text.setText(MobArmy.color(plugin.language==null?content:Language.translate(lang,content,plugin.language.phrases))));
+        shown.keySet().removeIf(uuid->Bukkit.getPlayer(uuid)==null);for(Player player:w.getPlayers())visibility(player);
     }
 }

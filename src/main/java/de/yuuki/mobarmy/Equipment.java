@@ -28,16 +28,16 @@ final class Equipment implements Listener {
             Registry.TRIM_PATTERN.getOrThrow(NamespacedKey.minecraft(cfg.getString("trim.pattern")))));
     }
     Map<String,Integer> sets(Player player){
-        Map<String,Integer> result=new LinkedHashMap<>();String[] slots={"boots","leggings","chestplate","helmet"};int index=0;
+        Map<String,Integer> result=new LinkedHashMap<>();Set<String> used=new HashSet<>();String[] slots={"boots","leggings","chestplate","helmet"};int index=0;
         for(ItemStack item:player.getInventory().getArmorContents()){
             String id=p.items.id(item);var cfg=id==null?null:p.getConfig().getConfigurationSection("items."+id);
-            if(cfg!=null&&cfg.contains("set")&&slots[index].equals(cfg.getString("slot")))result.merge(cfg.getString("set"),1,Integer::sum);index++;
+            if(cfg!=null&&cfg.contains("set")&&slots[index].equals(cfg.getString("slot"))&&used.add(id))result.merge(cfg.getString("set"),1,Integer::sum);index++;
         }
+        for(ItemStack item:new ItemStack[]{player.getInventory().getItemInMainHand(),player.getInventory().getItemInOffHand()}){String id=p.items.id(item);var cfg=id==null?null:p.getConfig().getConfigurationSection("items."+id);if(cfg!=null&&cfg.getBoolean("gear")&&!cfg.contains("slot")&&cfg.contains("set")&&used.add(id))result.merge(cfg.getString("set"),1,Integer::sum);}
         return result;
     }
     void tick(){
         for(Player player:Bukkit.getOnlinePlayers()){
-            Session session=p.session(player.getUniqueId());if(session==null||session.phase!=Session.Phase.FIGHT)continue;
             for(var set:sets(player).entrySet()){
                 var bonuses=p.getConfig().getConfigurationSection("equipment-sets."+set.getKey()+".bonuses");if(bonuses==null)continue;
                 for(String required:bonuses.getKeys(false))if(set.getValue()>=Integer.parseInt(required))for(var effect:bonuses.getMapList(required)){

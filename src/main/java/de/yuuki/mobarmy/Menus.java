@@ -16,7 +16,7 @@ final class Menus implements Listener {
         View(UUID owner,String kind,String portal,int page,int item){this.owner=owner;this.kind=kind;this.portal=portal;this.page=page;this.item=item;}
         public Inventory getInventory(){return inventory;}
     }
-    View view(Player player,String kind,String portal,int page,int item,String title){View v=new View(player.getUniqueId(),kind,portal,page,item);v.inventory=Bukkit.createInventory(v,54,MobArmy.color(title));return v;}
+    View view(Player player,String kind,String portal,int page,int item,String title){View v=new View(player.getUniqueId(),kind,portal,page,item);v.inventory=Bukkit.createInventory(v,54,MobArmy.color(p.text(player,title)));return v;}
     ItemStack button(Material type,String name,String... lore){ItemStack stack=new ItemStack(type);var meta=stack.getItemMeta();meta.setDisplayName(MobArmy.color(name));meta.setLore(Arrays.stream(lore).map(MobArmy::color).toList());stack.setItemMeta(meta);return stack;}
     void party(Player player,int page){
         Session s=p.session(player.getUniqueId());if(s==null){mail(player,0);return;}
@@ -31,19 +31,19 @@ final class Menus implements Listener {
         v.inventory.setItem(47,button(Material.BOOK,"&dStage "+s.stage+" / 5","&7Leader wird per Mehrheit gewählt.",String.format(Locale.ROOT,"&7Boss-Anteil pro Spieler: %.1f%%",100*Rules.bossShare(s.arena.minimum()))));
         v.inventory.setItem(48,button(Material.EMERALD_BLOCK,"&aReady / Stage starten","&7Minimum: "+s.arena.minimum(),"&7Aktuell: "+s.members.size(),"&7Nach Ready: Teleport in die Arena.","&7Phase: "+s.phase));
         v.inventory.setItem(50,button(Material.CHEST,"&dLoot-Postfach","&7Deine Items abholen / verteilen"));
-        v.inventory.setItem(53,button(Material.BARRIER,"&cDungeon verlassen"));player.openInventory(v.inventory);
+        v.inventory.setItem(53,button(Material.BARRIER,"&cDungeon verlassen"));p.language.open(player,v.inventory);
     }
     void timer(Player player,Portal portal){
         View v=view(player,"timer",portal.id,0,-1,"&dReward-Zeit wählen");
         String[] labels={"15 Minuten","30 Minuten","60 Minuten","120 Minuten","Keine Rewards"};
         for(int i=0;i<labels.length;i++)v.inventory.setItem(20+i,button(i==4?Material.BARRIER:Material.CLOCK,"&e"+labels[i],"&7Gilt bis spätestens Mitternacht"));
-        player.openInventory(v.inventory);
+        p.language.open(player,v.inventory);
     }
     void mail(Player player,int page){
         List<ItemStack> mail=p.items.mailbox(player.getUniqueId());View v=view(player,"mail","",Math.max(0,page),-1,"&dLoot-Postfach");
         int start=v.page*45;for(int i=start;i<Math.min(mail.size(),start+45);i++)v.inventory.setItem(i-start,mail.get(i).clone());
         v.inventory.setItem(45,button(Material.ARROW,"&fZurück"));v.inventory.setItem(46,button(Material.ARROW,"&fWeiter"));
-        v.inventory.setItem(49,button(Material.BOOK,"&fLinks: Abholen","&7Rechts: an Gruppenmitglied senden"));v.inventory.setItem(53,button(Material.OAK_DOOR,"&fDungeon-Menü"));player.openInventory(v.inventory);
+        v.inventory.setItem(49,button(Material.BOOK,"&fLinks: Abholen","&7Rechts: an Gruppenmitglied senden"));v.inventory.setItem(53,button(Material.OAK_DOOR,"&fDungeon-Menü"));p.language.open(player,v.inventory);
     }
     List<UUID> eligible(Player player){
         Session s=p.session(player.getUniqueId());if(s!=null&&s.leader.equals(player.getUniqueId()))return new ArrayList<>(s.members);
@@ -53,7 +53,7 @@ final class Menus implements Listener {
         List<UUID> members=eligible(player);if(members.isEmpty()){p.tell(player,"Keine Gruppe zum Verteilen gespeichert.");return;}
         View v=view(player,"give","",page,index,"&dLoot verschenken");
         for(int i=page*45;i<Math.min(page*45+45,members.size());i++){UUID id=members.get(i);String name=Objects.toString(Bukkit.getOfflinePlayer(id).getName(),id.toString());v.people.put(i-page*45,id);v.inventory.setItem(i-page*45,button(Material.PLAYER_HEAD,"&f"+name));}
-        v.inventory.setItem(45,button(Material.ARROW,"&fZurück"));v.inventory.setItem(46,button(Material.ARROW,"&fWeiter"));player.openInventory(v.inventory);
+        v.inventory.setItem(45,button(Material.ARROW,"&fZurück"));v.inventory.setItem(46,button(Material.ARROW,"&fWeiter"));p.language.open(player,v.inventory);
     }
     @EventHandler public void click(InventoryClickEvent event){
         if(!(event.getView().getTopInventory().getHolder() instanceof View v))return;

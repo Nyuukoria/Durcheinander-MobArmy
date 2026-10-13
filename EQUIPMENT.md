@@ -4,7 +4,7 @@ Alle 21 Ausrüstungsteile funktionieren als normale Minecraft-Rüstung/Waffen/We
 
 ## Drei vollständige Sets
 
-Jedes Set besteht aus Helm, Brustplatte, Beinschutz und Stiefeln. Zwei-/Vier-Teil-Boni gelten während `FIGHT` im Raid. Gemischte Sets zählen separat. Nach Ablegen oder Verlassen klingen Bonus-Effekte innerhalb von höchstens drei Sekunden ab; stärkere andere Potion-Effekte werden nicht gezielt entfernt.
+Jedes Set besteht aus Helm, Brustplatte, Beinschutz und Stiefeln. Zwei-/Vier-Teil-Boni gelten in allen Welten, solange die passenden Teile getragen oder in Haupt-/Nebenhand gehalten werden. Rüstung zählt nur im vorgesehenen Rüstungsslot; unterschiedliche Waffen/Werkzeuge zählen als weitere Teile. Zwei Kopien derselben Item-ID zählen einmal; Inventarvorräte zählen nicht. Gemischte Sets zählen separat. Nach Ablegen oder Wechseln klingen Bonus-Effekte innerhalb von höchstens drei Sekunden ab; stärkere andere Potion-Effekte werden nicht gezielt entfernt.
 
 | Set / IDs | Material und Trim | Verzauberungen | Zwei Teile | Vier Teile |
 |---|---|---|---|---|
@@ -30,6 +30,8 @@ Alle Helme: Atmung III. Wächter-/Sturmstiefel: Federfall IV; Abgrundstiefel: Fe
 
 Die Namen der Bogen-Verzauberungen „Stärke“ und „Schlag“ entsprechen Power/Punch. Keine Waffe umgeht den 20-%-Treffer-Cap, den 5-%-Mace-Cap oder den persönlichen Boss-Anteil. Glück wirkt nach den normalen Block-Loot-Regeln; Plünderung verändert die festen Plugin-Drop-Chancen nicht. Werkzeuge dürfen keine geschützten Arena-Blöcke abbauen.
 
+Wächterteile: Wächterklinge und Runenschaufel. Sturmteile: Sturmaxt, Sturmbogen, Echospitzhacke und Erntehacke. Abgrundteile: Abgrundklinge, Abgrundstreitkolben und Sternenbogen. Beispiel: drei Sturm-Rüstungsteile plus Sturmaxt in der Hand aktivieren den Vier-Teil-Bonus.
+
 ## Genaue Drop-Chancen
 
 Ein Pool würfelt einmal pro berechtigtem Gegner-Tod. Bei Erfolg kommt genau **ein** gleich gewichtetes Item aus diesem Pool. Verschiedene Pools würfeln unabhängig. Alle bestehenden Reward-Timer-/Boss-Abschluss-Regeln gelten weiterhin.
@@ -43,13 +45,13 @@ Ein Pool würfelt einmal pro berechtigtem Gegner-Tod. Bei Erfolg kommt genau **e
 | Legendäre Waffen | Endboss | 2 % | 3 | etwa 0,667 % |
 | Werkzeuge | Miniboss, Stage 3–4 | 6 % | 3 | 2 % |
 
-Sturmessenz: Stage-3-Miniboss, 20 %. Leerenessenz: Endboss, 25 %. Beide sind Ritual-Zutaten. Die Gruppenchancen sind keine Garantie nach einer bestimmten Anzahl Durchläufe; es gibt keinen versteckten Pity-Zähler. Der Live-Kodex zeigt die konkrete Item-Chance aus den aktuellen Config-Werten.
+Sturmessenz: Stage-3-Miniboss, 20 %. Leerenessenz: Endboss, 25 %. Beide sind Ritual-Zutaten. Die Gruppenchancen sind keine Garantie nach einer bestimmten Anzahl Durchläufe; es gibt keinen versteckten Pity-Zähler. Der Rezepte-Menü zeigt die konkrete Item-Chance aus den aktuellen Config-Werten.
 
 ## Ausprobieren und Erhalten
 
 - `/raid kit gear`: OP-Testkit mit allen 21 Teilen; selbst ausrüsten. Überlauf landet in `/raid loot`.
 - `/raid gear`: getragene Set-Teile prüfen.
-- `/raid codex gear` und `/raid codex sets`: Werte, Boni und Drop-Chancen ansehen.
+- `/rezepte gear` und `/rezepte sets`: Werte, Boni und Drop-Chancen ansehen.
 - Normal spielen: nur bei aktiven Rewards droppen Raid-Pools. Schmiederituale bieten gezielte Fortschrittswege gegen Zutaten.
 
 Werkbank, Amboss, Schleifstein, Enchanting und Schmiedetisch akzeptieren die Custom-Items nicht als normale Zutaten. Das verhindert, dass hohe Enchantments, Set-IDs oder Modelle bei Vanilla-Kombinationen verloren gehen. Repariere mit Mending oder Ritual. Weitergeben, Lagern und die vorhandene Shop-API bleiben möglich.

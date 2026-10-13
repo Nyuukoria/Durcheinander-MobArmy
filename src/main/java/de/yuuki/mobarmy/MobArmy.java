@@ -14,7 +14,7 @@ public final class MobArmy extends JavaPlugin {
     final Map<UUID,Location> returns=new HashMap<>();
     YamlConfiguration state;
     Items items; Engine engine; Menus menus; RaidCommand commands; Presentation presentation; Motion motion; ResourcePacks packs; Equipment equipment; Rituals ritualSystem; Catalogue catalogue;
-    NamespacedKey entityKey, itemKey;
+    NamespacedKey entityKey, itemKey; Language language; Bosses bosses;
     ZoneId zone;
     @Override public void onEnable() {
         saveDefaultConfig(); entityKey=new NamespacedKey(this,"raid_entity");itemKey=new NamespacedKey(this,"custom_item");
@@ -22,6 +22,7 @@ public final class MobArmy extends JavaPlugin {
             zone=ZoneId.of(getConfig().getString("timezone","Europe/Berlin"));
             state=YamlConfiguration.loadConfiguration(new File(getDataFolder(),"state.yml"));
             ConfigUpgrade.run(this);
+            language=new Language(this);
             var weeks=getConfig().getConfigurationSection("weeks");
             if(weeks==null)throw new IllegalArgumentException("Missing weeks");
             for(String id:weeks.getKeys(false)) {
@@ -29,7 +30,7 @@ public final class MobArmy extends JavaPlugin {
                 if(arena(a.world)!=null)throw new IllegalArgumentException("Each week needs its own world: "+a.world.getName());
                 arenas.put(id,a);
                 // Reloads/restarts always reopen the configured gate and remove stale raid entities.
-                a.door.each(b->{if(b.getType()==Material.BARRIER)b.setType(Material.AIR,false);});
+                if(!a.config.getBoolean("generate-demo"))a.door.each(b->{if(b.getType()==Material.BARRIER)b.setType(Material.AIR,false);});
                 for(Entity e:a.world.getEntities())if(e.getPersistentDataContainer().has(entityKey))e.remove();
             }
             var ps=state.getConfigurationSection("portals");
@@ -37,10 +38,12 @@ public final class MobArmy extends JavaPlugin {
             var rs=state.getConfigurationSection("returns");
             if(rs!=null)for(String id:rs.getKeys(false)){Location l=rs.getLocation(id);if(l!=null)returns.put(UUID.fromString(id),l);}
             // Clear labels from old builds before creating exactly one display per portal.
-            for(World w:Bukkit.getWorlds())for(Entity e:w.getEntities())if(e instanceof TextDisplay){String tag=e.getPersistentDataContainer().get(entityKey,org.bukkit.persistence.PersistentDataType.STRING);if(tag!=null&&tag.startsWith("portal"))e.remove();}
-            items=new Items(this);Recovery.restore(this);engine=new Engine(this);menus=new Menus(this);commands=new RaidCommand(this);presentation=new Presentation(this);motion=new Motion(this);packs=new ResourcePacks(this);equipment=new Equipment(this);ritualSystem=new Rituals(this);catalogue=new Catalogue(this);
-            for(Arena a:arenas.values())if(a.config.getBoolean("generate-demo")&&state.getInt("demo-layout."+a.id)<Arena.DEMO_LAYOUT){a.demo();state.set("demo."+a.id,true);state.set("demo-layout."+a.id,Arena.DEMO_LAYOUT);}
+            for(World w:Bukkit.getWorlds())for(Entity e:w.getEntities())if(e instanceof TextDisplay||e instanceof ArmorStand){String tag=e.getPersistentDataContainer().get(entityKey,org.bukkit.persistence.PersistentDataType.STRING);if(tag!=null&&tag.startsWith("portal"))e.remove();}
+            items=new Items(this);Recovery.restore(this);engine=new Engine(this);menus=new Menus(this);commands=new RaidCommand(this);motion=new Motion(this);packs=new ResourcePacks(this);equipment=new Equipment(this);ritualSystem=new Rituals(this);catalogue=new Catalogue(this);bosses=new Bosses(this);
+            for(Arena a:arenas.values())if(a.config.getBoolean("generate-demo")){if(state.getInt("demo-layout."+a.id)<3)a.demo();else a.repairDemo();state.set("demo."+a.id,true);state.set("demo-layout."+a.id,Arena.DEMO_LAYOUT);}
+            presentation=new Presentation(this);
             Objects.requireNonNull(getCommand("raid")).setExecutor(commands);getCommand("raid").setTabCompleter(commands);
+            Objects.requireNonNull(getCommand("rezepte")).setExecutor(commands);getCommand("rezepte").setTabCompleter(commands);
             getServer().getPluginManager().registerEvents(new Protection(this),this);
             getServer().getPluginManager().registerEvents(menus,this);
             getServer().getPluginManager().registerEvents(motion,this);
@@ -49,13 +52,13 @@ public final class MobArmy extends JavaPlugin {
             getServer().getPluginManager().registerEvents(ritualSystem,this);
             getServer().getPluginManager().registerEvents(catalogue,this);
             applyDemoPvp();
-            getServer().getScheduler().runTaskTimer(this,()->{engine.tick();equipment.tick();ritualSystem.tick();},20,20);
+            getServer().getScheduler().runTaskTimer(this,()->{engine.tick();equipment.tick();ritualSystem.tick();bosses.tick();},20,20);
             getServer().getScheduler().runTaskTimer(this,()->{presentation.animate();motion.tick();},1,1);
             for(Player player:Bukkit.getOnlinePlayers()){items.refresh(player);recover(player);packs.offer(player);}
             saveState();getLogger().info("Loaded "+arenas.size()+" raid arenas for Spigot 26.3.");
         }catch(Exception ex){getLogger().log(java.util.logging.Level.SEVERE,"Invalid raid setup; plugin disabled",ex);getServer().getPluginManager().disablePlugin(this);}
     }
-    @Override public void onDisable(){if(packs!=null)packs.close();if(items!=null)items.shutdown();if(engine!=null)engine.shutdown();if(presentation!=null)presentation.shutdown();for(Portal p:portals.values())p.removeLabel();if(state!=null)saveState();}
+    @Override public void onDisable(){if(bosses!=null)bosses.shutdown();if(packs!=null)packs.close();if(items!=null)items.shutdown();if(engine!=null)engine.shutdown();if(presentation!=null)presentation.shutdown();for(Portal p:portals.values())p.removeLabel();if(state!=null)saveState();}
     public String getCustomItemId(org.bukkit.inventory.ItemStack item){return items==null?null:items.id(item);}
     public org.bukkit.inventory.ItemStack createCustomItem(String id,int amount){return items.make(id,amount);}
     public int countCustomItems(Player player,String id){return items.count(player,id);}
@@ -75,7 +78,9 @@ public final class MobArmy extends JavaPlugin {
     Arena arena(World w){return arenas.values().stream().filter(a->a.world.equals(w)).findFirst().orElse(null);}
     Session session(UUID id){return portals.values().stream().map(p->p.session).filter(Objects::nonNull).filter(s->s.members.contains(id)).findFirst().orElse(null);}
     Portal portalAt(Location l){return portals.values().stream().filter(p->p.region.contains(l)).findFirst().orElse(null);}
-    void tell(Player p,String text){p.sendMessage(ChatColor.LIGHT_PURPLE+"[Raid] "+ChatColor.WHITE+color(text));}
+    String text(org.bukkit.command.CommandSender sender,String text){return language==null?text:language.text(sender,text);}
+    void reply(org.bukkit.command.CommandSender sender,String text){sender.sendMessage(color(text(sender,text)));}
+    void tell(Player p,String text){reply(p,"&d[Raid] &f"+text);}
     static String color(String s){return ChatColor.translateAlternateColorCodes('&',s);}
-    void announcement(Portal p,String path,String stage){if(p.rewards())Bukkit.broadcastMessage(color(getConfig().getString("messages."+path,"").replace("{stage}",stage)));}
+    void announcement(Portal p,String path,String stage){if(p.rewards())for(Player player:Bukkit.getOnlinePlayers())reply(player,getConfig().getString("messages."+path,"").replace("{stage}",stage));}
 }

@@ -17,8 +17,8 @@ final class Protection implements Listener {
     Entity source(Entity e){if(e instanceof Projectile pr&&pr.getShooter() instanceof Entity owner)return owner;if(e instanceof AreaEffectCloud cloud&&cloud.getSource() instanceof Entity owner)return owner;if(e instanceof TNTPrimed tnt&&tnt.getSource()!=null)return tnt.getSource();return e;}
     @EventHandler public void worldLoaded(org.bukkit.event.world.WorldLoadEvent e){if(p.getConfig().getBoolean("testing.disable-pvp"))e.getWorld().setPVP(false);}
     @EventHandler public void loadedEntities(org.bukkit.event.world.EntitiesLoadEvent event){
-        for(Entity e:event.getEntities())if(e instanceof TextDisplay){String tag=e.getPersistentDataContainer().get(p.entityKey,org.bukkit.persistence.PersistentDataType.STRING);
-            if(tag!=null&&tag.startsWith("portal")&&p.portals.values().stream().noneMatch(q->q.label!=null&&q.label.getUniqueId().equals(e.getUniqueId())))e.remove();
+        for(Entity e:event.getEntities())if(e instanceof TextDisplay||e instanceof ArmorStand){String tag=e.getPersistentDataContainer().get(p.entityKey,org.bukkit.persistence.PersistentDataType.STRING);
+            if(tag!=null&&tag.startsWith("portal")&&p.portals.values().stream().noneMatch(q->q.ownsLabel(e.getUniqueId())))e.remove();
         }
     }
     boolean raid(World w){return p.arena(w)!=null;}
@@ -34,9 +34,9 @@ final class Protection implements Listener {
         if(e.getTo()==null)return;Player player=e.getPlayer();Session s=p.session(player.getUniqueId());Arena destination=p.arena(e.getTo().getWorld());
         if(e.getCause()==PlayerTeleportEvent.TeleportCause.ENDER_PEARL){
             Portal portal=p.portalAt(e.getTo());if(portal!=null){e.setCancelled(true);return;}
-            if(s!=null){long now=System.currentTimeMillis();Location to=e.getTo();
-                if(s.phase!=Session.Phase.FIGHT||!s.arena.bounds.contains(to)||!to.getBlock().isPassable()||!to.clone().add(0,1,0).getBlock().isPassable()||!to.clone().subtract(0,1,0).getBlock().getType().isSolid()||now-s.pearlTimes.getOrDefault(player.getUniqueId(),0L)<p.getConfig().getLong("balance.pearl-cooldown-seconds",10)*1000){e.setCancelled(true);return;}
-                s.pearlTimes.put(player.getUniqueId(),now);
+            if(s!=null){
+                Location target=s.phase==Session.Phase.FIGHT?Pearls.safe(player,s.arena,e.getTo()):null;
+                if(target==null){e.setCancelled(true);p.tell(player,"Kein sicherer Enderperlen-Zielpunkt innerhalb der Arena.");return;}e.setTo(target);
             }
         }
         if(destination!=null&&s==null&&!p.commands.builders.contains(player.getUniqueId())){e.setCancelled(true);return;}
@@ -48,7 +48,9 @@ final class Protection implements Listener {
     @EventHandler(ignoreCancelled=true) public void vanillaPortal(PlayerPortalEvent e){if(p.portalAt(e.getFrom())!=null||raid(e.getFrom().getWorld()))e.setCancelled(true);}
     @EventHandler(ignoreCancelled=true) public void pearlHit(ProjectileHitEvent e){if(e.getEntity() instanceof EnderPearl&&p.portalAt(e.getEntity().getLocation())!=null){e.setCancelled(true);e.getEntity().remove();}}
     @EventHandler public void login(PlayerJoinEvent e){Bukkit.getScheduler().runTaskLater(p,()->{if(!e.getPlayer().isOnline())return;p.items.refresh(e.getPlayer());p.recover(e.getPlayer());if(p.packs!=null)p.packs.offer(e.getPlayer());if(raid(e.getPlayer().getWorld())&&p.session(e.getPlayer().getUniqueId())==null)e.getPlayer().teleport(Bukkit.getWorlds().getFirst().getSpawnLocation());},20);}
-    @EventHandler public void quit(PlayerQuitEvent e){p.commands.builders.remove(e.getPlayer().getUniqueId());Session s=p.session(e.getPlayer().getUniqueId());if(s!=null){Location exit=s.portal.exit.clone();p.engine.leave(e.getPlayer(),false);p.returns.put(e.getPlayer().getUniqueId(),exit);p.saveState();}}
+    @EventHandler public void quit(PlayerQuitEvent e){p.commands.builders.remove(e.getPlayer().getUniqueId());for(Portal portal:p.portals.values())portal.shown.remove(e.getPlayer().getUniqueId());if(p.bosses!=null)p.bosses.clear(e.getPlayer(),false);Session s=p.session(e.getPlayer().getUniqueId());if(s!=null){Location exit=s.portal.exit.clone();p.engine.leave(e.getPlayer(),false);p.returns.put(e.getPlayer().getUniqueId(),exit);p.saveState();}}
+    @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true) public void pickup(EntityPickupItemEvent e){if(e.getEntity() instanceof Player player&&p.items.id(e.getItem().getItemStack())!=null)Bukkit.getScheduler().runTask(p,()->p.items.refresh(player));}
+    @EventHandler public void inventoryClosed(org.bukkit.event.inventory.InventoryCloseEvent e){if(e.getPlayer() instanceof Player player)Bukkit.getScheduler().runTask(p,()->p.items.refresh(player));}
     @EventHandler(priority=EventPriority.HIGHEST) public void death(PlayerDeathEvent e){
         if(!raid(e.getEntity().getWorld()))return;e.setKeepInventory(true);e.setKeepLevel(true);e.setDroppedExp(0);e.getDrops().clear();e.setDeathMessage(null);
         Session s=p.session(e.getEntity().getUniqueId());Location exit=s==null?Bukkit.getWorlds().getFirst().getSpawnLocation():s.portal.exit.clone();deathReturns.put(e.getEntity().getUniqueId(),exit);p.engine.leave(e.getEntity(),true);
@@ -75,7 +77,7 @@ final class Protection implements Listener {
     }
     @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true) public void contributed(EntityDamageByEntityEvent e){Session s=p.engine.find(e.getEntity().getUniqueId());Entity attacker=source(e.getDamager());if(s!=null&&attacker instanceof Player player&&s.contribution.containsKey(e.getEntity().getUniqueId())){double actual=Math.min(e.getFinalDamage(),((LivingEntity)e.getEntity()).getHealth());s.contribution.get(e.getEntity().getUniqueId()).merge(player.getUniqueId(),actual,Double::sum);}}
     @EventHandler(priority=EventPriority.HIGHEST,ignoreCancelled=true) public void healMob(EntityRegainHealthEvent e){if(p.engine.find(e.getEntity().getUniqueId())!=null)e.setCancelled(true);}
-    @EventHandler(priority=EventPriority.HIGHEST) public void mobDeath(EntityDeathEvent e){if(p.engine.find(e.getEntity().getUniqueId())!=null||p.engine.rituals.containsKey(e.getEntity().getUniqueId())||(p.ritualSystem!=null&&p.ritualSystem.guardians.containsKey(e.getEntity().getUniqueId()))){e.setDroppedExp(0);p.engine.killed(e.getEntity(),e.getDrops());}}
+    @EventHandler(priority=EventPriority.HIGHEST) public void mobDeath(EntityDeathEvent e){if("boss-preview".equals(e.getEntity().getPersistentDataContainer().get(p.entityKey,org.bukkit.persistence.PersistentDataType.STRING))){e.setDroppedExp(0);e.getDrops().clear();return;}if(p.engine.find(e.getEntity().getUniqueId())!=null||p.engine.rituals.containsKey(e.getEntity().getUniqueId())||(p.ritualSystem!=null&&p.ritualSystem.guardians.containsKey(e.getEntity().getUniqueId()))){e.setDroppedExp(0);p.engine.killed(e.getEntity(),e.getDrops());}}
     @EventHandler(ignoreCancelled=true) public void itemSpawn(ItemSpawnEvent e){Arena a=p.arena(e.getEntity().getWorld());if(a==null)return;for(Portal portal:p.portals.values())if(portal.session!=null&&portal.session.arena==a)portal.session.drops.add(e.getEntity().getUniqueId());}
     @EventHandler(ignoreCancelled=true) public void target(EntityTargetLivingEntityEvent e){Session s=p.engine.find(e.getEntity().getUniqueId());if(s!=null&&(!(e.getTarget() instanceof Player player)||!s.members.contains(player.getUniqueId())))e.setCancelled(true);}
     @EventHandler(ignoreCancelled=true) public void launch(ProjectileLaunchEvent e){
@@ -84,8 +86,19 @@ final class Protection implements Listener {
         if(e.getEntity() instanceof AbstractArrow arrow&&arrow.getShooter() instanceof Mob mob&&p.engine.find(mob.getUniqueId())!=null&&mob.getAttribute(Attribute.ATTACK_DAMAGE)!=null)arrow.setDamage(mob.getAttribute(Attribute.ATTACK_DAMAGE).getValue()/2);
         if(e.getEntity() instanceof ThrownPotion potion&&potion.getShooter() instanceof Player player&&!use(player,"potion",p.getConfig().getInt("balance.potions-per-stage",3)))e.setCancelled(true);
     }
-    @EventHandler(ignoreCancelled=true) public void interact(PlayerInteractEvent e){
+    @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true) public void pearlLaunched(ProjectileLaunchEvent e){if(e.getEntity() instanceof EnderPearl pearl&&pearl.getShooter() instanceof Player player){Session s=p.session(player.getUniqueId());if(s!=null){s.pearlTimes.put(player.getUniqueId(),System.currentTimeMillis());player.setCooldown(Material.ENDER_PEARL,p.getConfig().getInt("balance.pearl-cooldown-seconds",3)*20);}}}
+    @EventHandler(priority=EventPriority.HIGHEST) public void interact(PlayerInteractEvent e){
         Player player=e.getPlayer();ItemStack item=e.getItem();
+        if(e.getHand()==EquipmentSlot.HAND&&e.getAction()==Action.RIGHT_CLICK_BLOCK&&e.getClickedBlock()!=null){Arena arena=p.arena(player.getWorld());if(arena!=null&&arena.config.getBoolean("generate-demo")){
+            Location at=e.getClickedBlock().getLocation();boolean recipes=at.equals(arena.recipesButton())||at.equals(arena.recipesButton().add(0,1,0)),ready=at.equals(arena.startButton())||at.equals(arena.startButton().add(0,1,0));
+            if(recipes||ready){e.setCancelled(true);if(recipes)p.catalogue.open(player,"items",0);else p.engine.ready(player);return;}
+        }}
+        if(e.useItemInHand()==Event.Result.DENY)return;
+        if(item!=null&&item.getType()==Material.ENDER_PEARL&&(e.getAction()==Action.RIGHT_CLICK_AIR||e.getAction()==Action.RIGHT_CLICK_BLOCK)){
+            Session session=p.session(player.getUniqueId());if(session!=null){long remaining=p.getConfig().getLong("balance.pearl-cooldown-seconds",3)*1000-(System.currentTimeMillis()-session.pearlTimes.getOrDefault(player.getUniqueId(),0L));
+                if(session.phase!=Session.Phase.FIGHT||remaining>0){e.setUseItemInHand(Event.Result.DENY);p.tell(player,session.phase!=Session.Phase.FIGHT?"Enderperlen sind nur während des Kampfes verfügbar.":"Enderperle bereit in "+Rules.clock((remaining+999)/1000)+".");return;}
+            }
+        }
         if(e.getHand()==EquipmentSlot.HAND&&e.getAction()==Action.RIGHT_CLICK_BLOCK&&e.getClickedBlock()!=null&&e.getClickedBlock().getType().name().endsWith("CAULDRON")&&p.items.ritual(player,e.getClickedBlock(),item)){e.setCancelled(true);return;}
         if(e.getHand()==EquipmentSlot.HAND&&(e.getAction()==Action.RIGHT_CLICK_AIR||e.getAction()==Action.RIGHT_CLICK_BLOCK)&&p.items.activate(player,item)){e.setCancelled(true);return;}
         if(!raid(player.getWorld()))return;

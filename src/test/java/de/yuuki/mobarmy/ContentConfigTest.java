@@ -8,6 +8,16 @@ import java.nio.charset.StandardCharsets;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ContentConfigTest {
+    @Test void bossPoolsAndExpandedWavesAreValidAndExcludePhantomsVexAndVexSummoners(){
+        var cfg=YamlConfiguration.loadConfiguration(new InputStreamReader(getClass().getResourceAsStream("/config.yml"),StandardCharsets.UTF_8));var bosses=cfg.getConfigurationSection("boss-types");assertEquals(9,bosses.getKeys(false).size());
+        for(String id:bosses.getKeys(false)){String type=bosses.getString(id+".type");org.bukkit.entity.EntityType.valueOf(type);assertTrue(Bosses.permitted(type));String item=bosses.getString(id+".model-item");if(item!=null)assertTrue(cfg.getBoolean("items."+item+".internal"));}
+        assertFalse(Bosses.permitted("VEX"));assertFalse(Bosses.permitted("PHANTOM"));assertFalse(Bosses.permitted("EVOKER"));
+        var types=new java.util.HashSet<String>();for(String week:cfg.getConfigurationSection("weeks").getKeys(false))for(int stage=1;stage<=5;stage++){
+            var s=cfg.getConfigurationSection("weeks."+week+".stages."+stage);for(String pool:java.util.List.of("miniboss-pool","boss-pool"))for(String id:s.getStringList(pool))assertTrue(bosses.contains(id));
+            for(String wave:s.getConfigurationSection("waves").getKeys(false)){int total=0;for(var spec:s.getMapList("waves."+wave+".mobs")){String type=spec.get("type").toString();assertTrue(Bosses.permitted(type));types.add(type);total+=((Number)spec.get("count")).intValue();}assertTrue(total>=10);}
+        }
+        assertTrue(types.size()>=14);
+    }
     @Test void allEquipmentPoolsAndRitualIngredientsPointToRealItemsAndValidRecipes(){
         var cfg=YamlConfiguration.loadConfiguration(new InputStreamReader(getClass().getResourceAsStream("/config.yml"),StandardCharsets.UTF_8));
         var items=cfg.getConfigurationSection("items");long gear=0;

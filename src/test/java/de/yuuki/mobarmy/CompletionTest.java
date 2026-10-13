@@ -5,6 +5,14 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CompletionTest {
+    @Test void demoBossLanguageAndDeleteCompletionUseTheirOwnArgumentGrammar(){
+        var allowed=List.of("skip","boss","language","rezepte","portal");var empty=List.<String>of();var portals=List.of("demo_w1");var bosses=List.of("frost_guardian","ember_guardian");
+        assertEquals(List.of("stage","wave"),Completion.suggest(new String[]{"skip",""},allowed,empty,portals,empty,empty,empty,bosses));
+        assertEquals(portals,Completion.suggest(new String[]{"skip","wave",""},allowed,empty,portals,empty,empty,empty,bosses));
+        assertEquals(List.of("frost_guardian"),Completion.suggest(new String[]{"boss","summon","fr"},allowed,empty,portals,empty,empty,empty,bosses));
+        assertEquals(List.of("de","en"),Completion.suggest(new String[]{"language",""},allowed,empty,portals,empty,empty,empty,bosses));
+        assertEquals(List.of("all","demo_w1"),Completion.suggest(new String[]{"portal","delete",""},allowed,empty,portals,empty,empty,empty,bosses));
+    }
     @Test void codexKitAndConfiguredRitualsHaveTheCorrectArgumentTypes(){
         var allowed=List.of("codex","kit","ritual");
         assertEquals(List.of("gear","items","rituals","sets"),Completion.suggest(new String[]{"codex",""},allowed,List.of(),List.of(),List.of(),List.of(),List.of("awakening")));

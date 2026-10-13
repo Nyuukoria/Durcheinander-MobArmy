@@ -14,8 +14,8 @@ final class Presentation {
     long ticks;
     Presentation(MobArmy p){this.p=p;for(Arena a:p.arenas.values())lobbySign(a);}
     void lobbySign(Arena a){
-        TextDisplay text=a.world.spawn(a.lobbySpawn.clone().add(-3.5,2.6,0),TextDisplay.class);
-        style(text);text.setText(MobArmy.color("&d&lVORBEREITUNG\n&f/raid &7→ Leader wählen\n&7Der Leader startet mit &aReady\n&f/raid leave &7→ zurück"));
+        TextDisplay text=a.world.spawn(a.lobbySpawn.clone().add(0,2.8,-3.5),TextDisplay.class);
+        style(text);text.setText(MobArmy.color("&d&lVORBEREITUNG / PREPARATION\n&f/raid &7→ Leader vote\n&f/rezepte &7→ Rezepte / Recipes\n&7Start: nur Leader / leader only"));
         text.getPersistentDataContainer().set(p.entityKey,PersistentDataType.STRING,"lobby:"+a.id);signs.add(text);
     }
     static void style(TextDisplay text){
@@ -42,23 +42,25 @@ final class Presentation {
         if(ticks%20==0)w.spawnParticle(Particle.ENCHANT,center,6,width*0.3,height*0.3,0.15,0.3);
     }
     void hud(Session s){
-        if(s.hud==null)s.hud=Bukkit.createBossBar("",BarColor.BLUE,BarStyle.SEGMENTED_10);
-        List<Player> ps=p.engine.players(s);Set<Player> current=new HashSet<>(ps);for(Player old:new ArrayList<>(s.hud.getPlayers()))if(!current.contains(old))s.hud.removePlayer(old);ps.forEach(s.hud::addPlayer);
-        String phase=switch(s.phase){case LOBBY->"Vorraum · Leader startet mit /raid";case ENTERING->"Teleport in "+Math.max(0,p.getConfig().getLong("presentation.entry-countdown-seconds",3)-(System.currentTimeMillis()-s.phaseSince)/1000)+"s";case FIGHT->(s.miniboss?"Miniboss":s.stage==5&&s.wave==5?"Endboss":"Wave "+s.wave)+" · Gegner: "+s.mobs.size();case LOOT->"Beute einsammeln · Rückkehr folgt";};
-        s.hud.setTitle(MobArmy.color("&d"+s.arena.id+" &7| &fStage "+s.stage+"/5 &7| &f"+phase));
-        s.hud.setColor(s.phase==Session.Phase.FIGHT?BarColor.PURPLE:BarColor.BLUE);
-        s.hud.setProgress(s.phase==Session.Phase.FIGHT&&s.waveStartMobs>0?Math.min(1,(double)s.mobs.size()/s.waveStartMobs):Math.min(1,(s.stage-1)/5.0));
-        Player lead=Bukkit.getPlayer(s.leader);String leader=lead==null?"—":lead.getName();
-        String timer=s.portal.rewards()?"&aRewards "+Rules.clock((s.portal.deadline-System.currentTimeMillis())/1000):"&7Keine Rewards";
-        for(Player pl:ps){
-            String extra="";if(s.bar!=null&&!s.mobs.isEmpty()){
-                UUID mob=s.mobs.iterator().next();double used=s.contribution.getOrDefault(mob,Map.of()).getOrDefault(pl.getUniqueId(),0.0);Entity entity=Bukkit.getEntity(mob);
+        List<Player> players=p.engine.players(s);Set<UUID> present=new HashSet<>();players.forEach(pl->present.add(pl.getUniqueId()));
+        for(UUID id:new ArrayList<>(s.privateHud.keySet()))if(!present.contains(id))remove(s,id);
+        for(Player pl:players){
+            BossBar hud=s.privateHud.computeIfAbsent(pl.getUniqueId(),id->{BossBar bar=Bukkit.createBossBar("",BarColor.BLUE,BarStyle.SEGMENTED_10);bar.addPlayer(pl);return bar;});
+            String phase=switch(s.phase){case LOBBY->"Vorraum · Leader startet mit /raid";case ENTERING->"Teleport in "+Math.max(0,p.getConfig().getLong("presentation.entry-countdown-seconds",3)-(System.currentTimeMillis()-s.phaseSince)/1000)+"s";case FIGHT->(s.miniboss?"Miniboss":s.stage==5&&s.wave==5?"Endboss":"Welle "+s.wave)+" · Gegner: "+s.mobs.size();case LOOT->"Beute einsammeln · Rückkehr folgt";};
+            hud.setTitle(MobArmy.color(p.text(pl,"&d"+s.arena.id+" &7| &fStufe "+s.stage+"/5 &7| &f"+phase)));hud.setColor(s.phase==Session.Phase.FIGHT?BarColor.PURPLE:BarColor.BLUE);
+            hud.setProgress(s.phase==Session.Phase.FIGHT&&s.waveStartMobs>0?Math.min(1,(double)s.mobs.size()/s.waveStartMobs):Math.min(1,(s.stage-1)/5.0));
+            if(s.bar!=null){BossBar boss=s.privateBoss.computeIfAbsent(pl.getUniqueId(),id->{BossBar bar=Bukkit.createBossBar("",BarColor.RED,BarStyle.SEGMENTED_10);bar.addPlayer(pl);return bar;});boss.setTitle(MobArmy.color(p.text(pl,s.bar.getTitle())));boss.setColor(s.bar.getColor());boss.setProgress(s.bar.getProgress());}
+            else{BossBar boss=s.privateBoss.remove(pl.getUniqueId());if(boss!=null)boss.removeAll();}
+            Player lead=Bukkit.getPlayer(s.leader);String leader=lead==null?"—":lead.getName(),timer=s.portal.rewards()?"&aBelohnungen "+Rules.clock((s.portal.deadline-System.currentTimeMillis())/1000):"&7Keine Rewards",extra="";
+            if(s.bar!=null&&!s.contribution.isEmpty()){
+                UUID mob=s.contribution.keySet().iterator().next();double used=s.contribution.get(mob).getOrDefault(pl.getUniqueId(),0.0);Entity entity=Bukkit.getEntity(mob);
                 if(entity instanceof LivingEntity living){double hp=living.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH).getValue();extra=String.format(Locale.ROOT," &7| &fDein Boss-Anteil %.0f/%.0f%%",100*used/hp,100*Rules.bossShare(s.arena.minimum()));}
             }
-            String text=MobArmy.color("&fLeader: &d"+leader+" &7| &fGruppe: "+s.members.size()+"/"+s.arena.minimum()+"+ &7| "+timer+extra);
-            pl.spigot().sendMessage(ChatMessageType.ACTION_BAR,TextComponent.fromLegacyText(text));
+            String text=MobArmy.color(p.text(pl,"&fLeader: &d"+leader+" &7| &fGruppe: "+s.members.size()+"/"+s.arena.minimum()+"+ &7| "+timer+extra));pl.spigot().sendMessage(ChatMessageType.ACTION_BAR,TextComponent.fromLegacyText(text));
         }
     }
+    void remove(Session s,UUID player){BossBar hud=s.privateHud.remove(player),boss=s.privateBoss.remove(player);if(hud!=null)hud.removeAll();if(boss!=null)boss.removeAll();}
+    void clear(Session s){s.privateHud.values().forEach(BossBar::removeAll);s.privateBoss.values().forEach(BossBar::removeAll);s.privateHud.clear();s.privateBoss.clear();}
     void burst(Location at){at.getWorld().spawnParticle(Particle.REVERSE_PORTAL,at.clone().add(0,1,0),50,0.45,0.7,0.45,0.1);}
     void transfer(Player player){burst(player.getLocation());player.playSound(player.getLocation(),Sound.BLOCK_PORTAL_TRAVEL,0.4f,1.2f);}
     void shutdown(){signs.forEach(Entity::remove);signs.clear();}

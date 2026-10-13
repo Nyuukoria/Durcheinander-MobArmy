@@ -1,0 +1,773 @@
+phrases:
+- de: Willkommen im Vorraum!
+  en: Welcome to the preparation room!
+- de: Nur der Leader kann starten.
+  en: Only the leader can start.
+- de: Nur der Leader startet die Stage mit Ready.
+  en: Only the leader starts the stage with Ready.
+- de: Nur der Leader startet mit Ready.
+  en: Only the leader starts with Ready.
+- de: um den Leader zu wählen
+  en: to vote for the leader
+- de: Leader wählen
+  en: Vote for the leader
+- de: Leader wird per Mehrheit gewählt.
+  en: The leader is elected by majority.
+- de: Die Gruppe wird in die Arena teleportiert …
+  en: The party is being teleported to the arena …
+- de: Während einer Stage ist kein Beitritt möglich.
+  en: You cannot join during an active stage.
+- de: Du bist in diesem Durchlauf ausgeschieden.
+  en: You have been eliminated from this run.
+- de: Diese Arena wird schon benutzt.
+  en: This arena is already in use.
+- de: Portal geschlossen.
+  en: Portal closed.
+- de: Bitte außerhalb des Portals warten.
+  en: Please wait outside the portal.
+- de: Kein sicherer Enderperlen-Zielpunkt innerhalb der Arena.
+  en: No safe ender pearl destination inside the arena.
+- de: Enderperlen sind nur während des Kampfes verfügbar.
+  en: Ender pearls are available during combat only.
+- de: Enderperle bereit in
+  en: Ender pearl ready in
+- de: Wave-Skip benötigt eine laufende Kampfphase.
+  en: Wave skip requires an active combat phase.
+- de: Demo-Steuerung ist nur in der Demo verfügbar.
+  en: Demo controls are available in demo mode only.
+- de: Zuerst eine Raid-Gruppe betreten.
+  en: Join a raid party first.
+- de: Stage bitte neu starten.
+  en: Please restart the stage.
+- de: Fehler in der Wave-Config. Admin informieren.
+  en: Wave configuration error. Contact an admin.
+- de: Ein Raid-Mob fehlt.
+  en: A raid mob is missing.
+- de: Stage fehlt in der Config.
+  en: Stage missing from the configuration.
+- de: Wave fehlt in der Config.
+  en: Wave missing from the configuration.
+- de: Kein freier Spawnpunkt mit Mindestabstand.
+  en: No clear spawn point with the required distance.
+- de: Stage geschafft!
+  en: Stage complete!
+- de: die nächste Stage starten
+  en: start the next stage
+- de: und die nächste Stage starten
+  en: and start the next stage
+- de: Boss-Vorschau beschworen. Keine Angriffe, Drops oder Raid-Fortschritte.
+  en: Boss preview summoned. No attacks, drops or raid progress.
+- de: Vor dir ist kein freier Platz.
+  en: There is no clear space in front of you.
+- de: Zuerst Boss-Vorschauen entfernen
+  en: Clear boss previews first
+- de: Unbekannter Boss
+  en: Unknown boss
+- de: Boni gelten in allen Welten.
+  en: Bonuses work in all worlds.
+- de: Getragene/gehaltene Sets
+  en: Worn/held sets
+- de: Getragene Sets
+  en: Equipped sets
+- de: zeigt Details.
+  en: shows details.
+- de: VORBEREITUNG
+  en: PREPARATION
+- de: Vorraum
+  en: Preparation room
+- de: Gegner
+  en: Enemies
+- de: Beute einsammeln · Rückkehr folgt
+  en: Collect loot · returning soon
+- de: Gruppe
+  en: Party
+- de: Dein Boss-Anteil
+  en: Your boss contribution
+- de: Keine Rewards
+  en: No rewards
+- de: Training · keine Rewards
+  en: Practice · no rewards
+- de: Boss bereits abgeschlossen
+  en: Boss already completed
+- de: OFFEN
+  en: OPEN
+- de: GESCHLOSSEN
+  en: CLOSED
+- de: GESPERRT
+  en: LOCKED
+- de: ARENA BELEGT
+  en: ARENA BUSY
+- de: Bitte hier warten
+  en: Please wait here
+- de: Hineingehen → Vorraum
+  en: Enter → preparation room
+- de: LÄUFT
+  en: ACTIVE
+- de: läuft – Beitritt gesperrt.
+  en: in progress – entry locked.
+- de: Arena belegt – Beitritt gesperrt.
+  en: Arena occupied – entry locked.
+- de: Diesen Befehl im Spiel ausführen
+  en: Run this command in-game
+- de: Berechtigung fehlt
+  en: Missing permission
+- de: Unbekanntes Portal
+  en: Unknown portal
+- de: Unbekannte Woche
+  en: Unknown week
+- de: Portal existiert bereits
+  en: Portal already exists
+- de: Portalregionen überschneiden sich
+  en: Portal regions overlap
+- de: Portal-Auswahl überschreitet 10.000 Blöcke
+  en: Portal selection exceeds 10,000 blocks
+- de: Erstelle das Portal in der Spawn-/Default-Welt
+  en: Create the portal in your spawn/default world
+- de: Stehe vor dem Erstellen auf sicherem Boden außerhalb der Portalauswahl
+  en: Stand on a safe floor outside the portal selection before creating it
+- de: Beende vor dem Neuladen alle Gruppen
+  en: Stop all sessions before reload
+- de: Beende vor dem Testmodus-Wechsel alle Gruppen
+  en: Stop all sessions before changing test mode
+- de: Beende vor dem Baumodus alle Gruppen
+  en: Stop all sessions before enabling build mode
+- de: Entferne Portale, bevor ihre Wochen entfernt werden
+  en: Remove portals before removing their weeks
+- de: Raid-Konfiguration neu geladen.
+  en: Raid config reloaded.
+- de: Unbekannter Unterbefehl. /raid help
+  en: Unknown subcommand. /raid help
+- de: Zeitangabe erforderlich
+  en: Duration required
+- de: Nutze set, add oder clear
+  en: Use set, add or clear
+- de: 'Portal-ID: Buchstaben, Zahlen, - oder _ (1–40 Zeichen)'
+  en: 'Portal ID: letters, numbers, - or _ (1-40 chars)'
+- de: Portal-ID angeben. Verfügbar
+  en: Specify portal ID. Available
+- de: Portal bereit
+  en: Portal ready
+- de: Position 1 gesetzt.
+  en: Position 1 set.
+- de: Position 2 gesetzt.
+  en: Position 2 set.
+- de: Zuerst pos1 und pos2 auswählen.
+  en: Select pos1 and pos2 first.
+- de: vollständig entfernt.
+  en: permanently deleted.
+- de: Alle
+  en: All
+- de: Portale
+  en: Portals
+- de: geöffnet
+  en: opened
+- de: geschlossen
+  en: closed
+- de: offen
+  en: open
+- de: Belohnungen
+  en: Rewards
+- de: Belohnungstimer aktualisiert.
+  en: Reward timer updated.
+- de: Spieler ist offline
+  en: Player is offline
+- de: Unbekannte Item-ID
+  en: Unknown item ID
+- de: Ungültige Anzahl.
+  en: Invalid amount.
+- de: Zu wenige echte Items; nichts entfernt.
+  en: Not enough authentic items; nothing removed.
+- de: entfernt.
+  en: removed.
+- de: Keine Gruppe zum Verteilen gespeichert.
+  en: No party saved for distribution.
+- de: Demo-Sperren sowie Item-/Ritual-Cooldowns entfernt.
+  en: Demo locks and item/ritual cooldowns cleared.
+- de: Wipe-Sperre entfernt.
+  en: Wipe lock cleared.
+- de: Wipe-Sperre aktiv.
+  en: Wipe lock active.
+- de: zeigt die Portalinfos.
+  en: shows portal details.
+- de: Raid-Rezepte
+  en: Raid recipes
+- de: Rezepte
+  en: Recipes
+- de: Gegenstände
+  en: Items
+- de: Ausrüstung
+  en: Equipment
+- de: Rituale
+  en: Rituals
+- de: Seltenheit
+  en: Rarity
+- de: Erhalten durch
+  en: Obtain through
+- de: Zutaten
+  en: Ingredients
+- de: Zutat
+  en: Ingredient
+- de: Ergebnis
+  en: Result
+- de: Typ
+  en: Type
+- de: Modus
+  en: Mode
+- de: Abklingzeit
+  en: Cooldown
+- de: 'Klicken: Ritual beginnen'
+  en: Click to begin ritual
+- de: Katalysator bleibt erhalten.
+  en: The catalyst is kept.
+- de: Kessel + Chaosfragment in der Haupthand
+  en: Cauldron + Chaos Fragment in main hand
+- de: Ausführen
+  en: Perform
+- de: ein Item aus
+  en: one item from
+- de: nach Wächter-Sieg
+  en: after defeating the guardian
+- de: Dauer
+  en: Duration
+- de: Schließen
+  en: Close
+- de: Zurück
+  en: Back
+- de: Weiter
+  en: Next
+- de: Stimmen
+  en: Votes
+- de: 'Klicken: Leader wählen'
+  en: Click to vote for the leader
+- de: Loot-Postfach
+  en: Loot mailbox
+- de: 'Links: Abholen'
+  en: 'Left click: collect'
+- de: 'Rechts: an Gruppenmitglied senden'
+  en: 'Right click: send to a party member'
+- de: Deine Items abholen / verteilen
+  en: Collect / distribute your items
+- de: Loot verschenken
+  en: Gift loot
+- de: Dungeon verlassen
+  en: Leave dungeon
+- de: Dungeon-Menü
+  en: Dungeon menu
+- de: 'Nach Ready: Teleport in die Arena.'
+  en: 'After Ready: teleport into the arena.'
+- de: Aktuell
+  en: Current
+- de: Ready / Stage starten
+  en: Ready / start stage
+- de: Minuten
+  en: Minutes
+- de: Reward-Zeit wählen
+  en: Choose reward time
+- de: Gilt bis spätestens Mitternacht
+  en: Valid until midnight at the latest
+- de: Mindestens
+  en: At least
+- de: Spieler erforderlich.
+  en: players required.
+- de: Boss-Anteil pro Spieler
+  en: Boss share per player
+- de: Mit
+  en: With
+- de: Mach
+  en: Use
+- de: Nur
+  en: Only
+- de: den Leader wählen
+  en: vote for the leader
+- de: Kampf
+  en: Combat
+- de: Welle
+  en: Wave
+- de: Stufe
+  en: Stage
+- de: Woche
+  en: Week
+- de: Beute
+  en: Loot
+- de: Dieses Relikt wirkt auf Gegner während einer Raid-Stage.
+  en: This relic affects enemies during a raid stage.
+- de: Keine Raid-Gegner in Reichweite. Das Relikt bleibt bereit.
+  en: No raid enemies in range. The relic remains ready.
+- de: Noch
+  en: Remaining
+- de: Abklingzeit für dieses Item.
+  en: cooldown for this item.
+- de: Relikt aktiviert.
+  en: Relic activated.
+- de: Limit pro Stage erreicht
+  en: Stage limit reached
+- de: 'Setbonus beim Tragen/Halten:'
+  en: 'Set bonuses while worn/held:'
+- de: Boni in allen Welten; nach Ablegen maximal 3s.
+  en: Bonuses in all worlds; fade within 3s of removal.
+- de: 'Reparatur: Mending oder Kesselritual.'
+  en: Repair with Mending or a cauldron ritual.
+- de: Setboni wirken in allen Welten.
+  en: Set bonuses work in all worlds.
+- de: Verbraucht sich nicht beim Aktivieren.
+  en: Using this item does not consume it.
+- de: Normale Haltbarkeit; mit Mending/Ritual reparierbar.
+  en: Normal durability; repair with Mending or a ritual.
+- de: Raid-Treffer- und Boss-Anteile gelten weiter.
+  en: Raid hit caps and boss contribution limits still apply.
+- de: Sehr seltener Boss-Fund
+  en: Very rare boss drop
+- de: Nahkampf
+  en: Melee
+- de: Wiederverwendbare Nahkampfwaffe
+  en: Reusable melee weapon
+- de: Waffe und normales Holzwerkzeug
+  en: Weapon and regular woodcutting tool
+- de: Fernkampf · benötigt normale Pfeile
+  en: Ranged weapon · requires normal arrows
+- de: ein Pfeil genügt
+  en: one arrow is sufficient
+- de: Bergbau außerhalb geschützter Arena-Blöcke
+  en: Mine outside protected arena blocks
+- de: Normales Erdwerkzeug · keine Schutz-Umgehung
+  en: Regular digging tool · respects protected blocks
+- de: Feldarbeit und Pflanzen · Vanilla-Erz-Regeln
+  en: Farming and harvesting · vanilla ore rules
+- de: Teile
+  en: pieces
+- de: Resistenz I
+  en: Resistance I
+- de: zusätzlich
+  en: additionally
+- de: Tempo I
+  en: Speed I
+- de: Stärke I
+  en: Strength I
+- de: langsamer Fall
+  en: Slow Falling
+- de: Feuerresistenz
+  en: Fire Resistance
+- de: bleibt erhalten
+  en: is kept
+- de: Wiederverwendbares
+  en: Reusable
+- de: Wiederverwendbarer
+  en: Reusable
+- de: Gruppenrelikt
+  en: party relic
+- de: Schutzrelikt
+  en: defensive relic
+- de: Kontrollrelikt
+  en: control relic
+- de: Heilrelikt
+  en: healing relic
+- de: Bewegungsrelikt
+  en: movement relic
+- de: Feuerrelikt
+  en: fire relic
+- de: Aufklärungsrelikt
+  en: scouting relic
+- de: Schwächungsrelikt
+  en: weakening relic
+- de: Rechtsklick
+  en: Right click
+- de: Wirkt auf deine Gruppe im Umkreis von 8 Blöcken.
+  en: Affects your party within 8 blocks.
+- de: Zur Ausweichbewegung
+  en: For dodging
+- de: Zum Ausweichen und für sichere Windcharge-Sprünge.
+  en: Dodge enemies and land wind charge jumps safely.
+- de: Verursacht keinen direkten Schaden.
+  en: Deals no direct damage.
+- de: Vier zusätzliche Herzen als kurzer Schutzschild.
+  en: Four temporary extra hearts.
+- de: Schützt dich vor Feuer und Lava.
+  en: Protects you from fire and lava.
+- de: Handelsware · Dungeon-Währung
+  en: Trade goods · dungeon currency
+- de: Für den Verkauf in einem kompatiblen NPC-Shop.
+  en: Sell in a compatible NPC shop.
+- de: Den Verkaufspreis bestimmt der jeweilige Shop.
+  en: The shop determines the selling price.
+- de: Sammeln, aufbewahren und später verkaufen.
+  en: Collect, store and sell later.
+- de: Ritualmaterial
+  en: Ritual material
+- de: Zutat für Schmiede- und Wächterrituale.
+  en: Ingredient for forging and guardian rituals.
+- de: Nur Ritual-Zutaten werden verbraucht.
+  en: Only ritual ingredients are consumed.
+- de: Sekunden
+  en: seconds
+- de: Blöcken
+  en: blocks
+- de: Spieler
+  en: players
+- de: Bosse
+  en: bosses
+- de: Langsamkeit
+  en: Slowness
+- de: Schwäche
+  en: Weakness
+- de: Nachtsicht
+  en: Night Vision
+- de: Rituale benötigen einen Kessel in der Default-Welt, höchstens 6 Blöcke entfernt.
+  en: Rituals require a cauldron in the default world within 6 blocks.
+- de: Halte den Ritual-Katalysator in der Haupthand.
+  en: Hold the ritual catalyst in your main hand.
+- de: Kessel verlassen oder entfernt.
+  en: Cauldron left or removed.
+- de: Du oder dieser Kessel führt schon ein Ritual aus.
+  en: You or this cauldron already has an active ritual.
+- de: Zu viele aktive Rituale.
+  en: Too many active rituals.
+- de: Ritual bereit in
+  en: Ritual ready in
+- de: Trage oder halte beschädigte Custom-Ausrüstung für die Reparatur.
+  en: Equip damaged custom gear or put it in your hotbar/offhand for repair.
+- de: Zutaten fehlen. Echte Custom-Materialien sind erforderlich; nichts verbraucht.
+  en: Ingredients missing. Authentic custom materials are required; nothing consumed.
+- de: beginnt. Bleib am Kessel; dein Katalysator bleibt erhalten.
+  en: begins. Stay at the cauldron; your catalyst is kept.
+- de: Der Ritualwächter ist verschwunden. Kein Sieg-Loot.
+  en: The ritual guardian disappeared. No victory loot.
+- de: Der Ritualwächter wurde ohne Spieler-Sieg beseitigt. Kein Sieg-Loot.
+  en: The ritual guardian died without a player victory. No victory loot.
+- de: Ritualprüfung geschafft! Die Beute ist im Inventar oder /raid loot.
+  en: Ritual trial complete! Loot is in your inventory or /raid loot.
+- de: Ritual abgebrochen. Zutaten zurück in /raid loot; Katalysator bleibt erhalten. Cooldown läuft weiter.
+  en: Ritual cancelled. Ingredients returned to /raid loot; catalyst is kept. Cooldown continues.
+- de: Ritual vollendet. Ergebnisse landen im Inventar oder /raid loot.
+  en: Ritual complete. Results go to your inventory or /raid loot.
+- de: Keine beschädigte Ausrüstung mehr gehalten/getragen
+  en: No damaged equipment remaining in your armor/hotbar/offhand
+- de: Kein freier Wächter-Spawn am Kessel
+  en: No clear guardian spawn beside the cauldron
+- de: Keine Raid-Berechtigung.
+  en: No raid permission.
+- de: Unbekanntes Ritual
+  en: Unknown ritual
+- de: Alle Rituale beenden erfordert Admin-Rechte.
+  en: Cancelling all rituals requires admin permission.
+- de: Rituale/Wächter beendet. Keine Sieg-Beute; angefangene Zeremonien erstatten Zutaten.
+  en: Rituals/guardians removed. No victory loot; unfinished ceremonies refund ingredients.
+- de: Ausrüstungsteile vollständig repariert.
+  en: equipment pieces fully repaired.
+- de: KREIS ZIEHEN
+  en: DRAWING THE CIRCLE
+- de: ENERGIE SAMMELN
+  en: GATHERING ENERGY
+- de: FORMEN
+  en: SHAPING
+- de: VOLLENDEN
+  en: COMPLETING
+- de: Test-Ausrüstung gegeben; Überlauf in /raid loot. Rüstung selbst anziehen.
+  en: Test equipment given; overflow in /raid loot. Equip the armor yourself.
+- de: Ritual-Testzutaten gegeben. Kessel platzieren, Chaosfragment halten, Rechtsklick.
+  en: Ritual test ingredients given. Place a cauldron, hold a chaos fragment and right click.
+- de: MobArmy-Texturen geladen.
+  en: MobArmy textures loaded.
+- de: angefordert
+  en: requested
+- de: geladen
+  en: loaded
+- de: angenommen
+  en: accepted
+- de: heruntergeladen
+  en: downloaded
+- de: abgelehnt
+  en: declined
+- de: Download fehlgeschlagen
+  en: Download failed
+- de: Laden fehlgeschlagen
+  en: Reload failed
+- de: ungültige URL
+  en: invalid URL
+- de: verworfen
+  en: discarded
+- de: nicht konfiguriert
+  en: not configured
+- de: noch nicht angefordert
+  en: not requested yet
+- de: lädt es erneut.
+  en: requests it again.
+- de: Texturen nicht automatisch verfügbar. Aktiviere die beiliegende Resource-Pack-ZIP in Minecraft.
+  en: Textures unavailable automatically. Enable the included resource-pack ZIP in Minecraft.
+- de: Endboss
+  en: Final boss
+- de: Chaosfragment
+  en: Chaos Fragment
+- de: Ritualkern
+  en: Ritual Core
+- de: Krone des Durcheinanders
+  en: Crown of Chaos
+- de: Raidsplitter
+  en: Raid Shard
+- de: Frosttalisman
+  en: Frost Talisman
+- de: Lebensblüte
+  en: Healing Bloom
+- de: Windrune
+  en: Gale Sigil
+- de: Glutamulett
+  en: Ember Charm
+- de: Wächterrune
+  en: Guardian Rune
+- de: Jägerlinse
+  en: Hunter Lens
+- de: Schwächungszahn
+  en: Weakening Fang
+- de: Sturmessenz
+  en: Storm Essence
+- de: Leerenessenz
+  en: Void Essence
+- de: Wächterklinge
+  en: Warden Blade
+- de: Sturmaxt
+  en: Gale Axe
+- de: Sturmbogen
+  en: Tempest Bow
+- de: Abgrundklinge
+  en: Abyss Sword
+- de: Abgrundstreitkolben
+  en: Abyss Mace
+- de: Sternenbogen
+  en: Star Bow
+- de: Echospitzhacke
+  en: Echo Pickaxe
+- de: Runenschaufel
+  en: Runic Shovel
+- de: Erntehacke
+  en: Harvest Hoe
+- de: Chaoswächter-Modell
+  en: Chaos Guardian Model
+- de: Frostkoloss-Modell
+  en: Frost Guardian Model
+- de: Glutkoloss-Modell
+  en: Ember Guardian Model
+- de: Wächtersatz · Helm
+  en: Warden Helmet
+- de: Wächtersatz · Brustplatte
+  en: Warden Chestplate
+- de: Wächtersatz · Beinschutz
+  en: Warden Leggings
+- de: Wächtersatz · Stiefel
+  en: Warden Boots
+- de: Sturmsatz · Helm
+  en: Gale Helmet
+- de: Sturmsatz · Brustplatte
+  en: Gale Chestplate
+- de: Sturmsatz · Beinschutz
+  en: Gale Leggings
+- de: Sturmsatz · Stiefel
+  en: Gale Boots
+- de: Abgrundsatz · Helm
+  en: Abyss Helmet
+- de: Abgrundsatz · Brustplatte
+  en: Abyss Chestplate
+- de: Abgrundsatz · Beinschutz
+  en: Abyss Leggings
+- de: Abgrundsatz · Stiefel
+  en: Abyss Boots
+- de: Wächtersatz
+  en: Warden set
+- de: Sturmsatz
+  en: Gale set
+- de: Abgrundsatz
+  en: Abyss set
+- de: Wächterschmiede
+  en: Warden Forge
+- de: Sturmschmiede
+  en: Gale Forge
+- de: Echowerkstatt
+  en: Echo Workshop
+- de: Prüfung des Abgrunds
+  en: Abyss Trial
+- de: Wiederherstellung
+  en: Restoration
+- de: Segen der Vorhut
+  en: Vanguard Blessing
+- de: Erwachen
+  en: Awakening
+- de: Eisenwächter
+  en: Iron Warden
+- de: Frostjäger
+  en: Frost Hunter
+- de: Glutchampion
+  en: Ember Champion
+- de: Sturmvorhut
+  en: Storm Vanguard
+- de: Schleimmatriarchin
+  en: Slime Matriarch
+- de: Abgrundwächter
+  en: Abyss Guardian
+- de: Frostkoloss
+  en: Frost Colossus
+- de: Glutkoloss
+  en: Ember Colossus
+- de: Sturmherrscher
+  en: Storm Lord
+- de: Wiederverwendbarer Ritual-Katalysator
+  en: Reusable ritual catalyst
+- de: Rechtsklick auf einen Kessel öffnet die Ritualwahl.
+  en: Right-click a cauldron to choose a ritual.
+- de: Schmieden, Wächterprüfungen, Reparatur und Segen.
+  en: Forging, guardian trials, repairs and blessings.
+- de: Katalysator bleibt erhalten; Zutaten je Rezept.
+  en: The catalyst is kept; each recipe lists its ingredients.
+- de: Wiederverwendbares Schutzrelikt
+  en: Reusable defensive relic
+- de: 'Rechtsklick: Resistenz I + Regeneration I (8s).'
+  en: 'Right-click: Resistance I + Regeneration I (8s).'
+- de: 'Abklingzeit: 60 Sekunden.'
+  en: 'Cooldown: 60 seconds.'
+- de: Bleibt bei jeder Benutzung erhalten.
+  en: Kept after every use.
+- de: Wiederverwendbares Gruppenrelikt
+  en: Reusable party relic
+- de: 'Rechtsklick: Tempo I + Eile I (10s).'
+  en: 'Right-click: Speed I + Haste I (10s).'
+- de: 'Abklingzeit: 75 Sekunden.'
+  en: 'Cooldown: 75 seconds.'
+- de: Wiederverwendbares Kontrollrelikt
+  en: Reusable control relic
+- de: 'Rechtsklick: Gegner im Umkreis von 8 Blöcken'
+  en: 'Right-click: enemies within 8 blocks'
+- de: erhalten Langsamkeit II (6s); Bosse I (3s).
+  en: receive Slowness II (6s); bosses I (3s).
+- de: 'Abklingzeit: 40 Sekunden · bleibt erhalten.'
+  en: 'Cooldown: 40 seconds · item is kept.'
+- de: Wiederverwendbares Heilrelikt
+  en: Reusable healing relic
+- de: 'Rechtsklick: Regeneration II (6s).'
+  en: 'Right-click: Regeneration II (6s).'
+- de: 'Abklingzeit: 90 Sekunden · bleibt erhalten.'
+  en: 'Cooldown: 90 seconds · item is kept.'
+- de: Wiederverwendbares Bewegungsrelikt
+  en: Reusable movement relic
+- de: 'Rechtsklick: Tempo II + langsamer Fall (8s).'
+  en: 'Right-click: Speed II + Slow Falling (8s).'
+- de: 'Abklingzeit: 35 Sekunden · bleibt erhalten.'
+  en: 'Cooldown: 35 seconds · item is kept.'
+- de: Wiederverwendbares Feuerrelikt
+  en: Reusable fire relic
+- de: 'Rechtsklick: Feuerresistenz (15s).'
+  en: 'Right-click: Fire Resistance (15s).'
+- de: 'Abklingzeit: 45 Sekunden · bleibt erhalten.'
+  en: 'Cooldown: 45 seconds · item is kept.'
+- de: 'Rechtsklick: Absorption II (8s).'
+  en: 'Right-click: Absorption II (8s).'
+- de: 'Abklingzeit: 75 Sekunden · bleibt erhalten.'
+  en: 'Cooldown: 75 seconds · item is kept.'
+- de: Wiederverwendbares Aufklärungsrelikt
+  en: Reusable scouting relic
+- de: 'Rechtsklick während einer Stage: markiert'
+  en: 'Right-click during combat: highlights'
+- de: Raid-Gegner in 16 Blöcken für 12s.
+  en: raid enemies within 16 blocks for 12s.
+- de: Du erhältst zusätzlich Nachtsicht (30s).
+  en: Also grants Night Vision (30s).
+- de: Wiederverwendbares Schwächungsrelikt
+  en: Reusable weakening relic
+- de: 'Rechtsklick: Raid-Gegner in 8 Blöcken'
+  en: 'Right-click: raid enemies within 8 blocks'
+- de: erhalten Schwäche I (6s), Bosse nur 3s.
+  en: receive Weakness I (6s); bosses only 3s.
+- de: 'Abklingzeit: 50 Sekunden · bleibt erhalten.'
+  en: 'Cooldown: 50 seconds · item is kept.'
+- de: RARE · Rüstung
+  en: RARE · Armor
+- de: EPIC · Rüstung
+  en: EPIC · Armor
+- de: LEGENDARY · Rüstung
+  en: LEGENDARY · Armor
+- de: '2 Teile: Resistenz I'
+  en: '2 pieces: Resistance I'
+- de: '4 Teile: zusätzlich Regeneration I'
+  en: '4 pieces: also Regeneration I'
+- de: '2 Teile: Tempo I'
+  en: '2 pieces: Speed I'
+- de: '4 Teile: zusätzlich langsamer Fall'
+  en: '4 pieces: also Slow Falling'
+- de: '2 Teile: Feuerresistenz'
+  en: '2 pieces: Fire Resistance'
+- de: '4 Teile: zusätzlich Resistenz I + Stärke I'
+  en: '4 pieces: also Resistance I + Strength I'
+- de: RARE · Ausrüstung
+  en: RARE · Equipment
+- de: EPIC · Ausrüstung
+  en: EPIC · Equipment
+- de: LEGENDARY · Ausrüstung
+  en: LEGENDARY · Equipment
+- de: Sehr seltener Boss-Fund · Nahkampf
+  en: Very rare boss drop · melee
+- de: Sehr seltener Boss-Fund · Mace-Cap gilt
+  en: Very rare boss drop · mace damage cap applies
+- de: Sehr seltener Boss-Fund · ein Pfeil genügt
+  en: Very rare boss drop · one arrow is enough
+- de: Demo-Skip ausgeführt. Keine zusätzliche Beute vergeben.
+  en: Demo skip completed. No additional loot awarded.
+- de: Boss-IDs
+  en: Boss IDs
+- de: Boss-Vorschauen entfernt.
+  en: Boss previews cleared.
+- de: Portale vollständig entfernt.
+  en: portals permanently deleted.
+- de: Vorraum · Leader startet mit
+  en: Preparation room · leader starts with
+- de: Leader startet mit
+  en: Leader starts with
+- de: Schmiedekern
+  en: Forge core
+- de: für dieses Item
+  en: for this item
+- de: ab Stage
+  en: from stage
+- de: Abbrechen
+  en: Cancel
+- de: Rezepte ansehen
+  en: View recipes
+- de: Ritual nur außerhalb aktiver Raids möglich.
+  en: Rituals are available outside active raids only.
+- de: Du brauchst ein Chaosfragment in der Haupthand.
+  en: Hold a Chaos Fragment in your main hand.
+- de: Du hast bereits ein aktives Ritual.
+  en: You already have an active ritual.
+- de: Zu wenig Zutaten; nichts verbraucht.
+  en: Insufficient ingredients; nothing consumed.
+- de: Zählt als gehaltenes Teil des warden-Sets.
+  en: Counts as a held piece of the Warden set.
+- de: Zählt als gehaltenes Teil des gale-Sets.
+  en: Counts as a held piece of the Gale set.
+- de: Zählt als gehaltenes Teil des abyss-Sets.
+  en: Counts as a held piece of the Abyss set.
+- de: 'Erhalten: Miniboss ab Stufe 1; Details /rezepte gear.'
+  en: 'Obtain: Miniboss from stage 1; details /rezepte gear.'
+- de: 'Erhalten: Miniboss ab Stufe 3; Details /rezepte gear.'
+  en: 'Obtain: Miniboss from stage 3; details /rezepte gear.'
+- de: 'Erhalten: Endboss ab Stufe 1; Details /rezepte gear.'
+  en: 'Obtain: End boss from stage 1; details /rezepte gear.'
+- de: 'Erhalten: Miniboss ab Stufe 2; Details /rezepte gear.'
+  en: 'Obtain: Miniboss from stage 2; details /rezepte gear.'
+- de: Eisenbarren
+  en: Iron ingot
+- de: Goldbarren
+  en: Gold ingot
+- de: Diamant
+  en: Diamond
+- de: Lapislazuli
+  en: Lapis lazuli
+- de: Smaragd
+  en: Emerald
+- de: Gegenstände
+  en: Items
+- de: KREIS ZIEHEN
+  en: DRAWING THE CIRCLE
+- de: ENERGIE SAMMELN
+  en: GATHERING ENERGY
+- de: FORMEN
+  en: SHAPING
+- de: VOLLENDEN
+  en: COMPLETING
+- de: STUFE
+  en: STAGE

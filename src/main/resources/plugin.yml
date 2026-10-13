@@ -1,5 +1,5 @@
 name: DurcheinanderMobArmy
-version: 1.4.0
+version: 1.5.0
 main: de.yuuki.mobarmy.MobArmy
 api-version: '26.3'
 author: Yuuki
@@ -8,6 +8,11 @@ commands:
   raid:
     description: Raid menu and administration
     usage: /raid help
+  rezepte:
+    description: Rezepte / recipes, equipment and ritual guide
+    usage: /rezepte [items|gear|sets|rituals]
+    aliases:
+    - recipes
 permissions:
   mobarmy.play:
     default: true

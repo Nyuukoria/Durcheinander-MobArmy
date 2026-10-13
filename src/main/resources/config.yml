@@ -1,5 +1,4 @@
-# Permanent gear and reusable catalysts; forge/repair ingredients are consumed.
-configuration-version: 5
+configuration-version: 6
 timezone: Europe/Berlin
 entry-timeout-seconds: 120
 loot-timeout-seconds: 120
@@ -21,7 +20,7 @@ balance:
   maximum-wave-mobs: 250
   minimum-spawn-distance: 8
   maximum-build-height: 2
-  pearl-cooldown-seconds: 10
+  pearl-cooldown-seconds: 3
   apple-cooldown-seconds: 30
   apples-per-stage: 3
   potions-per-stage: 3
@@ -29,6 +28,7 @@ balance:
   wind-charge-multiplier: 0.65
   wind-charge-max-horizontal: 0.9
   wind-charge-max-upward: 0.75
+  mob-spawn-spacing: 4
 messages:
   join: '&dEine Gruppe hat das Portal betreten'
   stage: '&dStage {stage} ist abgeschlossen'
@@ -56,6 +56,12 @@ items:
       result: ritual_core
       consume: 0
       cooldown-seconds: 120
+    name-en: '&dChaos Fragment'
+    lore-en:
+    - '&8Reusable ritual catalyst'
+    - '&7Right-click a cauldron to choose a ritual.'
+    - '&dForging, guardian trials, repairs and blessings.'
+    - '&7The catalyst is kept; each recipe lists its ingredients.'
   ritual_core:
     material: HEART_OF_THE_SEA
     name: '&bRitualkern'
@@ -77,6 +83,12 @@ items:
       - type: REGENERATION
         seconds: 8
         amplifier: 0
+    name-en: '&bRitual Core'
+    lore-en:
+    - '&8Reusable defensive relic'
+    - '&7Right-click: Resistance I + Regeneration I (8s).'
+    - '&bCooldown: 60 seconds.'
+    - '&7Kept after every use.'
   chaos_crown:
     material: NETHER_STAR
     name: '&6Krone des Durcheinanders'
@@ -102,6 +114,12 @@ items:
       - type: HASTE
         seconds: 10
         amplifier: 0
+    name-en: '&6Crown of Chaos'
+    lore-en:
+    - '&8Reusable party relic'
+    - '&7Right-click: Speed I + Haste I (10s).'
+    - '&dAffects your party within 8 blocks.'
+    - '&7Cooldown: 75 seconds.'
   raid_shard:
     material: PRISMARINE_SHARD
     name: '&5Raidsplitter'
@@ -119,10 +137,20 @@ items:
     - '&7Für den Verkauf in einem kompatiblen NPC-Shop.'
     - '&7Den Verkaufspreis bestimmt der jeweilige Shop.'
     - '&bSammeln, aufbewahren und später verkaufen.'
+    name-en: '&5Raid Shard'
+    lore-en:
+    - '&8Trade goods · dungeon currency'
+    - '&7Sell in a compatible NPC shop.'
+    - '&7The shop determines the selling price.'
+    - '&bCollect, store and sell later.'
   boss_model:
     material: PAPER
     name: '&dChaoswächter-Modell'
     item-model: mobarmy:chaos_guardian
+    internal: true
+    lore: []
+    name-en: '&dChaos Guardian Model'
+    lore-en: []
   frost_talisman:
     material: AMETHYST_SHARD
     name: '&bFrosttalisman'
@@ -144,6 +172,12 @@ items:
       enemy-slow-seconds: 6
       message: '&bDer Frosttalisman bremst nahe Raid-Gegner.'
       effects: []
+    name-en: '&bFrost Talisman'
+    lore-en:
+    - '&8Reusable control relic'
+    - '&7Right-click: enemies within 8 blocks'
+    - '&7receive Slowness II (6s); bosses I (3s).'
+    - '&bCooldown: 40 seconds · item is kept.'
   healing_bloom:
     material: AMETHYST_SHARD
     name: '&aLebensblüte'
@@ -167,6 +201,12 @@ items:
       - type: REGENERATION
         seconds: 6
         amplifier: 1
+    name-en: '&aHealing Bloom'
+    lore-en:
+    - '&8Reusable healing relic'
+    - '&7Right-click: Regeneration II (6s).'
+    - '&aAffects your party within 8 blocks.'
+    - '&7Cooldown: 90 seconds · item is kept.'
   gale_sigil:
     material: AMETHYST_SHARD
     name: '&3Windrune'
@@ -193,6 +233,12 @@ items:
       - type: SLOW_FALLING
         seconds: 8
         amplifier: 0
+    name-en: '&3Gale Sigil'
+    lore-en:
+    - '&8Reusable movement relic'
+    - '&7Right-click: Speed II + Slow Falling (8s).'
+    - '&3Dodge enemies and land wind charge jumps safely.'
+    - '&7Cooldown: 35 seconds · item is kept.'
   ember_charm:
     name: '&6Glutamulett'
     lore:
@@ -216,6 +262,12 @@ items:
       stage: 1
       amount: 1
       chance: 0.5
+    name-en: '&6Ember Charm'
+    lore-en:
+    - '&8Reusable fire relic'
+    - '&7Right-click: Fire Resistance (15s).'
+    - '&6Protects you from fire and lava.'
+    - '&7Cooldown: 45 seconds · item is kept.'
   guardian_rune:
     name: '&9Wächterrune'
     lore:
@@ -239,6 +291,12 @@ items:
       stage: 2
       amount: 1
       chance: 0.5
+    name-en: '&9Guardian Rune'
+    lore-en:
+    - '&8Reusable defensive relic'
+    - '&7Right-click: Absorption II (8s).'
+    - '&9Four temporary extra hearts.'
+    - '&7Cooldown: 75 seconds · item is kept.'
   hunter_lens:
     name: '&eJägerlinse'
     lore:
@@ -268,6 +326,13 @@ items:
       stage: 3
       amount: 1
       chance: 0.5
+    name-en: '&eHunter Lens'
+    lore-en:
+    - '&8Reusable scouting relic'
+    - '&7Right-click during combat: highlights'
+    - '&7raid enemies within 16 blocks for 12s.'
+    - '&eAlso grants Night Vision (30s).'
+    - '&7Cooldown: 35 seconds · item is kept.'
   weakening_fang:
     name: '&5Schwächungszahn'
     lore:
@@ -295,6 +360,13 @@ items:
       stage: 4
       amount: 1
       chance: 0.5
+    name-en: '&5Weakening Fang'
+    lore-en:
+    - '&8Reusable weakening relic'
+    - '&7Right-click: raid enemies within 8 blocks'
+    - '&7receive Weakness I (6s); bosses only 3s.'
+    - '&5Deals no direct damage.'
+    - '&7Cooldown: 50 seconds · item is kept.'
   warden_helmet:
     material: IRON_HELMET
     name: '&eWächtersatz · Helm'
@@ -313,11 +385,21 @@ items:
       pattern: sentry
     lore:
     - '&8RARE · Rüstung · &eWächtersatz'
-    - '&7Setbonus im aktiven Raid:'
+    - '&7Setbonus beim Tragen/Halten:'
     - '&72 Teile: Resistenz I'
     - '&74 Teile: zusätzlich Regeneration I'
-    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
     - '&7Reparatur: Mending oder Kesselritual.'
+    - '&eErhalten: Miniboss ab Stufe 1; Details /rezepte gear.'
+    name-en: '&eWarden Helmet'
+    lore-en:
+    - '&8RARE · Armor · &eWarden set'
+    - '&7Set bonuses while worn/held:'
+    - '&72 pieces: Resistance I'
+    - '&74 pieces: also Regeneration I'
+    - '&7Bonuses in all worlds; fade within 3s of removal.'
+    - '&7Repair with Mending or a cauldron ritual.'
+    - '&eObtain: Miniboss from stage 1; details /rezepte gear.'
   warden_chestplate:
     material: IRON_CHESTPLATE
     name: '&eWächtersatz · Brustplatte'
@@ -335,11 +417,21 @@ items:
       pattern: sentry
     lore:
     - '&8RARE · Rüstung · &eWächtersatz'
-    - '&7Setbonus im aktiven Raid:'
+    - '&7Setbonus beim Tragen/Halten:'
     - '&72 Teile: Resistenz I'
     - '&74 Teile: zusätzlich Regeneration I'
-    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
     - '&7Reparatur: Mending oder Kesselritual.'
+    - '&eErhalten: Miniboss ab Stufe 1; Details /rezepte gear.'
+    name-en: '&eWarden Chestplate'
+    lore-en:
+    - '&8RARE · Armor · &eWarden set'
+    - '&7Set bonuses while worn/held:'
+    - '&72 pieces: Resistance I'
+    - '&74 pieces: also Regeneration I'
+    - '&7Bonuses in all worlds; fade within 3s of removal.'
+    - '&7Repair with Mending or a cauldron ritual.'
+    - '&eObtain: Miniboss from stage 1; details /rezepte gear.'
   warden_leggings:
     material: IRON_LEGGINGS
     name: '&eWächtersatz · Beinschutz'
@@ -357,11 +449,21 @@ items:
       pattern: sentry
     lore:
     - '&8RARE · Rüstung · &eWächtersatz'
-    - '&7Setbonus im aktiven Raid:'
+    - '&7Setbonus beim Tragen/Halten:'
     - '&72 Teile: Resistenz I'
     - '&74 Teile: zusätzlich Regeneration I'
-    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
     - '&7Reparatur: Mending oder Kesselritual.'
+    - '&eErhalten: Miniboss ab Stufe 1; Details /rezepte gear.'
+    name-en: '&eWarden Leggings'
+    lore-en:
+    - '&8RARE · Armor · &eWarden set'
+    - '&7Set bonuses while worn/held:'
+    - '&72 pieces: Resistance I'
+    - '&74 pieces: also Regeneration I'
+    - '&7Bonuses in all worlds; fade within 3s of removal.'
+    - '&7Repair with Mending or a cauldron ritual.'
+    - '&eObtain: Miniboss from stage 1; details /rezepte gear.'
   warden_boots:
     material: IRON_BOOTS
     name: '&eWächtersatz · Stiefel'
@@ -380,11 +482,21 @@ items:
       pattern: sentry
     lore:
     - '&8RARE · Rüstung · &eWächtersatz'
-    - '&7Setbonus im aktiven Raid:'
+    - '&7Setbonus beim Tragen/Halten:'
     - '&72 Teile: Resistenz I'
     - '&74 Teile: zusätzlich Regeneration I'
-    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
     - '&7Reparatur: Mending oder Kesselritual.'
+    - '&eErhalten: Miniboss ab Stufe 1; Details /rezepte gear.'
+    name-en: '&eWarden Boots'
+    lore-en:
+    - '&8RARE · Armor · &eWarden set'
+    - '&7Set bonuses while worn/held:'
+    - '&72 pieces: Resistance I'
+    - '&74 pieces: also Regeneration I'
+    - '&7Bonuses in all worlds; fade within 3s of removal.'
+    - '&7Repair with Mending or a cauldron ritual.'
+    - '&eObtain: Miniboss from stage 1; details /rezepte gear.'
   gale_helmet:
     material: DIAMOND_HELMET
     name: '&bSturmsatz · Helm'
@@ -403,11 +515,21 @@ items:
       pattern: spire
     lore:
     - '&8EPIC · Rüstung · &bSturmsatz'
-    - '&7Setbonus im aktiven Raid:'
+    - '&7Setbonus beim Tragen/Halten:'
     - '&72 Teile: Tempo I'
     - '&74 Teile: zusätzlich langsamer Fall'
-    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
     - '&7Reparatur: Mending oder Kesselritual.'
+    - '&eErhalten: Miniboss ab Stufe 3; Details /rezepte gear.'
+    name-en: '&bGale Helmet'
+    lore-en:
+    - '&8EPIC · Armor · &bGale set'
+    - '&7Set bonuses while worn/held:'
+    - '&72 pieces: Speed I'
+    - '&74 pieces: also Slow Falling'
+    - '&7Bonuses in all worlds; fade within 3s of removal.'
+    - '&7Repair with Mending or a cauldron ritual.'
+    - '&eObtain: Miniboss from stage 3; details /rezepte gear.'
   gale_chestplate:
     material: DIAMOND_CHESTPLATE
     name: '&bSturmsatz · Brustplatte'
@@ -425,11 +547,21 @@ items:
       pattern: spire
     lore:
     - '&8EPIC · Rüstung · &bSturmsatz'
-    - '&7Setbonus im aktiven Raid:'
+    - '&7Setbonus beim Tragen/Halten:'
     - '&72 Teile: Tempo I'
     - '&74 Teile: zusätzlich langsamer Fall'
-    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
     - '&7Reparatur: Mending oder Kesselritual.'
+    - '&eErhalten: Miniboss ab Stufe 3; Details /rezepte gear.'
+    name-en: '&bGale Chestplate'
+    lore-en:
+    - '&8EPIC · Armor · &bGale set'
+    - '&7Set bonuses while worn/held:'
+    - '&72 pieces: Speed I'
+    - '&74 pieces: also Slow Falling'
+    - '&7Bonuses in all worlds; fade within 3s of removal.'
+    - '&7Repair with Mending or a cauldron ritual.'
+    - '&eObtain: Miniboss from stage 3; details /rezepte gear.'
   gale_leggings:
     material: DIAMOND_LEGGINGS
     name: '&bSturmsatz · Beinschutz'
@@ -447,11 +579,21 @@ items:
       pattern: spire
     lore:
     - '&8EPIC · Rüstung · &bSturmsatz'
-    - '&7Setbonus im aktiven Raid:'
+    - '&7Setbonus beim Tragen/Halten:'
     - '&72 Teile: Tempo I'
     - '&74 Teile: zusätzlich langsamer Fall'
-    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
     - '&7Reparatur: Mending oder Kesselritual.'
+    - '&eErhalten: Miniboss ab Stufe 3; Details /rezepte gear.'
+    name-en: '&bGale Leggings'
+    lore-en:
+    - '&8EPIC · Armor · &bGale set'
+    - '&7Set bonuses while worn/held:'
+    - '&72 pieces: Speed I'
+    - '&74 pieces: also Slow Falling'
+    - '&7Bonuses in all worlds; fade within 3s of removal.'
+    - '&7Repair with Mending or a cauldron ritual.'
+    - '&eObtain: Miniboss from stage 3; details /rezepte gear.'
   gale_boots:
     material: DIAMOND_BOOTS
     name: '&bSturmsatz · Stiefel'
@@ -470,11 +612,21 @@ items:
       pattern: spire
     lore:
     - '&8EPIC · Rüstung · &bSturmsatz'
-    - '&7Setbonus im aktiven Raid:'
+    - '&7Setbonus beim Tragen/Halten:'
     - '&72 Teile: Tempo I'
     - '&74 Teile: zusätzlich langsamer Fall'
-    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
     - '&7Reparatur: Mending oder Kesselritual.'
+    - '&eErhalten: Miniboss ab Stufe 3; Details /rezepte gear.'
+    name-en: '&bGale Boots'
+    lore-en:
+    - '&8EPIC · Armor · &bGale set'
+    - '&7Set bonuses while worn/held:'
+    - '&72 pieces: Speed I'
+    - '&74 pieces: also Slow Falling'
+    - '&7Bonuses in all worlds; fade within 3s of removal.'
+    - '&7Repair with Mending or a cauldron ritual.'
+    - '&eObtain: Miniboss from stage 3; details /rezepte gear.'
   abyss_helmet:
     material: NETHERITE_HELMET
     name: '&dAbgrundsatz · Helm'
@@ -493,11 +645,21 @@ items:
       pattern: silence
     lore:
     - '&8LEGENDARY · Rüstung · &dAbgrundsatz'
-    - '&7Setbonus im aktiven Raid:'
+    - '&7Setbonus beim Tragen/Halten:'
     - '&72 Teile: Feuerresistenz'
     - '&74 Teile: zusätzlich Resistenz I + Stärke I'
-    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
     - '&7Reparatur: Mending oder Kesselritual.'
+    - '&eErhalten: Endboss ab Stufe 1; Details /rezepte gear.'
+    name-en: '&dAbyss Helmet'
+    lore-en:
+    - '&8LEGENDARY · Armor · &dAbyss set'
+    - '&7Set bonuses while worn/held:'
+    - '&72 pieces: Fire Resistance'
+    - '&74 pieces: also Resistance I + Strength I'
+    - '&7Bonuses in all worlds; fade within 3s of removal.'
+    - '&7Repair with Mending or a cauldron ritual.'
+    - '&eObtain: End boss from stage 1; details /rezepte gear.'
   abyss_chestplate:
     material: NETHERITE_CHESTPLATE
     name: '&dAbgrundsatz · Brustplatte'
@@ -515,11 +677,21 @@ items:
       pattern: silence
     lore:
     - '&8LEGENDARY · Rüstung · &dAbgrundsatz'
-    - '&7Setbonus im aktiven Raid:'
+    - '&7Setbonus beim Tragen/Halten:'
     - '&72 Teile: Feuerresistenz'
     - '&74 Teile: zusätzlich Resistenz I + Stärke I'
-    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
     - '&7Reparatur: Mending oder Kesselritual.'
+    - '&eErhalten: Endboss ab Stufe 1; Details /rezepte gear.'
+    name-en: '&dAbyss Chestplate'
+    lore-en:
+    - '&8LEGENDARY · Armor · &dAbyss set'
+    - '&7Set bonuses while worn/held:'
+    - '&72 pieces: Fire Resistance'
+    - '&74 pieces: also Resistance I + Strength I'
+    - '&7Bonuses in all worlds; fade within 3s of removal.'
+    - '&7Repair with Mending or a cauldron ritual.'
+    - '&eObtain: End boss from stage 1; details /rezepte gear.'
   abyss_leggings:
     material: NETHERITE_LEGGINGS
     name: '&dAbgrundsatz · Beinschutz'
@@ -537,11 +709,21 @@ items:
       pattern: silence
     lore:
     - '&8LEGENDARY · Rüstung · &dAbgrundsatz'
-    - '&7Setbonus im aktiven Raid:'
+    - '&7Setbonus beim Tragen/Halten:'
     - '&72 Teile: Feuerresistenz'
     - '&74 Teile: zusätzlich Resistenz I + Stärke I'
-    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
     - '&7Reparatur: Mending oder Kesselritual.'
+    - '&eErhalten: Endboss ab Stufe 1; Details /rezepte gear.'
+    name-en: '&dAbyss Leggings'
+    lore-en:
+    - '&8LEGENDARY · Armor · &dAbyss set'
+    - '&7Set bonuses while worn/held:'
+    - '&72 pieces: Fire Resistance'
+    - '&74 pieces: also Resistance I + Strength I'
+    - '&7Bonuses in all worlds; fade within 3s of removal.'
+    - '&7Repair with Mending or a cauldron ritual.'
+    - '&eObtain: End boss from stage 1; details /rezepte gear.'
   abyss_boots:
     material: NETHERITE_BOOTS
     name: '&dAbgrundsatz · Stiefel'
@@ -560,11 +742,21 @@ items:
       pattern: silence
     lore:
     - '&8LEGENDARY · Rüstung · &dAbgrundsatz'
-    - '&7Setbonus im aktiven Raid:'
+    - '&7Setbonus beim Tragen/Halten:'
     - '&72 Teile: Feuerresistenz'
     - '&74 Teile: zusätzlich Resistenz I + Stärke I'
-    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
     - '&7Reparatur: Mending oder Kesselritual.'
+    - '&eErhalten: Endboss ab Stufe 1; Details /rezepte gear.'
+    name-en: '&dAbyss Boots'
+    lore-en:
+    - '&8LEGENDARY · Armor · &dAbyss set'
+    - '&7Set bonuses while worn/held:'
+    - '&72 pieces: Fire Resistance'
+    - '&74 pieces: also Resistance I + Strength I'
+    - '&7Bonuses in all worlds; fade within 3s of removal.'
+    - '&7Repair with Mending or a cauldron ritual.'
+    - '&eObtain: End boss from stage 1; details /rezepte gear.'
   warden_blade:
     material: IRON_SWORD
     name: '&eWächterklinge'
@@ -581,6 +773,20 @@ items:
     - '&7Verbraucht sich nicht beim Aktivieren.'
     - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
     - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
+    - '&7Zählt als gehaltenes Teil des warden-Sets.'
+    - '&7Setboni wirken in allen Welten.'
+    - '&eErhalten: Miniboss ab Stufe 2; Details /rezepte gear.'
+    set: warden
+    name-en: '&eWarden Blade'
+    lore-en:
+    - '&8RARE · Equipment'
+    - '&7Reusable melee weapon'
+    - '&7Using this item does not consume it.'
+    - '&7Normal durability; repair with Mending or a ritual.'
+    - '&7Raid hit caps and boss contribution limits still apply.'
+    - '&7Counts as a held piece of the Warden set.'
+    - '&7Set bonuses work in all worlds.'
+    - '&eObtain: Miniboss from stage 2; details /rezepte gear.'
   gale_axe:
     material: DIAMOND_AXE
     name: '&bSturmaxt'
@@ -598,6 +804,20 @@ items:
     - '&7Verbraucht sich nicht beim Aktivieren.'
     - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
     - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
+    - '&7Zählt als gehaltenes Teil des gale-Sets.'
+    - '&7Setboni wirken in allen Welten.'
+    - '&eErhalten: Miniboss ab Stufe 2; Details /rezepte gear.'
+    set: gale
+    name-en: '&bGale Axe'
+    lore-en:
+    - '&8RARE · Equipment'
+    - '&7Weapon and regular woodcutting tool'
+    - '&7Using this item does not consume it.'
+    - '&7Normal durability; repair with Mending or a ritual.'
+    - '&7Raid hit caps and boss contribution limits still apply.'
+    - '&7Counts as a held piece of the Gale set.'
+    - '&7Set bonuses work in all worlds.'
+    - '&eObtain: Miniboss from stage 2; details /rezepte gear.'
   tempest_bow:
     material: BOW
     name: '&bSturmbogen'
@@ -615,6 +835,20 @@ items:
     - '&7Verbraucht sich nicht beim Aktivieren.'
     - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
     - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
+    - '&7Zählt als gehaltenes Teil des gale-Sets.'
+    - '&7Setboni wirken in allen Welten.'
+    - '&eErhalten: Miniboss ab Stufe 2; Details /rezepte gear.'
+    set: gale
+    name-en: '&bTempest Bow'
+    lore-en:
+    - '&8RARE · Equipment'
+    - '&7Ranged weapon · requires normal arrows'
+    - '&7Using this item does not consume it.'
+    - '&7Normal durability; repair with Mending or a ritual.'
+    - '&7Raid hit caps and boss contribution limits still apply.'
+    - '&7Counts as a held piece of the Gale set.'
+    - '&7Set bonuses work in all worlds.'
+    - '&eObtain: Miniboss from stage 2; details /rezepte gear.'
   abyss_sword:
     material: NETHERITE_SWORD
     name: '&dAbgrundklinge'
@@ -632,6 +866,20 @@ items:
     - '&7Verbraucht sich nicht beim Aktivieren.'
     - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
     - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
+    - '&7Zählt als gehaltenes Teil des abyss-Sets.'
+    - '&7Setboni wirken in allen Welten.'
+    - '&eErhalten: Endboss ab Stufe 1; Details /rezepte gear.'
+    set: abyss
+    name-en: '&dAbyss Sword'
+    lore-en:
+    - '&8LEGENDARY · Equipment'
+    - '&7Very rare boss drop · melee'
+    - '&7Using this item does not consume it.'
+    - '&7Normal durability; repair with Mending or a ritual.'
+    - '&7Raid hit caps and boss contribution limits still apply.'
+    - '&7Counts as a held piece of the Abyss set.'
+    - '&7Set bonuses work in all worlds.'
+    - '&eObtain: End boss from stage 1; details /rezepte gear.'
   abyss_mace:
     material: MACE
     name: '&dAbgrundstreitkolben'
@@ -649,6 +897,20 @@ items:
     - '&7Verbraucht sich nicht beim Aktivieren.'
     - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
     - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
+    - '&7Zählt als gehaltenes Teil des abyss-Sets.'
+    - '&7Setboni wirken in allen Welten.'
+    - '&eErhalten: Endboss ab Stufe 1; Details /rezepte gear.'
+    set: abyss
+    name-en: '&dAbyss Mace'
+    lore-en:
+    - '&8LEGENDARY · Equipment'
+    - '&7Very rare boss drop · mace damage cap applies'
+    - '&7Using this item does not consume it.'
+    - '&7Normal durability; repair with Mending or a ritual.'
+    - '&7Raid hit caps and boss contribution limits still apply.'
+    - '&7Counts as a held piece of the Abyss set.'
+    - '&7Set bonuses work in all worlds.'
+    - '&eObtain: End boss from stage 1; details /rezepte gear.'
   star_bow:
     material: BOW
     name: '&6Sternenbogen'
@@ -666,6 +928,20 @@ items:
     - '&7Verbraucht sich nicht beim Aktivieren.'
     - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
     - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
+    - '&7Zählt als gehaltenes Teil des abyss-Sets.'
+    - '&7Setboni wirken in allen Welten.'
+    - '&eErhalten: Endboss ab Stufe 1; Details /rezepte gear.'
+    set: abyss
+    name-en: '&6Star Bow'
+    lore-en:
+    - '&8LEGENDARY · Equipment'
+    - '&7Very rare boss drop · one arrow is enough'
+    - '&7Using this item does not consume it.'
+    - '&7Normal durability; repair with Mending or a ritual.'
+    - '&7Raid hit caps and boss contribution limits still apply.'
+    - '&7Counts as a held piece of the Abyss set.'
+    - '&7Set bonuses work in all worlds.'
+    - '&eObtain: End boss from stage 1; details /rezepte gear.'
   echo_pickaxe:
     material: DIAMOND_PICKAXE
     name: '&5Echospitzhacke'
@@ -683,6 +959,20 @@ items:
     - '&7Verbraucht sich nicht beim Aktivieren.'
     - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
     - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
+    - '&7Zählt als gehaltenes Teil des gale-Sets.'
+    - '&7Setboni wirken in allen Welten.'
+    - '&eErhalten: Miniboss ab Stufe 3; Details /rezepte gear.'
+    set: gale
+    name-en: '&5Echo Pickaxe'
+    lore-en:
+    - '&8EPIC · Equipment'
+    - '&7Mine outside protected arena blocks'
+    - '&7Using this item does not consume it.'
+    - '&7Normal durability; repair with Mending or a ritual.'
+    - '&7Raid hit caps and boss contribution limits still apply.'
+    - '&7Counts as a held piece of the Gale set.'
+    - '&7Set bonuses work in all worlds.'
+    - '&eObtain: Miniboss from stage 3; details /rezepte gear.'
   runic_shovel:
     material: IRON_SHOVEL
     name: '&eRunenschaufel'
@@ -699,6 +989,20 @@ items:
     - '&7Verbraucht sich nicht beim Aktivieren.'
     - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
     - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
+    - '&7Zählt als gehaltenes Teil des warden-Sets.'
+    - '&7Setboni wirken in allen Welten.'
+    - '&eErhalten: Miniboss ab Stufe 3; Details /rezepte gear.'
+    set: warden
+    name-en: '&eRunic Shovel'
+    lore-en:
+    - '&8RARE · Equipment'
+    - '&7Regular digging tool · respects protected blocks'
+    - '&7Using this item does not consume it.'
+    - '&7Normal durability; repair with Mending or a ritual.'
+    - '&7Raid hit caps and boss contribution limits still apply.'
+    - '&7Counts as a held piece of the Warden set.'
+    - '&7Set bonuses work in all worlds.'
+    - '&eObtain: Miniboss from stage 3; details /rezepte gear.'
   harvest_hoe:
     material: DIAMOND_HOE
     name: '&aErntehacke'
@@ -716,6 +1020,20 @@ items:
     - '&7Verbraucht sich nicht beim Aktivieren.'
     - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
     - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
+    - '&7Zählt als gehaltenes Teil des gale-Sets.'
+    - '&7Setboni wirken in allen Welten.'
+    - '&eErhalten: Miniboss ab Stufe 3; Details /rezepte gear.'
+    set: gale
+    name-en: '&aHarvest Hoe'
+    lore-en:
+    - '&8EPIC · Equipment'
+    - '&7Farming and harvesting · vanilla ore rules'
+    - '&7Using this item does not consume it.'
+    - '&7Normal durability; repair with Mending or a ritual.'
+    - '&7Raid hit caps and boss contribution limits still apply.'
+    - '&7Counts as a held piece of the Gale set.'
+    - '&7Set bonuses work in all worlds.'
+    - '&eObtain: Miniboss from stage 3; details /rezepte gear.'
   storm_essence:
     material: AMETHYST_SHARD
     name: '&bSturmessenz'
@@ -730,6 +1048,11 @@ items:
       stage: 3
       amount: 1
       chance: 0.2
+    name-en: '&bStorm Essence'
+    lore-en:
+    - '&8Ritual material'
+    - '&7Ingredient for forging and guardian rituals.'
+    - '&7Only ritual ingredients are consumed.'
   void_essence:
     material: AMETHYST_SHARD
     name: '&5Leerenessenz'
@@ -744,6 +1067,27 @@ items:
       stage: 5
       amount: 1
       chance: 0.25
+    name-en: '&5Void Essence'
+    lore-en:
+    - '&8Ritual material'
+    - '&7Ingredient for forging and guardian rituals.'
+    - '&7Only ritual ingredients are consumed.'
+  boss_model_frost:
+    material: PAPER
+    name: '&bFrostkoloss-Modell'
+    item-model: mobarmy:frost_guardian
+    internal: true
+    lore: []
+    name-en: '&bFrost Guardian Model'
+    lore-en: []
+  boss_model_ember:
+    material: PAPER
+    name: '&6Glutkoloss-Modell'
+    item-model: mobarmy:ember_guardian
+    internal: true
+    lore: []
+    name-en: '&6Ember Guardian Model'
+    lore-en: []
 weeks:
   w1:
     world: raid_w1
@@ -801,51 +1145,81 @@ weeks:
         waves:
           '1':
             mobs:
-            - type: ZOMBIE
+            - type: DROWNED
               count: 4
-              health: 25
-              damage: 4
-              speed: 0.228
-              armor: 1
-              knockback-resistance: 0.1
-          '2':
-            mobs:
-            - type: ZOMBIE
-              count: 5
-              health: 30
-              damage: 5
-              speed: 0.236
-              armor: 2
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 1
               health: 26
-              damage: 5
-              speed: 0.23
-              equipment:
-                hand: BOW
-          '3':
-            mobs:
-            - type: ZOMBIE
-              count: 6
-              health: 35
-              damage: 6
-              speed: 0.244
-              armor: 3
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 2
-              health: 30
-              damage: 6
-              speed: 0.23
+              damage: 3.5
+              speed: 0.24
+              armor: 1
+            - type: STRAY
+              count: 3
+              health: 26
+              damage: 3.5
+              speed: 0.24
+              armor: 1
               equipment:
                 hand: BOW
             - type: SPIDER
-              count: 1
-              health: 39
-              damage: 6
-              speed: 0.26
+              count: 3
+              health: 26
+              damage: 3.5
+              speed: 0.24
+              armor: 1
+          '2':
+            mobs:
+            - type: SKELETON
+              count: 4
+              health: 28
+              damage: 3.5
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: BOW
+            - type: BOGGED
+              count: 4
+              health: 28
+              damage: 3.5
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: BOW
+            - type: ZOMBIE
+              count: 4
+              health: 28
+              damage: 3.5
+              speed: 0.24
+              armor: 1
+          '3':
+            mobs:
+            - type: STRAY
+              count: 4
+              health: 30
+              damage: 3.5
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: BOW
+            - type: SPIDER
+              count: 4
+              health: 30
+              damage: 3.5
+              speed: 0.24
+              armor: 1
               rider: SKELETON
+            - type: HUSK
+              count: 3
+              health: 30
+              damage: 3.5
+              speed: 0.24
+              armor: 1
+            - type: SKELETON
+              count: 3
+              health: 30
+              damage: 3.5
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: BOW
         miniboss:
           type: HUSK
           name: '&cChaos-Vorhut 1'
@@ -857,56 +1231,95 @@ weeks:
           equipment:
             hand: IRON_SWORD
             chestplate: IRON_CHESTPLATE
+        miniboss-pool:
+        - iron_warden
+        - frost_hunter
+        - storm_brute
+        - slime_matriarch
+        boss-pool:
+        - abyss_guardian
+        - frost_guardian
+        - ember_guardian
+        - storm_lord
       '2':
         name: Woche 1 – Stage 2
         waves:
           '1':
             mobs:
-            - type: ZOMBIE
-              count: 4
-              health: 25
-              damage: 4
-              speed: 0.228
-              armor: 1
-              knockback-resistance: 0.1
-          '2':
-            mobs:
-            - type: ZOMBIE
-              count: 5
-              health: 30
-              damage: 5
-              speed: 0.236
-              armor: 2
-              knockback-resistance: 0.1
             - type: SKELETON
-              count: 1
-              health: 26
-              damage: 5
-              speed: 0.23
+              count: 4
+              health: 30
+              damage: 4.0
+              speed: 0.24
+              armor: 1
               equipment:
                 hand: BOW
-          '3':
-            mobs:
-            - type: ZOMBIE
-              count: 6
-              health: 35
-              damage: 6
-              speed: 0.244
-              armor: 3
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 2
+            - type: BOGGED
+              count: 4
               health: 30
-              damage: 6
-              speed: 0.23
+              damage: 4.0
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: BOW
+            - type: ZOMBIE
+              count: 4
+              health: 30
+              damage: 4.0
+              speed: 0.24
+              armor: 1
+          '2':
+            mobs:
+            - type: STRAY
+              count: 5
+              health: 32
+              damage: 4.0
+              speed: 0.24
+              armor: 1
               equipment:
                 hand: BOW
             - type: SPIDER
-              count: 1
-              health: 39
-              damage: 6
-              speed: 0.26
-              rider: SKELETON
+              count: 5
+              health: 32
+              damage: 4.0
+              speed: 0.24
+              armor: 1
+            - type: HUSK
+              count: 4
+              health: 32
+              damage: 4.0
+              speed: 0.24
+              armor: 1
+          '3':
+            mobs:
+            - type: BOGGED
+              count: 4
+              health: 34
+              damage: 4.0
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: BOW
+            - type: ZOMBIE
+              count: 4
+              health: 34
+              damage: 4.0
+              speed: 0.24
+              armor: 1
+            - type: DROWNED
+              count: 4
+              health: 34
+              damage: 4.0
+              speed: 0.24
+              armor: 1
+            - type: STRAY
+              count: 4
+              health: 34
+              damage: 4.0
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: BOW
         miniboss:
           type: HUSK
           name: '&cChaos-Vorhut 2'
@@ -918,56 +1331,92 @@ weeks:
           equipment:
             hand: IRON_SWORD
             chestplate: IRON_CHESTPLATE
+        miniboss-pool:
+        - iron_warden
+        - frost_hunter
+        - storm_brute
+        - slime_matriarch
+        boss-pool:
+        - abyss_guardian
+        - frost_guardian
+        - ember_guardian
+        - storm_lord
       '3':
         name: Woche 1 – Stage 3
         waves:
           '1':
             mobs:
-            - type: ZOMBIE
-              count: 4
-              health: 25
-              damage: 4
-              speed: 0.228
-              armor: 1
-              knockback-resistance: 0.1
-          '2':
-            mobs:
-            - type: ZOMBIE
+            - type: STRAY
               count: 5
-              health: 30
-              damage: 5
-              speed: 0.236
-              armor: 2
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 1
-              health: 26
-              damage: 5
-              speed: 0.23
-              equipment:
-                hand: BOW
-          '3':
-            mobs:
-            - type: ZOMBIE
-              count: 6
-              health: 35
-              damage: 6
-              speed: 0.244
-              armor: 3
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 2
-              health: 30
-              damage: 6
-              speed: 0.23
+              health: 34
+              damage: 4.5
+              speed: 0.24
+              armor: 1
               equipment:
                 hand: BOW
             - type: SPIDER
-              count: 2
-              health: 39
-              damage: 6
-              speed: 0.26
+              count: 5
+              health: 34
+              damage: 4.5
+              speed: 0.24
+              armor: 1
+            - type: VINDICATOR
+              count: 4
+              health: 34
+              damage: 4.5
+              speed: 0.24
+              armor: 1
+          '2':
+            mobs:
+            - type: BOGGED
+              count: 6
+              health: 36
+              damage: 4.5
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: BOW
+            - type: WITHER_SKELETON
+              count: 5
+              health: 36
+              damage: 4.5
+              speed: 0.24
+              armor: 1
+            - type: PILLAGER
+              count: 5
+              health: 36
+              damage: 4.5
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: CROSSBOW
+          '3':
+            mobs:
+            - type: SPIDER
+              count: 5
+              health: 38
+              damage: 4.5
+              speed: 0.24
+              armor: 1
               rider: SKELETON
+            - type: VINDICATOR
+              count: 5
+              health: 38
+              damage: 4.5
+              speed: 0.24
+              armor: 1
+            - type: SLIME
+              count: 4
+              health: 38
+              damage: 4.5
+              speed: 0.24
+              armor: 1
+            - type: BLAZE
+              count: 4
+              health: 38
+              damage: 4.5
+              speed: 0.24
+              armor: 1
         miniboss:
           type: HUSK
           name: '&cChaos-Vorhut 3'
@@ -979,56 +1428,92 @@ weeks:
           equipment:
             hand: IRON_SWORD
             chestplate: IRON_CHESTPLATE
+        miniboss-pool:
+        - iron_warden
+        - frost_hunter
+        - storm_brute
+        - slime_matriarch
+        - ember_champion
+        boss-pool:
+        - abyss_guardian
+        - frost_guardian
+        - ember_guardian
+        - storm_lord
       '4':
         name: Woche 1 – Stage 4
         waves:
           '1':
             mobs:
-            - type: ZOMBIE
-              count: 4
-              health: 25
-              damage: 4
-              speed: 0.228
+            - type: BOGGED
+              count: 6
+              health: 38
+              damage: 5.0
+              speed: 0.24
               armor: 1
-              knockback-resistance: 0.1
+              equipment:
+                hand: BOW
+            - type: WITHER_SKELETON
+              count: 5
+              health: 38
+              damage: 5.0
+              speed: 0.24
+              armor: 1
+            - type: PILLAGER
+              count: 5
+              health: 38
+              damage: 5.0
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: CROSSBOW
           '2':
             mobs:
-            - type: ZOMBIE
-              count: 5
-              health: 30
-              damage: 5
-              speed: 0.236
-              armor: 2
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 1
-              health: 26
-              damage: 5
-              speed: 0.23
-              equipment:
-                hand: BOW
+            - type: SPIDER
+              count: 6
+              health: 40
+              damage: 5.0
+              speed: 0.24
+              armor: 1
+            - type: VINDICATOR
+              count: 6
+              health: 40
+              damage: 5.0
+              speed: 0.24
+              armor: 1
+            - type: SLIME
+              count: 6
+              health: 40
+              damage: 5.0
+              speed: 0.24
+              armor: 1
           '3':
             mobs:
-            - type: ZOMBIE
-              count: 6
-              health: 35
-              damage: 6
-              speed: 0.244
-              armor: 3
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 2
-              health: 30
-              damage: 6
-              speed: 0.23
+            - type: WITHER_SKELETON
+              count: 5
+              health: 42
+              damage: 5.0
+              speed: 0.24
+              armor: 1
+            - type: PILLAGER
+              count: 5
+              health: 42
+              damage: 5.0
+              speed: 0.24
+              armor: 1
               equipment:
-                hand: BOW
-            - type: SPIDER
-              count: 2
-              health: 39
-              damage: 6
-              speed: 0.26
-              rider: SKELETON
+                hand: CROSSBOW
+            - type: BREEZE
+              count: 5
+              health: 42
+              damage: 5.0
+              speed: 0.24
+              armor: 1
+            - type: WITCH
+              count: 5
+              health: 42
+              damage: 5.0
+              speed: 0.24
+              armor: 1
         miniboss:
           type: HUSK
           name: '&cChaos-Vorhut 4'
@@ -1040,78 +1525,116 @@ weeks:
           equipment:
             hand: IRON_SWORD
             chestplate: IRON_CHESTPLATE
+        miniboss-pool:
+        - iron_warden
+        - frost_hunter
+        - storm_brute
+        - slime_matriarch
+        - ember_champion
+        boss-pool:
+        - abyss_guardian
+        - frost_guardian
+        - ember_guardian
+        - storm_lord
       '5':
         name: Woche 1 – Stage 5
         waves:
           '1':
             mobs:
-            - type: ZOMBIE
-              count: 4
-              health: 25
-              damage: 4
-              speed: 0.228
+            - type: SPIDER
+              count: 6
+              health: 42
+              damage: 5.5
+              speed: 0.24
               armor: 1
-              knockback-resistance: 0.1
+            - type: VINDICATOR
+              count: 6
+              health: 42
+              damage: 5.5
+              speed: 0.24
+              armor: 1
+            - type: SLIME
+              count: 6
+              health: 42
+              damage: 5.5
+              speed: 0.24
+              armor: 1
           '2':
             mobs:
-            - type: ZOMBIE
-              count: 5
-              health: 30
-              damage: 5
-              speed: 0.236
-              armor: 2
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 1
-              health: 26
-              damage: 5
-              speed: 0.23
+            - type: WITHER_SKELETON
+              count: 7
+              health: 44
+              damage: 5.5
+              speed: 0.24
+              armor: 1
+            - type: PILLAGER
+              count: 7
+              health: 44
+              damage: 5.5
+              speed: 0.24
+              armor: 1
               equipment:
-                hand: BOW
+                hand: CROSSBOW
+            - type: BREEZE
+              count: 6
+              health: 44
+              damage: 5.5
+              speed: 0.24
+              armor: 1
           '3':
             mobs:
-            - type: ZOMBIE
+            - type: VINDICATOR
               count: 6
-              health: 35
-              damage: 6
-              speed: 0.244
-              armor: 3
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 2
-              health: 30
-              damage: 6
-              speed: 0.23
-              equipment:
-                hand: BOW
-            - type: SPIDER
-              count: 2
-              health: 39
-              damage: 6
-              speed: 0.26
-              rider: SKELETON
+              health: 46
+              damage: 5.5
+              speed: 0.24
+              armor: 1
+            - type: SLIME
+              count: 6
+              health: 46
+              damage: 5.5
+              speed: 0.24
+              armor: 1
+            - type: BLAZE
+              count: 5
+              health: 46
+              damage: 5.5
+              speed: 0.24
+              armor: 1
+            - type: ZOMBIE
+              count: 5
+              health: 46
+              damage: 5.5
+              speed: 0.24
+              armor: 1
           '4':
             mobs:
-            - type: ZOMBIE
-              count: 7
-              health: 40
-              damage: 7
-              speed: 0.252
-              armor: 4
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 3
-              health: 34
-              damage: 7
-              speed: 0.23
+            - type: PILLAGER
+              count: 6
+              health: 48
+              damage: 5.5
+              speed: 0.24
+              armor: 1
               equipment:
-                hand: BOW
-            - type: SPIDER
-              count: 2
-              health: 44
-              damage: 7
-              speed: 0.26
-              rider: SKELETON
+                hand: CROSSBOW
+            - type: BREEZE
+              count: 6
+              health: 48
+              damage: 5.5
+              speed: 0.24
+              armor: 1
+            - type: WITCH
+              count: 6
+              health: 48
+              damage: 5.5
+              speed: 0.24
+              armor: 1
+            - type: HUSK
+              count: 6
+              health: 48
+              damage: 5.5
+              speed: 0.24
+              armor: 1
         boss:
           type: HUSK
           name: '&5Chaoswächter'
@@ -1124,6 +1647,17 @@ weeks:
           equipment:
             hand: AIR
             helmet: AIR
+        miniboss-pool:
+        - iron_warden
+        - frost_hunter
+        - storm_brute
+        - slime_matriarch
+        - ember_champion
+        boss-pool:
+        - abyss_guardian
+        - frost_guardian
+        - ember_guardian
+        - storm_lord
   w2:
     world: raid_w2
     minimum-players: 3
@@ -1180,50 +1714,76 @@ weeks:
         waves:
           '1':
             mobs:
+            - type: BOGGED
+              count: 4
+              health: 26
+              damage: 3.5
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: BOW
             - type: ZOMBIE
               count: 4
-              health: 25
-              damage: 4
-              speed: 0.228
+              health: 26
+              damage: 3.5
+              speed: 0.24
               armor: 1
-              knockback-resistance: 0.1
+            - type: DROWNED
+              count: 4
+              health: 26
+              damage: 3.5
+              speed: 0.24
+              armor: 1
           '2':
             mobs:
-            - type: ZOMBIE
+            - type: SPIDER
               count: 5
-              health: 30
-              damage: 5
-              speed: 0.236
-              armor: 2
-              knockback-resistance: 0.1
+              health: 28
+              damage: 3.5
+              speed: 0.24
+              armor: 1
+            - type: HUSK
+              count: 5
+              health: 28
+              damage: 3.5
+              speed: 0.24
+              armor: 1
             - type: SKELETON
-              count: 1
-              health: 26
-              damage: 5
-              speed: 0.23
+              count: 4
+              health: 28
+              damage: 3.5
+              speed: 0.24
+              armor: 1
               equipment:
                 hand: BOW
           '3':
             mobs:
             - type: ZOMBIE
-              count: 6
-              health: 35
-              damage: 6
-              speed: 0.244
-              armor: 3
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 2
+              count: 4
               health: 30
-              damage: 6
-              speed: 0.23
+              damage: 3.5
+              speed: 0.24
+              armor: 1
+            - type: DROWNED
+              count: 4
+              health: 30
+              damage: 3.5
+              speed: 0.24
+              armor: 1
+            - type: STRAY
+              count: 4
+              health: 30
+              damage: 3.5
+              speed: 0.24
+              armor: 1
               equipment:
                 hand: BOW
             - type: SPIDER
-              count: 1
-              health: 39
-              damage: 6
-              speed: 0.26
+              count: 4
+              health: 30
+              damage: 3.5
+              speed: 0.24
+              armor: 1
               rider: SKELETON
         miniboss:
           type: HUSK
@@ -1236,56 +1796,94 @@ weeks:
           equipment:
             hand: IRON_SWORD
             chestplate: IRON_CHESTPLATE
+        miniboss-pool:
+        - iron_warden
+        - frost_hunter
+        - storm_brute
+        - slime_matriarch
+        - ember_champion
+        boss-pool:
+        - abyss_guardian
+        - frost_guardian
+        - ember_guardian
+        - storm_lord
       '2':
         name: Woche 2 – Stage 2
         waves:
           '1':
             mobs:
-            - type: ZOMBIE
-              count: 4
-              health: 25
-              damage: 4
-              speed: 0.228
+            - type: SPIDER
+              count: 5
+              health: 30
+              damage: 4.0
+              speed: 0.24
               armor: 1
-              knockback-resistance: 0.1
+            - type: HUSK
+              count: 5
+              health: 30
+              damage: 4.0
+              speed: 0.24
+              armor: 1
+            - type: SKELETON
+              count: 4
+              health: 30
+              damage: 4.0
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: BOW
           '2':
             mobs:
             - type: ZOMBIE
+              count: 6
+              health: 32
+              damage: 4.0
+              speed: 0.24
+              armor: 1
+            - type: DROWNED
               count: 5
-              health: 30
-              damage: 5
-              speed: 0.236
-              armor: 2
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 1
-              health: 26
-              damage: 5
-              speed: 0.23
+              health: 32
+              damage: 4.0
+              speed: 0.24
+              armor: 1
+            - type: STRAY
+              count: 5
+              health: 32
+              damage: 4.0
+              speed: 0.24
+              armor: 1
               equipment:
                 hand: BOW
           '3':
             mobs:
-            - type: ZOMBIE
-              count: 6
-              health: 35
-              damage: 6
-              speed: 0.244
-              armor: 3
-              knockback-resistance: 0.1
+            - type: HUSK
+              count: 5
+              health: 34
+              damage: 4.0
+              speed: 0.24
+              armor: 1
             - type: SKELETON
-              count: 2
-              health: 30
-              damage: 6
-              speed: 0.23
+              count: 5
+              health: 34
+              damage: 4.0
+              speed: 0.24
+              armor: 1
               equipment:
                 hand: BOW
-            - type: SPIDER
-              count: 1
-              health: 39
-              damage: 6
-              speed: 0.26
-              rider: SKELETON
+            - type: BOGGED
+              count: 4
+              health: 34
+              damage: 4.0
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: BOW
+            - type: ZOMBIE
+              count: 4
+              health: 34
+              damage: 4.0
+              speed: 0.24
+              armor: 1
         miniboss:
           type: HUSK
           name: '&cChaos-Vorhut 2'
@@ -1297,56 +1895,90 @@ weeks:
           equipment:
             hand: IRON_SWORD
             chestplate: IRON_CHESTPLATE
+        miniboss-pool:
+        - iron_warden
+        - frost_hunter
+        - storm_brute
+        - slime_matriarch
+        - ember_champion
+        boss-pool:
+        - abyss_guardian
+        - frost_guardian
+        - ember_guardian
+        - storm_lord
       '3':
         name: Woche 2 – Stage 3
         waves:
           '1':
             mobs:
-            - type: ZOMBIE
-              count: 4
-              health: 25
-              damage: 4
-              speed: 0.228
+            - type: WITHER_SKELETON
+              count: 6
+              health: 34
+              damage: 4.5
+              speed: 0.24
               armor: 1
-              knockback-resistance: 0.1
+            - type: PILLAGER
+              count: 5
+              health: 34
+              damage: 4.5
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: CROSSBOW
+            - type: BREEZE
+              count: 5
+              health: 34
+              damage: 4.5
+              speed: 0.24
+              armor: 1
           '2':
             mobs:
-            - type: ZOMBIE
-              count: 5
-              health: 30
-              damage: 5
-              speed: 0.236
-              armor: 2
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 1
-              health: 26
-              damage: 5
-              speed: 0.23
-              equipment:
-                hand: BOW
+            - type: VINDICATOR
+              count: 6
+              health: 36
+              damage: 4.5
+              speed: 0.24
+              armor: 1
+            - type: SLIME
+              count: 6
+              health: 36
+              damage: 4.5
+              speed: 0.24
+              armor: 1
+            - type: BLAZE
+              count: 6
+              health: 36
+              damage: 4.5
+              speed: 0.24
+              armor: 1
           '3':
             mobs:
-            - type: ZOMBIE
-              count: 6
-              health: 35
-              damage: 6
-              speed: 0.244
-              armor: 3
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 2
-              health: 30
-              damage: 6
-              speed: 0.23
+            - type: PILLAGER
+              count: 5
+              health: 38
+              damage: 4.5
+              speed: 0.24
+              armor: 1
               equipment:
-                hand: BOW
-            - type: SPIDER
-              count: 2
-              health: 39
-              damage: 6
-              speed: 0.26
-              rider: SKELETON
+                hand: CROSSBOW
+            - type: BREEZE
+              count: 5
+              health: 38
+              damage: 4.5
+              speed: 0.24
+              armor: 1
+            - type: WITCH
+              count: 5
+              health: 38
+              damage: 4.5
+              speed: 0.24
+              armor: 1
+            - type: HUSK
+              count: 5
+              health: 38
+              damage: 4.5
+              speed: 0.24
+              armor: 1
         miniboss:
           type: HUSK
           name: '&cChaos-Vorhut 3'
@@ -1358,56 +1990,88 @@ weeks:
           equipment:
             hand: IRON_SWORD
             chestplate: IRON_CHESTPLATE
+        miniboss-pool:
+        - iron_warden
+        - frost_hunter
+        - storm_brute
+        - slime_matriarch
+        - ember_champion
+        boss-pool:
+        - abyss_guardian
+        - frost_guardian
+        - ember_guardian
+        - storm_lord
       '4':
         name: Woche 2 – Stage 4
         waves:
           '1':
             mobs:
-            - type: ZOMBIE
-              count: 4
-              health: 25
-              damage: 4
-              speed: 0.228
+            - type: VINDICATOR
+              count: 6
+              health: 38
+              damage: 5.0
+              speed: 0.24
               armor: 1
-              knockback-resistance: 0.1
+            - type: SLIME
+              count: 6
+              health: 38
+              damage: 5.0
+              speed: 0.24
+              armor: 1
+            - type: BLAZE
+              count: 6
+              health: 38
+              damage: 5.0
+              speed: 0.24
+              armor: 1
           '2':
             mobs:
-            - type: ZOMBIE
-              count: 5
-              health: 30
-              damage: 5
-              speed: 0.236
-              armor: 2
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 1
-              health: 26
-              damage: 5
-              speed: 0.23
+            - type: PILLAGER
+              count: 7
+              health: 40
+              damage: 5.0
+              speed: 0.24
+              armor: 1
               equipment:
-                hand: BOW
+                hand: CROSSBOW
+            - type: BREEZE
+              count: 7
+              health: 40
+              damage: 5.0
+              speed: 0.24
+              armor: 1
+            - type: WITCH
+              count: 6
+              health: 40
+              damage: 5.0
+              speed: 0.24
+              armor: 1
           '3':
             mobs:
-            - type: ZOMBIE
+            - type: SLIME
               count: 6
-              health: 35
-              damage: 6
-              speed: 0.244
-              armor: 3
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 2
-              health: 30
-              damage: 6
-              speed: 0.23
-              equipment:
-                hand: BOW
-            - type: SPIDER
-              count: 2
-              health: 39
-              damage: 6
-              speed: 0.26
-              rider: SKELETON
+              health: 42
+              damage: 5.0
+              speed: 0.24
+              armor: 1
+            - type: BLAZE
+              count: 6
+              health: 42
+              damage: 5.0
+              speed: 0.24
+              armor: 1
+            - type: ZOMBIE
+              count: 5
+              health: 42
+              damage: 5.0
+              speed: 0.24
+              armor: 1
+            - type: DROWNED
+              count: 5
+              health: 42
+              damage: 5.0
+              speed: 0.24
+              armor: 1
         miniboss:
           type: HUSK
           name: '&cChaos-Vorhut 4'
@@ -1419,78 +2083,118 @@ weeks:
           equipment:
             hand: IRON_SWORD
             chestplate: IRON_CHESTPLATE
+        miniboss-pool:
+        - iron_warden
+        - frost_hunter
+        - storm_brute
+        - slime_matriarch
+        - ember_champion
+        boss-pool:
+        - abyss_guardian
+        - frost_guardian
+        - ember_guardian
+        - storm_lord
       '5':
         name: Woche 2 – Stage 5
         waves:
           '1':
             mobs:
-            - type: ZOMBIE
-              count: 4
-              health: 25
-              damage: 4
-              speed: 0.228
+            - type: PILLAGER
+              count: 7
+              health: 42
+              damage: 5.5
+              speed: 0.24
               armor: 1
-              knockback-resistance: 0.1
+              equipment:
+                hand: CROSSBOW
+            - type: BREEZE
+              count: 7
+              health: 42
+              damage: 5.5
+              speed: 0.24
+              armor: 1
+            - type: WITCH
+              count: 6
+              health: 42
+              damage: 5.5
+              speed: 0.24
+              armor: 1
           '2':
             mobs:
-            - type: ZOMBIE
-              count: 5
-              health: 30
-              damage: 5
-              speed: 0.236
-              armor: 2
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 1
-              health: 26
-              damage: 5
-              speed: 0.23
-              equipment:
-                hand: BOW
-          '3':
-            mobs:
-            - type: ZOMBIE
-              count: 6
-              health: 35
-              damage: 6
-              speed: 0.244
-              armor: 3
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 2
-              health: 30
-              damage: 6
-              speed: 0.23
-              equipment:
-                hand: BOW
-            - type: SPIDER
-              count: 2
-              health: 39
-              damage: 6
-              speed: 0.26
-              rider: SKELETON
-          '4':
-            mobs:
+            - type: SLIME
+              count: 8
+              health: 44
+              damage: 5.5
+              speed: 0.24
+              armor: 1
+            - type: BLAZE
+              count: 7
+              health: 44
+              damage: 5.5
+              speed: 0.24
+              armor: 1
             - type: ZOMBIE
               count: 7
-              health: 40
-              damage: 7
-              speed: 0.252
-              armor: 4
-              knockback-resistance: 0.1
+              health: 44
+              damage: 5.5
+              speed: 0.24
+              armor: 1
+          '3':
+            mobs:
+            - type: BREEZE
+              count: 6
+              health: 46
+              damage: 5.5
+              speed: 0.24
+              armor: 1
+            - type: WITCH
+              count: 6
+              health: 46
+              damage: 5.5
+              speed: 0.24
+              armor: 1
+            - type: HUSK
+              count: 6
+              health: 46
+              damage: 5.5
+              speed: 0.24
+              armor: 1
             - type: SKELETON
-              count: 3
-              health: 34
-              damage: 7
-              speed: 0.23
+              count: 6
+              health: 46
+              damage: 5.5
+              speed: 0.24
+              armor: 1
               equipment:
                 hand: BOW
-            - type: SPIDER
-              count: 2
-              health: 44
-              damage: 7
-              speed: 0.26
-              rider: SKELETON
+          '4':
+            mobs:
+            - type: BLAZE
+              count: 7
+              health: 48
+              damage: 5.5
+              speed: 0.24
+              armor: 1
+            - type: ZOMBIE
+              count: 7
+              health: 48
+              damage: 5.5
+              speed: 0.24
+              armor: 1
+            - type: DROWNED
+              count: 6
+              health: 48
+              damage: 5.5
+              speed: 0.24
+              armor: 1
+            - type: STRAY
+              count: 6
+              health: 48
+              damage: 5.5
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: BOW
         boss:
           type: HUSK
           name: '&5Chaoswächter'
@@ -1503,6 +2207,17 @@ weeks:
           equipment:
             hand: AIR
             helmet: AIR
+        miniboss-pool:
+        - iron_warden
+        - frost_hunter
+        - storm_brute
+        - slime_matriarch
+        - ember_champion
+        boss-pool:
+        - abyss_guardian
+        - frost_guardian
+        - ember_guardian
+        - storm_lord
   w3:
     world: raid_w3
     minimum-players: 5
@@ -1559,51 +2274,80 @@ weeks:
         waves:
           '1':
             mobs:
-            - type: ZOMBIE
-              count: 4
-              health: 25
-              damage: 4
-              speed: 0.228
-              armor: 1
-              knockback-resistance: 0.1
-          '2':
-            mobs:
-            - type: ZOMBIE
+            - type: HUSK
               count: 5
-              health: 30
-              damage: 5
-              speed: 0.236
-              armor: 2
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 1
               health: 26
-              damage: 5
-              speed: 0.23
+              damage: 3.5
+              speed: 0.24
+              armor: 1
+            - type: SKELETON
+              count: 5
+              health: 26
+              damage: 3.5
+              speed: 0.24
+              armor: 1
               equipment:
                 hand: BOW
-          '3':
+            - type: BOGGED
+              count: 4
+              health: 26
+              damage: 3.5
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: BOW
+          '2':
             mobs:
-            - type: ZOMBIE
+            - type: DROWNED
               count: 6
-              health: 35
-              damage: 6
-              speed: 0.244
-              armor: 3
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 2
-              health: 30
-              damage: 6
-              speed: 0.23
+              health: 28
+              damage: 3.5
+              speed: 0.24
+              armor: 1
+            - type: STRAY
+              count: 5
+              health: 28
+              damage: 3.5
+              speed: 0.24
+              armor: 1
               equipment:
                 hand: BOW
             - type: SPIDER
-              count: 1
-              health: 39
-              damage: 6
-              speed: 0.26
-              rider: SKELETON
+              count: 5
+              health: 28
+              damage: 3.5
+              speed: 0.24
+              armor: 1
+          '3':
+            mobs:
+            - type: SKELETON
+              count: 5
+              health: 30
+              damage: 3.5
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: BOW
+            - type: BOGGED
+              count: 5
+              health: 30
+              damage: 3.5
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: BOW
+            - type: ZOMBIE
+              count: 4
+              health: 30
+              damage: 3.5
+              speed: 0.24
+              armor: 1
+            - type: DROWNED
+              count: 4
+              health: 30
+              damage: 3.5
+              speed: 0.24
+              armor: 1
         miniboss:
           type: HUSK
           name: '&cChaos-Vorhut 1'
@@ -1615,56 +2359,97 @@ weeks:
           equipment:
             hand: IRON_SWORD
             chestplate: IRON_CHESTPLATE
+        miniboss-pool:
+        - iron_warden
+        - frost_hunter
+        - storm_brute
+        - slime_matriarch
+        - ember_champion
+        boss-pool:
+        - abyss_guardian
+        - frost_guardian
+        - ember_guardian
+        - storm_lord
       '2':
         name: Woche 3 – Stage 2
         waves:
           '1':
             mobs:
-            - type: ZOMBIE
-              count: 4
-              health: 25
-              damage: 4
-              speed: 0.228
+            - type: DROWNED
+              count: 6
+              health: 30
+              damage: 4.0
+              speed: 0.24
               armor: 1
-              knockback-resistance: 0.1
-          '2':
-            mobs:
-            - type: ZOMBIE
+            - type: STRAY
               count: 5
               health: 30
-              damage: 5
-              speed: 0.236
-              armor: 2
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 1
-              health: 26
-              damage: 5
-              speed: 0.23
-              equipment:
-                hand: BOW
-          '3':
-            mobs:
-            - type: ZOMBIE
-              count: 6
-              health: 35
-              damage: 6
-              speed: 0.244
-              armor: 3
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 2
-              health: 30
-              damage: 6
-              speed: 0.23
+              damage: 4.0
+              speed: 0.24
+              armor: 1
               equipment:
                 hand: BOW
             - type: SPIDER
-              count: 1
-              health: 39
-              damage: 6
-              speed: 0.26
+              count: 5
+              health: 30
+              damage: 4.0
+              speed: 0.24
+              armor: 1
+          '2':
+            mobs:
+            - type: SKELETON
+              count: 6
+              health: 32
+              damage: 4.0
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: BOW
+            - type: BOGGED
+              count: 6
+              health: 32
+              damage: 4.0
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: BOW
+            - type: ZOMBIE
+              count: 6
+              health: 32
+              damage: 4.0
+              speed: 0.24
+              armor: 1
+          '3':
+            mobs:
+            - type: STRAY
+              count: 5
+              health: 34
+              damage: 4.0
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: BOW
+            - type: SPIDER
+              count: 5
+              health: 34
+              damage: 4.0
+              speed: 0.24
+              armor: 1
               rider: SKELETON
+            - type: HUSK
+              count: 5
+              health: 34
+              damage: 4.0
+              speed: 0.24
+              armor: 1
+            - type: SKELETON
+              count: 5
+              health: 34
+              damage: 4.0
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: BOW
         miniboss:
           type: HUSK
           name: '&cChaos-Vorhut 2'
@@ -1676,56 +2461,88 @@ weeks:
           equipment:
             hand: IRON_SWORD
             chestplate: IRON_CHESTPLATE
+        miniboss-pool:
+        - iron_warden
+        - frost_hunter
+        - storm_brute
+        - slime_matriarch
+        - ember_champion
+        boss-pool:
+        - abyss_guardian
+        - frost_guardian
+        - ember_guardian
+        - storm_lord
       '3':
         name: Woche 3 – Stage 3
         waves:
           '1':
             mobs:
-            - type: ZOMBIE
-              count: 4
-              health: 25
-              damage: 4
-              speed: 0.228
+            - type: SLIME
+              count: 6
+              health: 34
+              damage: 4.5
+              speed: 0.24
               armor: 1
-              knockback-resistance: 0.1
-          '2':
-            mobs:
-            - type: ZOMBIE
-              count: 5
-              health: 30
-              damage: 5
-              speed: 0.236
-              armor: 2
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 1
-              health: 26
-              damage: 5
-              speed: 0.23
-              equipment:
-                hand: BOW
-          '3':
-            mobs:
+            - type: BLAZE
+              count: 6
+              health: 34
+              damage: 4.5
+              speed: 0.24
+              armor: 1
             - type: ZOMBIE
               count: 6
-              health: 35
-              damage: 6
-              speed: 0.244
-              armor: 3
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 2
-              health: 30
-              damage: 6
-              speed: 0.23
+              health: 34
+              damage: 4.5
+              speed: 0.24
+              armor: 1
+          '2':
+            mobs:
+            - type: BREEZE
+              count: 7
+              health: 36
+              damage: 4.5
+              speed: 0.24
+              armor: 1
+            - type: WITCH
+              count: 7
+              health: 36
+              damage: 4.5
+              speed: 0.24
+              armor: 1
+            - type: HUSK
+              count: 6
+              health: 36
+              damage: 4.5
+              speed: 0.24
+              armor: 1
+          '3':
+            mobs:
+            - type: BLAZE
+              count: 6
+              health: 38
+              damage: 4.5
+              speed: 0.24
+              armor: 1
+            - type: ZOMBIE
+              count: 6
+              health: 38
+              damage: 4.5
+              speed: 0.24
+              armor: 1
+            - type: DROWNED
+              count: 5
+              health: 38
+              damage: 4.5
+              speed: 0.24
+              armor: 1
+            - type: STRAY
+              count: 5
+              health: 38
+              damage: 4.5
+              speed: 0.24
+              armor: 1
               equipment:
                 hand: BOW
-            - type: SPIDER
-              count: 2
-              health: 39
-              damage: 6
-              speed: 0.26
-              rider: SKELETON
         miniboss:
           type: HUSK
           name: '&cChaos-Vorhut 3'
@@ -1737,56 +2554,90 @@ weeks:
           equipment:
             hand: IRON_SWORD
             chestplate: IRON_CHESTPLATE
+        miniboss-pool:
+        - iron_warden
+        - frost_hunter
+        - storm_brute
+        - slime_matriarch
+        - ember_champion
+        boss-pool:
+        - abyss_guardian
+        - frost_guardian
+        - ember_guardian
+        - storm_lord
       '4':
         name: Woche 3 – Stage 4
         waves:
           '1':
             mobs:
-            - type: ZOMBIE
-              count: 4
-              health: 25
-              damage: 4
-              speed: 0.228
+            - type: BREEZE
+              count: 7
+              health: 38
+              damage: 5.0
+              speed: 0.24
               armor: 1
-              knockback-resistance: 0.1
+            - type: WITCH
+              count: 7
+              health: 38
+              damage: 5.0
+              speed: 0.24
+              armor: 1
+            - type: HUSK
+              count: 6
+              health: 38
+              damage: 5.0
+              speed: 0.24
+              armor: 1
           '2':
             mobs:
+            - type: BLAZE
+              count: 8
+              health: 40
+              damage: 5.0
+              speed: 0.24
+              armor: 1
             - type: ZOMBIE
-              count: 5
-              health: 30
-              damage: 5
-              speed: 0.236
-              armor: 2
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 1
-              health: 26
-              damage: 5
-              speed: 0.23
-              equipment:
-                hand: BOW
+              count: 7
+              health: 40
+              damage: 5.0
+              speed: 0.24
+              armor: 1
+            - type: DROWNED
+              count: 7
+              health: 40
+              damage: 5.0
+              speed: 0.24
+              armor: 1
           '3':
             mobs:
-            - type: ZOMBIE
+            - type: WITCH
               count: 6
-              health: 35
-              damage: 6
-              speed: 0.244
-              armor: 3
-              knockback-resistance: 0.1
+              health: 42
+              damage: 5.0
+              speed: 0.24
+              armor: 1
+            - type: HUSK
+              count: 6
+              health: 42
+              damage: 5.0
+              speed: 0.24
+              armor: 1
             - type: SKELETON
-              count: 2
-              health: 30
-              damage: 6
-              speed: 0.23
+              count: 6
+              health: 42
+              damage: 5.0
+              speed: 0.24
+              armor: 1
               equipment:
                 hand: BOW
-            - type: SPIDER
-              count: 2
-              health: 39
-              damage: 6
-              speed: 0.26
-              rider: SKELETON
+            - type: BOGGED
+              count: 6
+              health: 42
+              damage: 5.0
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: BOW
         miniboss:
           type: HUSK
           name: '&cChaos-Vorhut 4'
@@ -1798,78 +2649,121 @@ weeks:
           equipment:
             hand: IRON_SWORD
             chestplate: IRON_CHESTPLATE
+        miniboss-pool:
+        - iron_warden
+        - frost_hunter
+        - storm_brute
+        - slime_matriarch
+        - ember_champion
+        boss-pool:
+        - abyss_guardian
+        - frost_guardian
+        - ember_guardian
+        - storm_lord
       '5':
         name: Woche 3 – Stage 5
         waves:
           '1':
             mobs:
-            - type: ZOMBIE
-              count: 4
-              health: 25
-              damage: 4
-              speed: 0.228
+            - type: BLAZE
+              count: 8
+              health: 42
+              damage: 5.5
+              speed: 0.24
               armor: 1
-              knockback-resistance: 0.1
+            - type: ZOMBIE
+              count: 7
+              health: 42
+              damage: 5.5
+              speed: 0.24
+              armor: 1
+            - type: DROWNED
+              count: 7
+              health: 42
+              damage: 5.5
+              speed: 0.24
+              armor: 1
           '2':
             mobs:
-            - type: ZOMBIE
-              count: 5
-              health: 30
-              damage: 5
-              speed: 0.236
-              armor: 2
-              knockback-resistance: 0.1
+            - type: WITCH
+              count: 8
+              health: 44
+              damage: 5.5
+              speed: 0.24
+              armor: 1
+            - type: HUSK
+              count: 8
+              health: 44
+              damage: 5.5
+              speed: 0.24
+              armor: 1
             - type: SKELETON
-              count: 1
-              health: 26
-              damage: 5
-              speed: 0.23
+              count: 8
+              health: 44
+              damage: 5.5
+              speed: 0.24
+              armor: 1
               equipment:
                 hand: BOW
           '3':
             mobs:
             - type: ZOMBIE
+              count: 7
+              health: 46
+              damage: 5.5
+              speed: 0.24
+              armor: 1
+            - type: DROWNED
+              count: 7
+              health: 46
+              damage: 5.5
+              speed: 0.24
+              armor: 1
+            - type: STRAY
               count: 6
-              health: 35
-              damage: 6
-              speed: 0.244
-              armor: 3
-              knockback-resistance: 0.1
-            - type: SKELETON
-              count: 2
-              health: 30
-              damage: 6
-              speed: 0.23
+              health: 46
+              damage: 5.5
+              speed: 0.24
+              armor: 1
               equipment:
                 hand: BOW
             - type: SPIDER
-              count: 2
-              health: 39
-              damage: 6
-              speed: 0.26
+              count: 6
+              health: 46
+              damage: 5.5
+              speed: 0.24
+              armor: 1
               rider: SKELETON
           '4':
             mobs:
-            - type: ZOMBIE
+            - type: HUSK
               count: 7
-              health: 40
-              damage: 7
-              speed: 0.252
-              armor: 4
-              knockback-resistance: 0.1
+              health: 48
+              damage: 5.5
+              speed: 0.24
+              armor: 1
             - type: SKELETON
-              count: 3
-              health: 34
-              damage: 7
-              speed: 0.23
+              count: 7
+              health: 48
+              damage: 5.5
+              speed: 0.24
+              armor: 1
               equipment:
                 hand: BOW
-            - type: SPIDER
-              count: 2
-              health: 44
-              damage: 7
-              speed: 0.26
-              rider: SKELETON
+            - type: BOGGED
+              count: 7
+              health: 48
+              damage: 5.5
+              speed: 0.24
+              armor: 1
+              equipment:
+                hand: BOW
+            - type: WITHER_SKELETON
+              count: 7
+              health: 48
+              damage: 5.5
+              speed: 0.24
+              armor: 1
         boss:
           type: HUSK
           name: '&5Chaoswächter'
@@ -1882,6 +2776,17 @@ weeks:
           equipment:
             hand: AIR
             helmet: AIR
+        miniboss-pool:
+        - iron_warden
+        - frost_hunter
+        - storm_brute
+        - slime_matriarch
+        - ember_champion
+        boss-pool:
+        - abyss_guardian
+        - frost_guardian
+        - ember_guardian
+        - storm_lord
 presentation:
   entry-countdown-seconds: 3
   portal-particle-range: 28
@@ -2138,3 +3043,94 @@ rituals:
     - 215
     - 90
     display-item: chaos_crown
+default-language: de
+boss-types:
+  iron_warden:
+    type: HUSK
+    name: '&eEisenwächter'
+    health: 120
+    damage: 7
+    speed: 0.24
+    armor: 6
+    ability: rally
+    equipment:
+      hand: IRON_AXE
+      chestplate: IRON_CHESTPLATE
+  frost_hunter:
+    type: STRAY
+    name: '&bFrostjäger'
+    health: 110
+    damage: 6
+    speed: 0.25
+    armor: 3
+    ability: frost
+    equipment:
+      hand: BOW
+      chestplate: DIAMOND_CHESTPLATE
+  ember_champion:
+    type: WITHER_SKELETON
+    name: '&6Glutchampion'
+    health: 130
+    damage: 7
+    speed: 0.25
+    armor: 5
+    ability: reveal
+    equipment:
+      hand: STONE_SWORD
+      chestplate: GOLDEN_CHESTPLATE
+  storm_brute:
+    type: VINDICATOR
+    name: '&3Sturmvorhut'
+    health: 140
+    damage: 8
+    speed: 0.25
+    armor: 5
+    ability: rally
+    equipment:
+      hand: IRON_AXE
+  slime_matriarch:
+    type: SLIME
+    name: '&aSchleimmatriarchin'
+    health: 150
+    damage: 7
+    speed: 0.23
+    armor: 3
+    ability: reveal
+  abyss_guardian:
+    type: HUSK
+    name: '&5Abgrundwächter'
+    health: 340
+    damage: 10
+    speed: 0.24
+    armor: 8
+    ability: reveal
+    model-item: boss_model
+  frost_guardian:
+    type: HUSK
+    name: '&bFrostkoloss'
+    health: 300
+    damage: 9
+    speed: 0.23
+    armor: 8
+    ability: frost
+    model-item: boss_model_frost
+  ember_guardian:
+    type: HUSK
+    name: '&6Glutkoloss'
+    health: 320
+    damage: 10
+    speed: 0.24
+    armor: 7
+    ability: rally
+    model-item: boss_model_ember
+  storm_lord:
+    type: BOGGED
+    name: '&3Sturmherrscher'
+    health: 280
+    damage: 8
+    speed: 0.25
+    armor: 6
+    ability: frost
+    equipment:
+      hand: BOW
+      chestplate: DIAMOND_CHESTPLATE

@@ -1,4 +1,4 @@
-# Durcheinander MobArmy 1.4.0
+# Durcheinander MobArmy 1.5.0
 
 Spigot **Minecraft Java 26.3 / Java 25**. Konfigurierbare Raids mit drei Wochen, fünf Stages, Gruppen, Leader-Voting, Bossen, eigenen Items und Kesselritualen. Verwendet nur Bukkit/Spigot-APIs.
 
@@ -9,7 +9,7 @@ Spigot **Minecraft Java 26.3 / Java 25**. Konfigurierbare Raids mit drei Wochen,
 3. `local-test/start-server.bat` starten. Auf `Done` warten und Minecraft Java **26.3** mit `localhost:25565` verbinden.
 4. In der Serverkonsole `op DEIN_NAME` eingeben.
 5. Im Spiel `/raid kit` (inklusive aller zehn wiederverwendbaren Relikte) und `/raid demo w1` benutzen. Die Reward-Zeit im Admin-Menü auswählen.
-6. In das animierte Portal gehen oder `/raid join demo_w1` benutzen. Du landest im **getrennten Vorraum**. Das Menü öffnet sich nur durch `/raid`.
+6. In das animierte Portal gehen oder `/raid join demo_w1` benutzen. Du landest im **getrennten Vorraum**. Das Gruppenmenü öffnet sich durch `/raid`. An der Wand befinden sich Rezepte und Start; Start bedient nur der Leader.
 7. In `/raid` den Leader wählen und als Leader **Ready** drücken. Nach drei Sekunden wird die gesamte Gruppe in die überdachte Arena teleportiert. Die Wave beginnt erst, wenn alle angekommen sind.
 8. Nach einer Stage kurz Beute einsammeln, dann geht es automatisch zurück in den Vorraum. Mit `/raid` und Ready die nächste Stage starten.
 
@@ -23,16 +23,28 @@ Alle 34 Item-Texturen sind jetzt echte **16×16-PNGs** mit kleinen Farbpaletten,
 
 Server mit `stop` beenden, neue ZIP über denselben Ordner entpacken, dann `local-test/start-server.bat` starten. Der Launcher ersetzt das Plugin automatisch und setzt die Demo-Flags. Java/Git/Spigot werden dabei wiederverwendet.
 
-Die alten **generierten Demo-Arenen** werden beim ersten Start auf Layout 3 umgebaut: **9×9-Vorraum**, geschlossene **100×100-Landschaftsarena**, sanfte Hügel, Wege, Ruinen und kleine Bäume/Kristallgebilde. Die drei Welten behalten ihre eigenen Themen. Der erste Start benötigt durch den Umbau länger. Alte versionierte Plugin-JARs sichert der Launcher außerhalb des Plugin-Suchpfads, um doppelte Plugin-Versionen zu vermeiden. Eigene Welten mit `generate-demo: false` werden nicht gebaut. Andere Konfigurationen, Loot-Postfach und Fortschritt bleiben erhalten.
+Alte Layouts vor Version 1.2 werden vollständig neu gebaut; neuere **generierte Demo-Arenen** erhalten Layout 4 als Reparatur: Wand-/Boden-/Deckenlöcher werden geschlossen, die Endertruhe ausgerichtet und Wandtasten ergänzt. Das Layout enthält einen **9×9-Vorraum** und eine geschlossene **100×100-Landschaftsarena** mit sanften Hügeln, Wegen, Ruinen und kleinen Bäumen/Kristallgebilden. Die drei Welten behalten ihre eigenen Themen. Der erste Start benötigt durch den Umbau länger. Alte versionierte Plugin-JARs sichert der Launcher außerhalb des Plugin-Suchpfads, um doppelte Plugin-Versionen zu vermeiden. Eigene Welten mit `generate-demo: false` werden nicht gebaut. Andere Konfigurationen, Loot-Postfach und Fortschritt bleiben erhalten.
+
+## Neu in 1.5
+
+- Demo-Steuerung: `/raid skip wave [portal]` entfernt die aktuelle Welle und beginnt die nächste. Bei Mini-/Endbossen wird die Stufe übersprungen. `/raid skip stage [portal]` kehrt zur nächsten Stufe im Vorraum zurück; Stufe 5 beendet den Durchlauf. Keine neue Skip-Beute und kein Boss-Abschluss-Flag. Admin-Rechte und Demo-Portal oder Solo-Testmodus erforderlich.
+- 14 Gegnerarten, 10–30 Gegner pro normaler Welle plus spätere Reiter. Zufällige sichere Spawns über die Arena mit Spielerabstand und Abstand zu vorhandenen Gegnern. Keine Phantome, Vex oder Evoker. Jeder frisch gespawnte Raid-Gegner leuchtet 10 Sekunden.
+- Neun Bosstypen mit unterschiedlichen Aussehen, Leben und Frost-/Tempo-/Markierungsfähigkeiten. Drei kubische Wächtermodelle verwenden Minecraft-Blocktexturen. `/raid boss list`, `/raid boss summon frost_guardian` und `/raid boss clear [all]` zeigen unbewegliche, unverwundbare Vorschauen. Vorschauen geben weder Beute noch Fortschritt und werden bei Logout/Serverstopp entfernt.
+- Setboni zählen authentische Rüstung im richtigen Slot und unterschiedliche passende Waffen/Werkzeuge in Haupt-/Nebenhand. Gleiche Item-ID zählt einmal. Alle Welten sind erlaubt; Inventarvorräte zählen nicht. `/raid gear` zeigt die aktive Zählung. Items nennen ihre Beschaffung; `/rezepte gear` ergänzt genaue Drop-Chancen und mögliche Schmiederituale.
+- `/raid language de|en` (auch `sprache` oder `lang`) speichert die persönliche Sprache. Chat, Menüs, HUD, Item-Namen/Lore und Portalstatus werden entsprechend angezeigt. Befehle und IDs bleiben gleich. Wandbeschriftungen sind zweisprachig.
+- Der Katalog heißt **Rezepte**: `/rezepte [items|gear|sets|rituals]`, auch `/recipes` oder `/raid rezepte`. Der alte `codex`-Unterbefehl bleibt als Alias nutzbar.
+- Enderperlen-Cooldown wird beim Wurf gesetzt, statt beim Landen zu blockieren. Standard jetzt 3 Sekunden. Bei Gegner-/Wandtreffern wird ein naher freier Landeplatz innerhalb der Arena gesucht; Ausbruch durch die Außenwand bleibt gesperrt.
+- Portaltexte stehen fest über der Eintrittsfläche; genau eine Sprachversion wird pro Spieler angezeigt. `/raid portal delete <id|all>` entfernt Trigger, Anzeigen, Fortschritt und gespeicherten Portalstatus dauerhaft. Danach kann dieselbe ID an anderer Stelle neu erzeugt werden. Dekorative Rahmen sind gewöhnliche selbst gebaute Blöcke.
+- Geschlossene Arena-Außenwand statt altem Durchgang, automatische Lochreparatur für generierte Arenen, nach innen gerichtete Endertruhe und echte klickbare Schilder/Tasten für Rezepte und Leader-Start im Vorraum.
 
 ## Neu in 1.4
 
-- Drei komplette Rüstungssets (12 Teile): Wächter, Sturm und Abgrund. Zwei-/Vier-Teil-Boni gelten nur in einer aktiven Raid-Stage. Getragene Rüstung benutzt normale Eisen-/Diamant-/Netherit-Modelle mit Gold-/Quarz-/Amethyst-Trims; eigene 16×16-Icons erscheinen im Inventar und in der Hand.
+- Drei komplette Rüstungssets (12 Teile): Wächter, Sturm und Abgrund. Zwei-/Vier-Teil-Boni gelten beim Tragen oder Halten in allen Welten. Getragene Rüstung benutzt normale Eisen-/Diamant-/Netherit-Modelle mit Gold-/Quarz-/Amethyst-Trims; eigene 16×16-Icons erscheinen im Inventar und in der Hand.
 - Neun Waffen/Werkzeuge mit echter Haltbarkeit, hohen Verzauberungen und normalen Minecraft-Funktionen: unter anderem Schärfe VIII, Bogenstärke VII, Dichte VI, Effizienz VII und Glück IV. Raid-Damage-Caps gelten weiter. Looting erhöht nicht die konfigurierten Raid-Pool-Chancen.
-- Gewichtete Beute-Gruppen mit genau einem Item bei erfolgreichem Wurf. Legendäre Rüstung hat 1 % Gruppen-Chance, legendäre Waffen 2 % beim belohnten Endboss. Konkrete Chancen stehen im Kodex und in `EQUIPMENT.md`.
+- Gewichtete Beute-Gruppen mit genau einem Item bei erfolgreichem Wurf. Legendäre Rüstung hat 1 % Gruppen-Chance, legendäre Waffen 2 % beim belohnten Endboss. Konkrete Chancen stehen im Rezepte-Menü und in `EQUIPMENT.md`.
 - Sieben Kesselrituale: Erwachen, Wächterschmiede, Sturmschmiede, Echowerkstatt, Abgrundprüfung, Wiederherstellung und Segen. Zutaten werden geprüft und bezahlt, der Chaosfragment-Katalysator bleibt erhalten. Abbruch/Neustart einer nicht vollendeten Zeremonie erstattet Zutaten ins Postfach; Cooldowns bleiben bestehen.
 - Abgrundprüfung beschwört einen stärkeren Wächter. Nach einem Spieler-Sieg bekommt die ausführende Person ein Werkzeug; 10 % Chance ersetzen es durch eine legendäre Waffe. Wächter verschwinden nach 10 Minuten ohne Sieg-Beute. Die bereits vollendete Beschwörung erstattet ihre Zutaten nicht.
-- `/raid codex` ist ein lesbarer Item-/Set-/Ritual-Katalog. `/raid gear` zeigt deine getragenen Set-Teile. Die Test-Kits geben Ausrüstung und Ritualzutaten; Überlauf landet in `/raid loot`.
+- `/rezepte` ist ein lesbarer Item-/Set-/Ritual-Katalog. `/raid gear` zeigt deine getragenen Set-Teile. Die Test-Kits geben Ausrüstung und Ritualzutaten; Überlauf landet in `/raid loot`.
 - Custom-Items sind für normale Werkbank-/Amboss-/Schmiedetisch-/Schleifstein-/Enchanting-Vorgänge gesperrt, damit Item-IDs und hohe Verzauberungen erhalten bleiben. Mending und das Ritual reparieren sie. Shop-API und direkte normale Werkzeugnutzung bleiben verfügbar.
 
 ## Neu in 1.3
@@ -100,8 +112,12 @@ PvP in Raid-Welten, Elytra-Boosts, Feuerwerke und schädliche Explosionen sind g
 | `/raid cooldown clear [spieler\|all]` | Wipe-Sperre und Ausscheiden zurücksetzen; in Solo-Demo auch Item-/Ritual-Cooldowns; ohne Spieler: du selbst — `mobarmy.admin` |
 | `/raid test on\|off` | Solo-/Wipe-Regeln während der laufenden Demo ändern — `mobarmy.admin` |
 | `/raid kit basic\|gear\|ritual` | Basis-Kit, sämtliche neue Ausrüstung oder Ritual-Testzutaten — `mobarmy.admin` |
-| `/raid codex [items\|gear\|sets\|rituals]` | Item-/Set-/Rezept-Katalog — `mobarmy.play` |
-| `/raid gear` | Getragene Set-Teile und Hinweis zu Boni — `mobarmy.play` |
+| `/rezepte [items\|gear\|sets\|rituals]` | Item-/Set-/Rezept-Katalog — `mobarmy.play` |
+| `/raid language de\|en` | Persönliche Sprache dauerhaft wechseln |
+| `/raid skip wave\|stage [portal]` | Demo-Welle/-Stufe überspringen — `mobarmy.admin` |
+| `/raid boss list\|summon <id>\|clear [all]` | Demo-Boss-Vorschau — `mobarmy.admin` |
+| `/raid portal delete <id\|all>` | Portale dauerhaft entfernen und ID wieder freigeben — `mobarmy.admin` |
+| `/raid gear` | Getragene/gehaltene Set-Teile und Hinweis zu Boni — `mobarmy.play` |
 | `/raid rituals`, `/raid ritual <id>` | Kessel anschauen: Menü oder Ritual ausführen — `mobarmy.play` |
 | `/raid ritual cancel [all]` | Eigene Rituale/Wächter beenden; `all` benötigt Admin-Rechte |
 | `/raid reload` | Config laden, zuvor Gruppen/Rituale/Wächter beenden — `mobarmy.admin` |
@@ -135,7 +151,7 @@ mvn clean verify
 python3 tools/build_release.py
 ```
 
-JAR: `target/DurcheinanderMobArmy-1.4.0.jar`. Resource Pack: `target/MobArmy-resource-pack-26.3.zip`. Das Pack verwendet Format 97.1. GitHub Actions baut JAR, Pack und ZIP und prüft die Windows-Setup-Skripte.
+JAR: `target/DurcheinanderMobArmy-1.5.0.jar`. Resource Pack: `target/MobArmy-resource-pack-26.3.zip`. Das Pack verwendet Format 97.1. GitHub Actions baut JAR, Pack und ZIP und prüft die Windows-Setup-Skripte.
 
 Automatische Tests prüfen Timer/Mitternacht/Boss-Abschluss, Schaden und Mindestspieler-Anteile, Waves/Reiter, komplette Tab-Grammatik, Spinnen-Regelausnahme, GUI-freien Eintritt und den Gruppen-Teleport. Sichtbarkeit, native Wind-Charge-Physik, Spinnen-Bewegung und Multiplayer-Balance bitte mit `TESTING.md` im Spiel prüfen.
 

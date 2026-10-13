@@ -17,7 +17,7 @@ class ResourcePacksTest {
         try(var zip=new ZipInputStream(new ByteArrayInputStream(bundle))){for(ZipEntry entry;(entry=zip.getNextEntry())!=null;)files.put(entry.getName(),zip.readAllBytes());}
         assertTrue(files.containsKey("pack.mcmeta"));assertFalse(files.containsKey("index.txt"));
         var cfg=YamlConfiguration.loadConfiguration(new InputStreamReader(getClass().getResourceAsStream("/config.yml"),java.nio.charset.StandardCharsets.UTF_8));
-        for(String id:cfg.getConfigurationSection("items").getKeys(false)){if(id.equals("boss_model"))continue;
+        for(String id:cfg.getConfigurationSection("items").getKeys(false)){if(cfg.getBoolean("items."+id+".internal"))continue;
             assertTrue(files.containsKey("assets/mobarmy/items/"+id+".json"),id);assertTrue(files.containsKey("assets/mobarmy/models/item/"+id+".json"),id);
             var png=ImageIO.read(new ByteArrayInputStream(files.get("assets/mobarmy/textures/item/"+id+".png")));assertNotNull(png,id);assertEquals(16,png.getWidth());assertEquals(16,png.getHeight());assertTrue(png.getColorModel().hasAlpha());
             var colors=new HashSet<Integer>();boolean transparent=false;

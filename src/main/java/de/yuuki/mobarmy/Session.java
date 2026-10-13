@@ -20,6 +20,7 @@ final class Session {
     long phaseSince=System.currentTimeMillis();
     boolean miniboss;
     BossBar bar, hud;
+    final Map<UUID,BossBar> privateHud=new HashMap<>(),privateBoss=new HashMap<>();
     int waveStartMobs;
     Session(Portal portal,Arena arena,UUID leader){this.portal=portal;this.arena=arena;this.leader=leader;}
     boolean active(){return phase==Phase.ENTERING||phase==Phase.FIGHT;}

@@ -14,7 +14,7 @@ class ConfigUpgradeTest {
         var cfg=new YamlConfiguration();cfg.loadFromString(resource);cfg.set("configuration-version",4);cfg.set("loot-pools",null);cfg.set("equipment-sets",null);cfg.set("rituals",null);cfg.set("items.abyss_sword",null);
         cfg.set("items.warden_blade.enchantments.sharpness",7);cfg.set("weeks.w1.arena.max",List.of(40,85,42));
         MobArmy p=mock(MobArmy.class);when(p.getConfig()).thenReturn(cfg);when(p.getResource("config.yml")).thenAnswer(i->new ByteArrayInputStream(resource.getBytes(StandardCharsets.UTF_8)));
-        ConfigUpgrade.run(p);assertEquals(5,cfg.getInt("configuration-version"));assertEquals(List.of(40,85,42),cfg.getIntegerList("weeks.w1.arena.max"));assertEquals(7,cfg.getInt("items.warden_blade.enchantments.sharpness"));
+        ConfigUpgrade.run(p);assertEquals(6,cfg.getInt("configuration-version"));assertEquals(List.of(40,85,42),cfg.getIntegerList("weeks.w1.arena.max"));assertEquals(7,cfg.getInt("items.warden_blade.enchantments.sharpness"));
         assertEquals(8,cfg.getInt("items.abyss_sword.enchantments.sharpness"));assertEquals(7,cfg.getConfigurationSection("rituals").getKeys(false).size());assertEquals(.01,cfg.getDouble("loot-pools.abyss.chance"));
     }
     @Test void v12UpdateAddsRelicsWithoutRebuildingOrOverwritingExistingSettings()throws Exception{
@@ -24,7 +24,7 @@ class ConfigUpgradeTest {
         for(String id:List.of("ember_charm","guardian_rune","hunter_lens","weakening_fang"))cfg.set("items."+id,null);
         MobArmy p=mock(MobArmy.class);when(p.getConfig()).thenReturn(cfg);when(p.getResource("config.yml")).thenAnswer(i->new ByteArrayInputStream(resource.getBytes(StandardCharsets.UTF_8)));
         ConfigUpgrade.run(p);
-        assertEquals(5,cfg.getInt("configuration-version"));assertEquals(List.of(40,85,42),cfg.getIntegerList("weeks.w1.arena.max"));
+        assertEquals(6,cfg.getInt("configuration-version"));assertEquals(List.of(40,85,42),cfg.getIntegerList("weeks.w1.arena.max"));
         assertEquals("My core",cfg.getString("items.ritual_core.name"));assertEquals(99,cfg.getInt("items.ritual_core.use.cooldown-seconds"));
         for(String id:List.of("ember_charm","guardian_rune","hunter_lens","weakening_fang")){assertTrue(cfg.contains("items."+id,true));assertEquals(0,cfg.getInt("items."+id+".use.consume"));}
     }
@@ -47,7 +47,7 @@ class ConfigUpgradeTest {
         cfg.set("items.raid_shard.name","Old shard");cfg.set("items.raid_shard.drops",List.of(Map.of("source","mob","chance",.42)));
         MobArmy p=mock(MobArmy.class);when(p.getConfig()).thenReturn(cfg);when(p.getResource("config.yml")).thenAnswer(i->new ByteArrayInputStream(resource.getBytes(StandardCharsets.UTF_8)));
         ConfigUpgrade.run(p);
-        assertEquals(5,cfg.getInt("configuration-version"));assertEquals(List.of(80,64,-4),cfg.getIntegerList("weeks.old.lobby.min"));assertEquals(List.of(-23,64,-30),cfg.getIntegerList("weeks.custom.lobby.min"));
+        assertEquals(6,cfg.getInt("configuration-version"));assertEquals(List.of(80,64,-4),cfg.getIntegerList("weeks.old.lobby.min"));assertEquals(List.of(-23,64,-30),cfg.getIntegerList("weeks.custom.lobby.min"));
         assertEquals(.13,cfg.getDouble("balance.hit-cap"));assertTrue(cfg.getBoolean("testing.solo"));assertEquals(.42,cfg.getMapList("items.raid_shard.drops").getFirst().get("chance"));
         assertEquals("mobarmy:raid_shard",cfg.getString("items.raid_shard.item-model"));
         assertEquals(List.of(49,85,49),cfg.getIntegerList("weeks.old.arena.max"));assertEquals(0,cfg.getInt("items.ritual_core.use.consume"));assertTrue(cfg.contains("items.frost_talisman",true));

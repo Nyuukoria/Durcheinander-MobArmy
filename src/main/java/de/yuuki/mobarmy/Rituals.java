@@ -27,12 +27,12 @@ final class Rituals implements Listener {
     List<RitualPayments.Requirement> requirements(ConfigurationSection cfg){
         List<RitualPayments.Requirement> out=new ArrayList<>();for(var row:cfg.getMapList("ingredients"))out.add(new RitualPayments.Requirement((String)row.get("item"),(String)row.get("material"),((Number)row.get("amount")).intValue()));return out;
     }
-    String ingredientName(RitualPayments.Requirement ingredient){return ingredient.customId()!=null?MobArmy.color(p.getConfig().getString("items."+ingredient.customId()+".name",ingredient.customId())):ingredient.material();}
+    String ingredientName(RitualPayments.Requirement ingredient){return ingredient.customId()!=null?MobArmy.color(p.getConfig().getString("items."+ingredient.customId()+".name",ingredient.customId())):switch(ingredient.material()){case "IRON_INGOT"->"Eisenbarren";case "GOLD_INGOT"->"Goldbarren";case "DIAMOND"->"Diamant";case "LAPIS_LAZULI"->"Lapislazuli";case "EMERALD"->"Smaragd";default->ingredient.material();};}
     boolean locationValid(Player player,Location cauldron){return cauldron.getWorld()!=null&&player.getWorld().equals(cauldron.getWorld())&&player.getLocation().distanceSquared(cauldron.clone().add(.5,.5,.5))<=36&&cauldron.getBlock().getType().name().endsWith("CAULDRON")&&p.arena(player.getWorld())==null&&player.getWorld().getName().equals(p.getConfig().getString("ritual-world","world"));}
     void open(Player player,Block cauldron){
         if(!player.hasPermission("mobarmy.play"))return;
         if(!locationValid(player,cauldron.getLocation())){p.tell(player,"Rituale benötigen einen Kessel in der Default-Welt, höchstens 6 Blöcke entfernt.");return;}
-        View v=new View(player.getUniqueId(),cauldron.getLocation());v.inventory=Bukkit.createInventory(v,54,MobArmy.color("&5Kesselrituale"));int slot=10;
+        View v=new View(player.getUniqueId(),cauldron.getLocation());v.inventory=Bukkit.createInventory(v,54,MobArmy.color(p.text(player,"&5Kesselrituale")));int slot=10;
         for(String id:ids()){
             var cfg=recipe(id);ItemStack item=p.items.make(cfg.getString("display-item","ritual_core"),1);var meta=item.getItemMeta();meta.setDisplayName(MobArmy.color(cfg.getString("name",id)));
             List<String> lore=new ArrayList<>();lore.add(MobArmy.color("&7Typ: "+cfg.getString("mode")));lore.add(MobArmy.color("&7Katalysator bleibt erhalten."));
@@ -42,7 +42,7 @@ final class Rituals implements Listener {
             lore.add(MobArmy.color("&7Dauer: "+cfg.getInt("duration-seconds",8)+"s · Cooldown: "+cfg.getInt("cooldown-seconds",120)+"s"));lore.add(MobArmy.color("&eKlicken: Ritual beginnen"));meta.setLore(lore);item.setItemMeta(meta);
             if(slot%9==8)slot+=2;if(slot>=45)break;v.recipes.put(slot,id);v.inventory.setItem(slot++,item);
         }
-        player.openInventory(v.inventory);
+        p.language.open(player,v.inventory);
     }
     @EventHandler public void click(InventoryClickEvent event){
         if(!(event.getView().getTopInventory().getHolder() instanceof View v))return;event.setCancelled(true);
@@ -107,7 +107,7 @@ final class Rituals implements Listener {
             Player player=Bukkit.getPlayer(owner);if(player==null||!player.isOnline()||!locationValid(player,cauldron)||!cfg.getString("catalyst","chaos_fragment").equals(p.items.id(player.getInventory().getItemInMainHand()))){abort();return;}
             int duration=Math.max(40,cfg.getInt("duration-seconds",8)*20);ticks+=2;double progress=Math.min(1,(double)ticks/duration);
             String phase=progress<.25?"KREIS ZIEHEN":progress<.55?"ENERGIE SAMMELN":progress<.85?"FORMEN":"VOLLENDEN";
-            label.setText(MobArmy.color(cfg.getString("name")+"\n&f"+phase+" &d"+(int)(progress*100)+"%"));orb.teleport(center.clone().add(0,.2+Math.sin(ticks*.07)*.15+progress*.6,0));orb.setRotation(ticks*5,0);
+            label.setText(MobArmy.color(p.text(player,cfg.getString("name"))+"\n&f"+p.text(player,phase)+" &d"+(int)(progress*100)+"%"));orb.teleport(center.clone().add(0,.2+Math.sin(ticks*.07)*.15+progress*.6,0));orb.setRotation(ticks*5,0);
             for(int ring=0;ring<2;ring++)for(int point=0;point<12;point++){
                 double a=point*Math.PI/6+ticks*.06*(ring==0?1:-1),radius=ring==0?1.6-progress*.4:.9+progress*.2;
                 center.getWorld().spawnParticle(Particle.DUST,center.clone().add(Math.cos(a)*radius,-.7+ring*(.3+progress*.7),Math.sin(a)*radius),1,0,0,0,0,new Particle.DustOptions(color,1));

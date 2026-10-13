@@ -49,11 +49,11 @@ final class Items {
         meta.setDisplayName(template.getDisplayName());meta.setLore(template.getLore());meta.setItemModel(template.getItemModel());
         if(template.hasCustomModelData())meta.setCustomModelData(template.getCustomModelData());Equipment.decorate(p.getConfig().getConfigurationSection("items."+id),meta);result.setItemMeta(meta);return result;
     }
-    void refresh(Player player){for(int slot=0;slot<player.getInventory().getSize();slot++){ItemStack item=player.getInventory().getItem(slot);if(item!=null&&id(item)!=null)player.getInventory().setItem(slot,refreshed(item));}}
-    List<ItemStack> mailbox(UUID owner){List<ItemStack> result=new ArrayList<>();for(Object entry:p.state.getList("mail."+owner,List.of()))if(entry instanceof ItemStack item)result.add(refreshed(item));return result;}
+    void refresh(Player player){for(int slot=0;slot<player.getInventory().getSize();slot++){ItemStack item=player.getInventory().getItem(slot);if(item!=null&&id(item)!=null)player.getInventory().setItem(slot,p.language==null?refreshed(item):p.language.localized(player.getUniqueId(),refreshed(item)));}}
+    List<ItemStack> mailbox(UUID owner){List<ItemStack> result=new ArrayList<>();for(Object entry:p.state.getList("mail."+owner,List.of()))if(entry instanceof ItemStack item)result.add(p.language==null?refreshed(item):p.language.localized(owner,refreshed(item)));return result;}
     void mailbox(UUID owner,List<ItemStack> items){p.state.set("mail."+owner,items.isEmpty()?null:items);p.saveState();}
     void store(UUID owner,ItemStack item){List<ItemStack> mail=mailbox(owner);mail.add(item.clone());mailbox(owner,mail);}
-    void deliver(UUID owner,ItemStack item){Player target=Bukkit.getPlayer(owner);if(target==null){store(owner,item);return;}for(ItemStack remainder:target.getInventory().addItem(item.clone()).values())store(owner,remainder);p.saveState();}
+    void deliver(UUID owner,ItemStack item){Player target=Bukkit.getPlayer(owner);if(target==null){store(owner,item);return;}for(ItemStack remainder:target.getInventory().addItem(p.language==null?item.clone():p.language.localized(owner,item)).values())store(owner,remainder);p.saveState();}
     int count(Player player,String id){int total=0;for(ItemStack item:player.getInventory().getContents())if(id.equals(id(item)))total+=item.getAmount();return total;}
     boolean take(Player player,String id,int amount){
         if(amount<1||count(player,id)<amount)return false;int left=amount;

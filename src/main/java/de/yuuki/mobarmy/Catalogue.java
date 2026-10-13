@@ -21,13 +21,13 @@ final class Catalogue implements Listener {
             case "rituals"->new ArrayList<>(p.ritualSystem.ids());
             case "sets"->p.items.ids().stream().filter(id->p.getConfig().contains("items."+id+".set")).toList();
             case "gear"->p.items.ids().stream().filter(id->p.getConfig().getBoolean("items."+id+".gear")).toList();
-            case "items"->p.items.ids().stream().filter(id->!id.equals("boss_model")).toList();
-            default->throw new IllegalArgumentException("/raid codex items|gear|sets|rituals");
+            case "items"->p.items.ids().stream().filter(id->!p.getConfig().getBoolean("items."+id+".internal")).toList();
+            default->throw new IllegalArgumentException("/rezepte items|gear|sets|rituals");
         };
     }
     void open(Player player,String category,int page){
         List<String> ids=entries(category);int current=Math.max(0,Math.min(page,Math.max(0,(ids.size()-1)/45)));
-        View v=new View(player.getUniqueId(),category,current);v.inventory=Bukkit.createInventory(v,54,MobArmy.color("&dRaid-Kodex · "+category+" · "+(current+1)));
+        View v=new View(player.getUniqueId(),category,current);v.inventory=Bukkit.createInventory(v,54,MobArmy.color(p.text(player,"&dRezepte · "+switch(category){case "gear"->"Ausrüstung";case "sets"->"Sets";case "rituals"->"Rituale";default->"Gegenstände";}+" · "+(current+1))));
         for(int i=current*45;i<Math.min(ids.size(),(current+1)*45);i++){
             String id=ids.get(i);ItemStack icon;List<String> extra=new ArrayList<>();
             if(category.equals("rituals")){
@@ -42,10 +42,15 @@ final class Catalogue implements Listener {
                     if(weight>0)extra.add("&7"+pool.getString("source")+" ab Stage "+pool.getInt("minimum-stage",1)+": "+String.format(Locale.ROOT,"%.2f%%",100*pool.getDouble("chance")*weight/total)+" für dieses Item");
                 }
             }
+            if(!category.equals("rituals"))for(String recipeId:p.ritualSystem.ids()){
+                var ritual=p.ritualSystem.recipe(recipeId);String poolId=ritual.getString("pool","");String legendary=ritual.getString("legendary-pool","");
+                boolean obtainable=false;for(String pool:List.of(poolId,legendary))if(!pool.isEmpty()){var poolCfg=p.getConfig().getConfigurationSection("loot-pools."+pool);if(poolCfg!=null&&poolCfg.getMapList("entries").stream().anyMatch(row->id.equals(row.get("item"))))obtainable=true;}
+                if(obtainable){extra.add("&eErhalten durch: "+ritual.getString("name")+" · /raid ritual "+recipeId);for(var ingredient:p.ritualSystem.requirements(ritual))extra.add("&7"+ingredient.amount()+" × "+p.ritualSystem.ingredientName(ingredient));}
+            }
             var meta=icon.getItemMeta();List<String> lore=new ArrayList<>(meta.hasLore()?meta.getLore():List.of());lore.add("");lore.addAll(extra.stream().map(MobArmy::color).toList());lore.add(MobArmy.color("&8ID: "+id));meta.setLore(lore);icon.setItemMeta(meta);v.inventory.setItem(i-current*45,icon);
         }
         v.inventory.setItem(45,p.menus.button(Material.ARROW,"&fZurück"));v.inventory.setItem(46,p.menus.button(Material.ARROW,"&fWeiter"));
-        v.inventory.setItem(48,p.menus.button(Material.BOOK,"&dItems"));v.inventory.setItem(49,p.menus.button(Material.DIAMOND_SWORD,"&bAusrüstung"));v.inventory.setItem(50,p.menus.button(Material.DIAMOND_CHESTPLATE,"&eSets"));v.inventory.setItem(51,p.menus.button(Material.CAULDRON,"&5Rituale"));v.inventory.setItem(53,p.menus.button(Material.BARRIER,"&cSchließen"));player.openInventory(v.inventory);
+        v.inventory.setItem(48,p.menus.button(Material.BOOK,"&dItems"));v.inventory.setItem(49,p.menus.button(Material.DIAMOND_SWORD,"&bAusrüstung"));v.inventory.setItem(50,p.menus.button(Material.DIAMOND_CHESTPLATE,"&eSets"));v.inventory.setItem(51,p.menus.button(Material.CAULDRON,"&5Rituale"));v.inventory.setItem(53,p.menus.button(Material.BARRIER,"&cSchließen"));p.language.open(player,v.inventory);
     }
     @EventHandler public void click(InventoryClickEvent event){
         if(!(event.getView().getTopInventory().getHolder() instanceof View v))return;event.setCancelled(true);
