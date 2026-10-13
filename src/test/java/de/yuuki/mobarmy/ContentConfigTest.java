@@ -1,0 +1,32 @@
+package de.yuuki.mobarmy;
+
+import org.bukkit.Material;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.junit.jupiter.api.Test;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import static org.junit.jupiter.api.Assertions.*;
+
+class ContentConfigTest {
+    @Test void allEquipmentPoolsAndRitualIngredientsPointToRealItemsAndValidRecipes(){
+        var cfg=YamlConfiguration.loadConfiguration(new InputStreamReader(getClass().getResourceAsStream("/config.yml"),StandardCharsets.UTF_8));
+        var items=cfg.getConfigurationSection("items");long gear=0;
+        for(String id:items.getKeys(false)){
+            var item=items.getConfigurationSection(id);Material.valueOf(item.getString("material"));if(!item.getBoolean("gear"))continue;gear++;
+            var enchantments=item.getConfigurationSection("enchantments");assertNotNull(enchantments,id);for(String enchant:enchantments.getKeys(false))assertTrue(enchantments.getInt(enchant)>=1&&enchantments.getInt(enchant)<=10);
+            assertFalse(enchantments.contains("infinity")&&enchantments.contains("mending"),id+" has conflicting bow enchants");
+            if(item.contains("set"))assertTrue(cfg.contains("equipment-sets."+item.getString("set")),id);
+        }
+        assertEquals(21,gear);
+        var pools=cfg.getConfigurationSection("loot-pools");for(String id:pools.getKeys(false)){
+            var pool=pools.getConfigurationSection(id);assertTrue(pool.getDouble("chance")>0&&pool.getDouble("chance")<=.1);
+            for(var row:pool.getMapList("entries"))assertTrue(items.contains(row.get("item").toString()),id);assertNotNull(LootTables.choose(pool,0));
+        }
+        var rituals=cfg.getConfigurationSection("rituals");assertEquals(7,rituals.getKeys(false).size());
+        for(String id:rituals.getKeys(false)){
+            var ritual=rituals.getConfigurationSection(id);assertTrue(items.contains(ritual.getString("catalyst")));assertTrue(items.contains(ritual.getString("display-item")));
+            if(ritual.contains("pool"))assertTrue(pools.contains(ritual.getString("pool")));if(ritual.contains("legendary-pool"))assertTrue(pools.contains(ritual.getString("legendary-pool")));
+            for(var row:ritual.getMapList("ingredients")){assertTrue(((Number)row.get("amount")).intValue()>0);if(row.containsKey("item"))assertTrue(items.contains(row.get("item").toString()));else Material.valueOf(row.get("material").toString());}
+        }
+    }
+}

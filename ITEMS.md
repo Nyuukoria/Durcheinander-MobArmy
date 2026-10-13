@@ -2,7 +2,7 @@
 
 | Item-ID | Funktion |
 |---|---|
-| `chaos_fragment` | Rechtsklick auf einen Kessel in der konfigurierten Default-Welt: animiertes 6-Sekunden-Ritual. Bleibt erhalten; 120 Sekunden Cooldown. Beschwört einen Wächter, dessen Beute ein Ritualkern ist. |
+| `chaos_fragment` | Rechtsklick auf einen Kessel öffnet die sieben Rituale. Katalysator bleibt erhalten; Zutaten und Cooldown je Rezept. Erwachen beschwört einen Wächter für einen Ritualkern. |
 | `ritual_core` | Rechtsklick: Resistenz I + Regeneration I für 8 Sekunden. Kein Verbrauch, Cooldown: 60 Sekunden. |
 | `chaos_crown` | Rechtsklick: Tempo I + Eile I für 10 Sekunden für dich und aktuelle Gruppenmitglieder innerhalb 8 Blöcken. Kein Verbrauch, Cooldown: 75 Sekunden. Außerhalb einer Gruppe wirkt die Krone auf dich selbst. |
 | `frost_talisman` | Rechtsklick im Kampf: Langsamkeit II (6s) auf Raid-Gegner innerhalb 8 Blöcken, Bosse nur I (3s). Kein Schaden, kein Verbrauch, 40s Cooldown; ohne Gegner kein Cooldown. Drop: Stage-2-Miniboss. |
@@ -16,6 +16,8 @@
 | `boss_model` | Interne Darstellung des Endbosses, kein Belohnungs-Relikt. |
 
 Relikt-Cooldowns werden gespeichert und gelten auch nach einem Relog. Andere Relikte können über `items.<id>.use` konfiguriert werden. Alle benutzbaren Items benötigen ihre echte PDC-ID, ein umbenanntes Vanilla-Item reicht nicht.
+
+Ausrüstung, hohe Verzauberungen, Seltenheiten und Drop-Chancen: `EQUIPMENT.md`. Schmiede-/Reparatur-/Wächterrezepte: `RITUALS.md`. Sturm-/Leerenessenz sind verbrauchbare Zutaten, alle Relikte und Katalysatoren bleiben wiederverwendbar.
 
 ## Anbindung an ein anderes Shop-Plugin
 
@@ -37,8 +39,8 @@ ItemStack template = raid.createCustomItem("raid_shard", 1);
 
 ## Texturen
 
-Alle elf Icons liegen als **echte 16×16-RGBA-PNGs** unter `resource-pack/assets/mobarmy/textures/item/`. Je Datei: höchstens sechs deckende Farben plus vollständig transparente Pixel, harte Kanten ohne Antialiasing oder weiche Glows. Die Modelle überschreiben keine Vanilla-Items. Die integrierten Asset-Prüfungen verlangen exakt 16×16 Pixel.
+Alle 34 Icons liegen als **echte 16×16-RGBA-PNGs** unter `resource-pack/assets/mobarmy/textures/item/`. Je Datei: höchstens sechs deckende Farben plus vollständig transparente Pixel, harte Kanten ohne Antialiasing oder weiche Glows. Die Modelle überschreiben keine Vanilla-Items. Die integrierten Asset-Prüfungen verlangen exakt 16×16 Pixel.
 
-Die Motive werden mit der eingebauten Imagegen-Funktion als stark vereinfachte Minecraft-Pixelgrafiken erstellt, dann mit Nearest-Neighbor auf genau 16×16 formatiert und auf maximal sechs deckende Farben quantisiert. Der transparente Hintergrund bleibt erhalten. Die vollständigen Prompts stehen in `resource-pack/texture-prompts.json`; als Motive dienen schlichte Splitter, Kugel, Krone, Blume, Windspirale, Flamme, Schildrune, Lupe und Zahn. Es werden keine Vanilla-Dateien kopiert.
+Die Motive werden mit der eingebauten Imagegen-Funktion als stark vereinfachte Minecraft-Pixelgrafiken erstellt, dann mit Nearest-Neighbor auf genau 16×16 formatiert und auf maximal sechs deckende Farben quantisiert. Der transparente Hintergrund bleibt erhalten. Die vollständigen Prompts stehen in `resource-pack/texture-prompts.json`; als Motive dienen schlichte Splitter, Kugel, Krone, Blume, Windspirale, Flamme, Schildrune, Lupe und Zahn. Rüstungs- und Werkzeug-Icons folgen denselben Regeln. Die getragenen Rüstungen nutzen Minecraft-Materialmodelle mit Vanilla-Trims. Es werden keine Vanilla-Dateien kopiert.
 
 Das fertig gebaute Pack liegt als `resource-pack/MobArmy-resource-pack-26.3.zip` in der Test-ZIP und ist zusätzlich im Plugin gebündelt. Die localhost-Demo fordert es automatisch vom eigenen PC an; bitte im Minecraft-Dialog annehmen. `/raid pack status` und `/raid pack reload` helfen bei der Prüfung. Alte manuell installierte MobArmy-Packs deaktivieren, wenn sie Modelle überschreiben.

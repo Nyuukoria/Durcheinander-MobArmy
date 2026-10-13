@@ -11,12 +11,11 @@ import java.util.*;
 
 final class Items {
     final MobArmy p;
-    final Map<UUID,RitualCast> casts=new HashMap<>();
     Items(MobArmy p){
         this.p=p;
         var pending=p.state.getConfigurationSection("pending-rituals");
         if(pending!=null)for(String key:pending.getKeys(false)){
-            UUID owner=UUID.fromString(pending.getString(key+".owner"));ItemStack item=pending.getItemStack(key+".item");if(item!=null){List<ItemStack> mail=mailbox(owner);mail.add(item);p.state.set("mail."+owner,mail);}
+            UUID owner=UUID.fromString(pending.getString(key+".owner"));List<ItemStack> returned=mailbox(owner);ItemStack legacy=pending.getItemStack(key+".item");if(legacy!=null)returned.add(legacy);for(Object entry:pending.getList(key+".items",List.of()))if(entry instanceof ItemStack item)returned.add(item);p.state.set("mail."+owner,returned);
         }
         p.state.set("pending-rituals",null);
     }
@@ -24,9 +23,11 @@ final class Items {
     ItemStack make(String id,int count){
         var cfg=p.getConfig().getConfigurationSection("items."+id);if(cfg==null)throw new IllegalArgumentException("Unknown item: "+id);
         ItemStack item=new ItemStack(Material.valueOf(cfg.getString("material","AMETHYST_SHARD")),count);var meta=item.getItemMeta();
+        if(count<1||count>item.getMaxStackSize())throw new IllegalArgumentException("Dieses Item erlaubt maximal "+item.getMaxStackSize()+" pro Stack.");
         meta.setDisplayName(MobArmy.color(cfg.getString("name",id)));meta.setLore(cfg.getStringList("lore").stream().map(MobArmy::color).toList());
         String model=cfg.getString("item-model");if(model!=null)meta.setItemModel(Objects.requireNonNull(NamespacedKey.fromString(model)));
         if(cfg.contains("custom-model-data"))meta.setCustomModelData(cfg.getInt("custom-model-data"));
+        Equipment.decorate(cfg,meta);
         meta.getPersistentDataContainer().set(p.itemKey,PersistentDataType.STRING,id);item.setItemMeta(meta);return item;
     }
     String id(ItemStack item){return item==null||!item.hasItemMeta()?null:item.getItemMeta().getPersistentDataContainer().get(p.itemKey,PersistentDataType.STRING);}
@@ -40,13 +41,13 @@ final class Items {
                 double chance=d.containsKey("chance")?((Number)d.get("chance")).doubleValue():1;
                 if(Math.random()<=chance)out.add(make(id,d.containsKey("amount")?((Number)d.get("amount")).intValue():1));
             }
-        }return out;
+        }for(String item:LootTables.roll(p.getConfig().getConfigurationSection("loot-pools"),source,stage,week,Math::random))out.add(make(item,1));return out;
     }
     ItemStack refreshed(ItemStack item){
         String id=id(item);if(id==null||!ids().contains(id))return item.clone();
         ItemStack result=item.clone();var meta=result.getItemMeta();var template=make(id,item.getAmount()).getItemMeta();
         meta.setDisplayName(template.getDisplayName());meta.setLore(template.getLore());meta.setItemModel(template.getItemModel());
-        if(template.hasCustomModelData())meta.setCustomModelData(template.getCustomModelData());result.setItemMeta(meta);return result;
+        if(template.hasCustomModelData())meta.setCustomModelData(template.getCustomModelData());Equipment.decorate(p.getConfig().getConfigurationSection("items."+id),meta);result.setItemMeta(meta);return result;
     }
     void refresh(Player player){for(int slot=0;slot<player.getInventory().getSize();slot++){ItemStack item=player.getInventory().getItem(slot);if(item!=null&&id(item)!=null)player.getInventory().setItem(slot,refreshed(item));}}
     List<ItemStack> mailbox(UUID owner){List<ItemStack> result=new ArrayList<>();for(Object entry:p.state.getList("mail."+owner,List.of()))if(entry instanceof ItemStack item)result.add(refreshed(item));return result;}
@@ -98,60 +99,8 @@ final class Items {
         p.tell(player,cfg.getString("message","Relikt aktiviert.")+" &7("+(enemyRadius>0?affectedEnemies+" Gegner":targets.size()+" Spieler")+")");return true;
     }
     boolean ritual(Player player,org.bukkit.block.Block cauldron,ItemStack held){
-        String id=id(held);if(id==null)return false;var cfg=p.getConfig().getConfigurationSection("items."+id+".ritual");if(cfg==null)return false;
-        if(p.arena(player.getWorld())!=null||!player.getWorld().getName().equals(p.getConfig().getString("ritual-world","world"))){p.tell(player,"Das Ritual funktioniert nur in der Default-Welt.");return true;}
-        p.engine.rituals.keySet().removeIf(key->Bukkit.getEntity(key)==null);
-        if(p.engine.rituals.size()+casts.size()>=p.getConfig().getInt("maximum-ritual-mobs",20)){p.tell(player,"Zu viele aktive Rituale.");return true;}
-        if(casts.values().stream().anyMatch(c->c.cauldron.equals(cauldron.getLocation()))){p.tell(player,"An diesem Kessel läuft schon ein Ritual.");return true;}
-        long now=System.currentTimeMillis();String cooldown="item-cooldowns."+player.getUniqueId()+"."+id;
-        long until=p.state.getLong(cooldown);if(until>now){p.tell(player,"Ritual bereit in "+Rules.clock((until-now+999)/1000)+".");return true;}
-        int consumed=Math.max(0,cfg.getInt("consume",0));if(held.getAmount()<consumed){p.tell(player,"Zu wenige Ritual-Items.");return true;}
-        ItemStack payment=consumed>0?held.clone():null;if(payment!=null){payment.setAmount(consumed);held.setAmount(held.getAmount()-consumed);}
-        RitualCast cast;try{cast=new RitualCast(player.getUniqueId(),cauldron.getLocation(),payment,cfg);}catch(RuntimeException ex){if(payment!=null)held.setAmount(held.getAmount()+consumed);p.getLogger().warning("Ritual could not start: "+ex.getMessage());p.tell(player,"Das Ritual konnte nicht starten. Dein Item bleibt erhalten.");return true;}casts.put(cast.key,cast);
-        if(payment!=null){p.state.set("pending-rituals."+cast.key+".owner",player.getUniqueId().toString());p.state.set("pending-rituals."+cast.key+".item",payment);}
-        p.state.set(cooldown,now+cfg.getLong("cooldown-seconds",120)*1000);p.saveState();
-        cast.runTaskTimer(p,0,2);
-        return true;
+        String id=id(held);if(!"chaos_fragment".equals(id))return false;
+        p.ritualSystem.open(player,cauldron);return true;
     }
-    final class RitualCast extends BukkitRunnable {
-        final UUID key=UUID.randomUUID(),owner;final Location cauldron,center;final ItemStack payment;final ConfigurationSection config;
-        final ItemDisplay orb;final TextDisplay label;int tick;boolean done;
-        RitualCast(UUID owner,Location cauldron,ItemStack payment,ConfigurationSection config){
-            this.owner=owner;this.cauldron=cauldron;this.payment=payment;this.config=config;center=cauldron.clone().add(0.5,1,0.5);
-            orb=center.getWorld().spawn(center,ItemDisplay.class);orb.setItemStack(make("ritual_core",1));orb.setPersistent(false);orb.getPersistentDataContainer().set(p.entityKey,PersistentDataType.STRING,"ritual-animation");
-            var t=orb.getTransformation();t.getScale().set(0.55f);orb.setTransformation(t);orb.setInterpolationDuration(2);
-            label=center.getWorld().spawn(center.clone().add(0,2,0),TextDisplay.class);Presentation.style(label);label.getPersistentDataContainer().set(p.entityKey,PersistentDataType.STRING,"ritual-animation");
-            center.getWorld().playSound(center,Sound.BLOCK_RESPAWN_ANCHOR_CHARGE,0.8f,0.6f);
-        }
-        public void run(){
-            int total=Math.max(40,p.getConfig().getInt("ritual-animation.duration-seconds",6)*20);tick+=2;
-            if(!cauldron.getBlock().getType().name().endsWith("CAULDRON")){abort();return;}
-            double progress=Math.min(1,(double)tick/total),radius=1.6-progress*0.8;
-            String phase=progress<.33?"ERWECKUNG":progress<.75?"VERDICHTUNG":"DURCHBRUCH";
-            label.setText(MobArmy.color("&d&l"+phase+"\n&fRitual &b"+(int)(progress*100)+"%"));
-            orb.teleport(center.clone().add(0,0.2+Math.sin(tick*0.06)*0.15+progress*0.4,0));orb.setRotation(tick*6,0);
-            for(int i=0;i<16;i++){
-                double angle=i*Math.PI/8+tick*.075;Location at=center.clone().add(Math.cos(angle)*radius,-0.7+progress*.3,Math.sin(angle)*radius);
-                center.getWorld().spawnParticle(Particle.DUST,at,1,0,0,0,0,new Particle.DustOptions(i%2==0?Color.fromRGB(209,86,255):Color.fromRGB(86,229,232),1.0f));
-            }
-            if(progress>.33)for(int i=0;i<4;i++){double a=tick*.13+i*Math.PI/2;center.getWorld().spawnParticle(Particle.REVERSE_PORTAL,center.clone().add(Math.cos(a)*.55,progress*1.8,Math.sin(a)*.55),2,0,0,0,.03);}
-            if(tick==Math.max(2,(total/3)/2*2))center.getWorld().playSound(center,Sound.BLOCK_BEACON_POWER_SELECT,.8f,.7f);
-            if(progress<1)return;
-            try{
-                Entity entity=center.getWorld().spawnEntity(center,EntityType.valueOf(config.getString("type","HUSK")));
-                if(!(entity instanceof Mob mob)){entity.remove();throw new IllegalArgumentException("Ritual entity must be a mob");}
-                mob.getPersistentDataContainer().set(p.entityKey,PersistentDataType.STRING,"ritual");mob.setPersistent(false);
-                double hp=Math.min(1024,config.getDouble("health",80));Engine.set(mob,org.bukkit.attribute.Attribute.MAX_HEALTH,hp);mob.setHealth(hp);
-                Engine.set(mob,org.bukkit.attribute.Attribute.ATTACK_DAMAGE,config.getDouble("damage",6));mob.setCustomName(MobArmy.color(config.getString("name","&dRitualwächter")));mob.setCustomNameVisible(true);mob.setCanPickupItems(false);mob.setGlowing(true);
-                Player player=Bukkit.getPlayer(owner);if(player!=null&&player.getWorld().equals(center.getWorld()))mob.setTarget(player);
-                if(mob.getEquipment()!=null){mob.getEquipment().setHelmet(new ItemStack(Material.IRON_HELMET));mob.getEquipment().setHelmetDropChance(0);}
-                p.engine.rituals.put(mob.getUniqueId(),config.getString("result",""));
-                center.getWorld().spawnParticle(Particle.EXPLOSION,center,3,.4,.5,.4,0);center.getWorld().spawnParticle(Particle.DRAGON_BREATH,center,100,.6,.8,.6,.04);
-                center.getWorld().playSound(center,Sound.ENTITY_EVOKER_PREPARE_SUMMON,1,.65f);cleanup();
-            }catch(RuntimeException ex){p.getLogger().warning("Ritual failed: "+ex.getMessage());abort();}
-        }
-        void cleanup(){if(done)return;done=true;cancel();orb.remove();label.remove();casts.remove(key);p.state.set("pending-rituals."+key,null);p.saveState();}
-        void abort(){if(done)return;cleanup();if(payment!=null)store(owner,payment);Player player=Bukkit.getPlayer(owner);if(player!=null)p.tell(player,payment!=null?"Ritual abgebrochen – verbrauchte Items liegen im /raid loot Postfach.":"Ritual abgebrochen – dein Katalysator bleibt erhalten. Die Abklingzeit läuft weiter.");}
-    }
-    void shutdown(){for(RitualCast cast:new ArrayList<>(casts.values()))cast.abort();}
+    void shutdown(){if(p.ritualSystem!=null)p.ritualSystem.shutdown();}
 }

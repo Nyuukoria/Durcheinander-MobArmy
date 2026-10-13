@@ -163,6 +163,7 @@ final class Engine {
     static void set(LivingEntity mob,Attribute a,double value){AttributeInstance attr=mob.getAttribute(a);if(attr!=null)attr.setBaseValue(value);}
     void aggro(Session s){List<Player> ps=players(s).stream().filter(pl->!pl.isDead()&&s.arena.bounds.contains(pl.getLocation())).toList();if(ps.isEmpty())return;int i=0;for(UUID id:s.mobs){Entity e=Bukkit.getEntity(id);if(e instanceof Mob m)m.setTarget(ps.get(i++%ps.size()));}}
     void killed(LivingEntity entity,List<ItemStack> drops){
+        if(p.ritualSystem!=null&&p.ritualSystem.killed(entity,drops))return;
         if(rituals.containsKey(entity.getUniqueId())){String result=rituals.remove(entity.getUniqueId());drops.clear();if(!result.isEmpty())drops.add(p.items.make(result,1));return;}
         Session s=find(entity.getUniqueId());if(s==null)return;
         for(Entity passenger:entity.getPassengers())if(passenger instanceof ItemDisplay)passenger.remove();

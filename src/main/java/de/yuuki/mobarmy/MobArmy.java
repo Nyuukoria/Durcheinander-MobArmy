@@ -13,7 +13,7 @@ public final class MobArmy extends JavaPlugin {
     final Map<String,Portal> portals=new LinkedHashMap<>();
     final Map<UUID,Location> returns=new HashMap<>();
     YamlConfiguration state;
-    Items items; Engine engine; Menus menus; RaidCommand commands; Presentation presentation; Motion motion; ResourcePacks packs;
+    Items items; Engine engine; Menus menus; RaidCommand commands; Presentation presentation; Motion motion; ResourcePacks packs; Equipment equipment; Rituals ritualSystem; Catalogue catalogue;
     NamespacedKey entityKey, itemKey;
     ZoneId zone;
     @Override public void onEnable() {
@@ -38,15 +38,18 @@ public final class MobArmy extends JavaPlugin {
             if(rs!=null)for(String id:rs.getKeys(false)){Location l=rs.getLocation(id);if(l!=null)returns.put(UUID.fromString(id),l);}
             // Clear labels from old builds before creating exactly one display per portal.
             for(World w:Bukkit.getWorlds())for(Entity e:w.getEntities())if(e instanceof TextDisplay){String tag=e.getPersistentDataContainer().get(entityKey,org.bukkit.persistence.PersistentDataType.STRING);if(tag!=null&&tag.startsWith("portal"))e.remove();}
-            items=new Items(this);Recovery.restore(this);engine=new Engine(this);menus=new Menus(this);commands=new RaidCommand(this);presentation=new Presentation(this);motion=new Motion(this);packs=new ResourcePacks(this);
+            items=new Items(this);Recovery.restore(this);engine=new Engine(this);menus=new Menus(this);commands=new RaidCommand(this);presentation=new Presentation(this);motion=new Motion(this);packs=new ResourcePacks(this);equipment=new Equipment(this);ritualSystem=new Rituals(this);catalogue=new Catalogue(this);
             for(Arena a:arenas.values())if(a.config.getBoolean("generate-demo")&&state.getInt("demo-layout."+a.id)<Arena.DEMO_LAYOUT){a.demo();state.set("demo."+a.id,true);state.set("demo-layout."+a.id,Arena.DEMO_LAYOUT);}
             Objects.requireNonNull(getCommand("raid")).setExecutor(commands);getCommand("raid").setTabCompleter(commands);
             getServer().getPluginManager().registerEvents(new Protection(this),this);
             getServer().getPluginManager().registerEvents(menus,this);
             getServer().getPluginManager().registerEvents(motion,this);
             getServer().getPluginManager().registerEvents(packs,this);
+            getServer().getPluginManager().registerEvents(equipment,this);
+            getServer().getPluginManager().registerEvents(ritualSystem,this);
+            getServer().getPluginManager().registerEvents(catalogue,this);
             applyDemoPvp();
-            getServer().getScheduler().runTaskTimer(this,engine::tick,20,20);
+            getServer().getScheduler().runTaskTimer(this,()->{engine.tick();equipment.tick();ritualSystem.tick();},20,20);
             getServer().getScheduler().runTaskTimer(this,()->{presentation.animate();motion.tick();},1,1);
             for(Player player:Bukkit.getOnlinePlayers()){items.refresh(player);recover(player);packs.offer(player);}
             saveState();getLogger().info("Loaded "+arenas.size()+" raid arenas for Spigot 26.3.");

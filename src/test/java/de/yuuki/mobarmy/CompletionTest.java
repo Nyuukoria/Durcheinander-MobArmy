@@ -5,6 +5,12 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CompletionTest {
+    @Test void codexKitAndConfiguredRitualsHaveTheCorrectArgumentTypes(){
+        var allowed=List.of("codex","kit","ritual");
+        assertEquals(List.of("gear","items","rituals","sets"),Completion.suggest(new String[]{"codex",""},allowed,List.of(),List.of(),List.of(),List.of(),List.of("awakening")));
+        assertEquals(List.of("basic","gear","ritual"),Completion.suggest(new String[]{"kit",""},allowed,List.of(),List.of(),List.of(),List.of(),List.of("awakening")));
+        assertEquals(List.of("custom_recipe"),Completion.suggest(new String[]{"ritual","custom"},allowed,List.of(),List.of(),List.of(),List.of(),List.of("awakening","custom_recipe")));
+    }
     final List<String> allowed=List.of("portal","timer","item","demo","cooldown","test","join","help");
     List<String> suggest(String... args){return Completion.suggest(args,allowed,List.of("w1","w2","w3"),List.of("demo_w1","event_two"),List.of("chaos_fragment","raid_shard"),List.of("Yuuki","Ashy"));}
     @Test void completesOnlyTheExpectedArgumentType(){

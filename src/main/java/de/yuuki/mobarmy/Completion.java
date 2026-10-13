@@ -5,6 +5,9 @@ import java.util.*;
 /** Command grammar independent of Bukkit so every argument position can be tested. */
 final class Completion {
     static List<String> suggest(String[] args,Collection<String> allowed,Collection<String> weeks,Collection<String> portals,Collection<String> items,Collection<String> players){
+        return suggest(args,allowed,weeks,portals,items,players,List.of());
+    }
+    static List<String> suggest(String[] args,Collection<String> allowed,Collection<String> weeks,Collection<String> portals,Collection<String> items,Collection<String> players,Collection<String> rituals){
         if(args.length==0)return List.of();List<String> out=new ArrayList<>();String root=args[0].toLowerCase(Locale.ROOT);
         if(args.length==1)out.addAll(allowed);
         else if(allowed.contains(root))switch(root){
@@ -19,6 +22,9 @@ final class Completion {
             case "cooldown"->{if(args.length==2)out.add("clear");else if(args.length==3&&args[1].equalsIgnoreCase("clear")){out.addAll(players);out.add("all");}}
             case "demo"->{if(args.length==2){out.addAll(weeks);out.addAll(List.of("reset","rebuild"));}else if(args.length==3&&args[1].equalsIgnoreCase("reset")){out.addAll(portals);out.add("all");}else if(args.length==3&&args[1].equalsIgnoreCase("rebuild"))out.addAll(weeks);}
             case "pack"->{if(args.length==2)out.addAll(List.of("status","reload"));}
+            case "codex"->{if(args.length==2)out.addAll(List.of("items","gear","sets","rituals"));}
+            case "ritual","rituals"->{if(args.length==2){out.addAll(rituals);out.add("cancel");}else if(args.length==3&&args[1].equalsIgnoreCase("cancel")&&allowed.contains("kit"))out.add("all");}
+            case "kit"->{if(args.length==2)out.addAll(List.of("basic","gear","ritual"));}
             case "test"->{if(args.length==2)out.addAll(List.of("on","off"));}
             case "visit"->{if(args.length==2)out.addAll(weeks);}
             case "join","open","close","stop","reset"->{if(args.length==2)out.addAll(portals);}

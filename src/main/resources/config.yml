@@ -1,5 +1,5 @@
-# Demo v3: compact separate preparation room and roofed 100x100 landscape.
-configuration-version: 4
+# Permanent gear and reusable catalysts; forge/repair ingredients are consumed.
+configuration-version: 5
 timezone: Europe/Berlin
 entry-timeout-seconds: 120
 loot-timeout-seconds: 120
@@ -39,9 +39,9 @@ items:
     name: '&dChaosfragment'
     lore:
     - '&8Wiederverwendbarer Ritual-Katalysator'
-    - '&7Rechtsklick auf einen Kessel in der Default-Welt.'
-    - '&dErweckt einen Wächter nach 6 Sekunden.'
-    - '&7Bleibt erhalten · Abklingzeit: 120 Sekunden.'
+    - '&7Rechtsklick auf einen Kessel öffnet die Ritualwahl.'
+    - '&dSchmieden, Wächterprüfungen, Reparatur und Segen.'
+    - '&7Katalysator bleibt erhalten; Zutaten je Rezept.'
     item-model: mobarmy:chaos_fragment
     drops:
     - source: miniboss
@@ -295,6 +295,455 @@ items:
       stage: 4
       amount: 1
       chance: 0.5
+  warden_helmet:
+    material: IRON_HELMET
+    name: '&eWächtersatz · Helm'
+    rarity: rare
+    gear: true
+    set: warden
+    slot: helmet
+    item-model: mobarmy:warden_helmet
+    enchantments:
+      protection: 4
+      unbreaking: 4
+      mending: 1
+      respiration: 3
+    trim:
+      material: gold
+      pattern: sentry
+    lore:
+    - '&8RARE · Rüstung · &eWächtersatz'
+    - '&7Setbonus im aktiven Raid:'
+    - '&72 Teile: Resistenz I'
+    - '&74 Teile: zusätzlich Regeneration I'
+    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Reparatur: Mending oder Kesselritual.'
+  warden_chestplate:
+    material: IRON_CHESTPLATE
+    name: '&eWächtersatz · Brustplatte'
+    rarity: rare
+    gear: true
+    set: warden
+    slot: chestplate
+    item-model: mobarmy:warden_chestplate
+    enchantments:
+      protection: 4
+      unbreaking: 4
+      mending: 1
+    trim:
+      material: gold
+      pattern: sentry
+    lore:
+    - '&8RARE · Rüstung · &eWächtersatz'
+    - '&7Setbonus im aktiven Raid:'
+    - '&72 Teile: Resistenz I'
+    - '&74 Teile: zusätzlich Regeneration I'
+    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Reparatur: Mending oder Kesselritual.'
+  warden_leggings:
+    material: IRON_LEGGINGS
+    name: '&eWächtersatz · Beinschutz'
+    rarity: rare
+    gear: true
+    set: warden
+    slot: leggings
+    item-model: mobarmy:warden_leggings
+    enchantments:
+      protection: 4
+      unbreaking: 4
+      mending: 1
+    trim:
+      material: gold
+      pattern: sentry
+    lore:
+    - '&8RARE · Rüstung · &eWächtersatz'
+    - '&7Setbonus im aktiven Raid:'
+    - '&72 Teile: Resistenz I'
+    - '&74 Teile: zusätzlich Regeneration I'
+    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Reparatur: Mending oder Kesselritual.'
+  warden_boots:
+    material: IRON_BOOTS
+    name: '&eWächtersatz · Stiefel'
+    rarity: rare
+    gear: true
+    set: warden
+    slot: boots
+    item-model: mobarmy:warden_boots
+    enchantments:
+      protection: 4
+      unbreaking: 4
+      mending: 1
+      feather_falling: 4
+    trim:
+      material: gold
+      pattern: sentry
+    lore:
+    - '&8RARE · Rüstung · &eWächtersatz'
+    - '&7Setbonus im aktiven Raid:'
+    - '&72 Teile: Resistenz I'
+    - '&74 Teile: zusätzlich Regeneration I'
+    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Reparatur: Mending oder Kesselritual.'
+  gale_helmet:
+    material: DIAMOND_HELMET
+    name: '&bSturmsatz · Helm'
+    rarity: epic
+    gear: true
+    set: gale
+    slot: helmet
+    item-model: mobarmy:gale_helmet
+    enchantments:
+      protection: 5
+      unbreaking: 4
+      mending: 1
+      respiration: 3
+    trim:
+      material: quartz
+      pattern: spire
+    lore:
+    - '&8EPIC · Rüstung · &bSturmsatz'
+    - '&7Setbonus im aktiven Raid:'
+    - '&72 Teile: Tempo I'
+    - '&74 Teile: zusätzlich langsamer Fall'
+    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Reparatur: Mending oder Kesselritual.'
+  gale_chestplate:
+    material: DIAMOND_CHESTPLATE
+    name: '&bSturmsatz · Brustplatte'
+    rarity: epic
+    gear: true
+    set: gale
+    slot: chestplate
+    item-model: mobarmy:gale_chestplate
+    enchantments:
+      protection: 5
+      unbreaking: 4
+      mending: 1
+    trim:
+      material: quartz
+      pattern: spire
+    lore:
+    - '&8EPIC · Rüstung · &bSturmsatz'
+    - '&7Setbonus im aktiven Raid:'
+    - '&72 Teile: Tempo I'
+    - '&74 Teile: zusätzlich langsamer Fall'
+    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Reparatur: Mending oder Kesselritual.'
+  gale_leggings:
+    material: DIAMOND_LEGGINGS
+    name: '&bSturmsatz · Beinschutz'
+    rarity: epic
+    gear: true
+    set: gale
+    slot: leggings
+    item-model: mobarmy:gale_leggings
+    enchantments:
+      protection: 5
+      unbreaking: 4
+      mending: 1
+    trim:
+      material: quartz
+      pattern: spire
+    lore:
+    - '&8EPIC · Rüstung · &bSturmsatz'
+    - '&7Setbonus im aktiven Raid:'
+    - '&72 Teile: Tempo I'
+    - '&74 Teile: zusätzlich langsamer Fall'
+    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Reparatur: Mending oder Kesselritual.'
+  gale_boots:
+    material: DIAMOND_BOOTS
+    name: '&bSturmsatz · Stiefel'
+    rarity: epic
+    gear: true
+    set: gale
+    slot: boots
+    item-model: mobarmy:gale_boots
+    enchantments:
+      protection: 5
+      unbreaking: 4
+      mending: 1
+      feather_falling: 4
+    trim:
+      material: quartz
+      pattern: spire
+    lore:
+    - '&8EPIC · Rüstung · &bSturmsatz'
+    - '&7Setbonus im aktiven Raid:'
+    - '&72 Teile: Tempo I'
+    - '&74 Teile: zusätzlich langsamer Fall'
+    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Reparatur: Mending oder Kesselritual.'
+  abyss_helmet:
+    material: NETHERITE_HELMET
+    name: '&dAbgrundsatz · Helm'
+    rarity: legendary
+    gear: true
+    set: abyss
+    slot: helmet
+    item-model: mobarmy:abyss_helmet
+    enchantments:
+      protection: 6
+      unbreaking: 5
+      mending: 1
+      respiration: 3
+    trim:
+      material: amethyst
+      pattern: silence
+    lore:
+    - '&8LEGENDARY · Rüstung · &dAbgrundsatz'
+    - '&7Setbonus im aktiven Raid:'
+    - '&72 Teile: Feuerresistenz'
+    - '&74 Teile: zusätzlich Resistenz I + Stärke I'
+    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Reparatur: Mending oder Kesselritual.'
+  abyss_chestplate:
+    material: NETHERITE_CHESTPLATE
+    name: '&dAbgrundsatz · Brustplatte'
+    rarity: legendary
+    gear: true
+    set: abyss
+    slot: chestplate
+    item-model: mobarmy:abyss_chestplate
+    enchantments:
+      protection: 6
+      unbreaking: 5
+      mending: 1
+    trim:
+      material: amethyst
+      pattern: silence
+    lore:
+    - '&8LEGENDARY · Rüstung · &dAbgrundsatz'
+    - '&7Setbonus im aktiven Raid:'
+    - '&72 Teile: Feuerresistenz'
+    - '&74 Teile: zusätzlich Resistenz I + Stärke I'
+    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Reparatur: Mending oder Kesselritual.'
+  abyss_leggings:
+    material: NETHERITE_LEGGINGS
+    name: '&dAbgrundsatz · Beinschutz'
+    rarity: legendary
+    gear: true
+    set: abyss
+    slot: leggings
+    item-model: mobarmy:abyss_leggings
+    enchantments:
+      protection: 6
+      unbreaking: 5
+      mending: 1
+    trim:
+      material: amethyst
+      pattern: silence
+    lore:
+    - '&8LEGENDARY · Rüstung · &dAbgrundsatz'
+    - '&7Setbonus im aktiven Raid:'
+    - '&72 Teile: Feuerresistenz'
+    - '&74 Teile: zusätzlich Resistenz I + Stärke I'
+    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Reparatur: Mending oder Kesselritual.'
+  abyss_boots:
+    material: NETHERITE_BOOTS
+    name: '&dAbgrundsatz · Stiefel'
+    rarity: legendary
+    gear: true
+    set: abyss
+    slot: boots
+    item-model: mobarmy:abyss_boots
+    enchantments:
+      protection: 6
+      unbreaking: 5
+      mending: 1
+      feather_falling: 6
+    trim:
+      material: amethyst
+      pattern: silence
+    lore:
+    - '&8LEGENDARY · Rüstung · &dAbgrundsatz'
+    - '&7Setbonus im aktiven Raid:'
+    - '&72 Teile: Feuerresistenz'
+    - '&74 Teile: zusätzlich Resistenz I + Stärke I'
+    - '&7Boni klingen nach Ablegen in maximal 3s ab.'
+    - '&7Reparatur: Mending oder Kesselritual.'
+  warden_blade:
+    material: IRON_SWORD
+    name: '&eWächterklinge'
+    rarity: rare
+    gear: true
+    item-model: mobarmy:warden_blade
+    enchantments:
+      sharpness: 6
+      unbreaking: 4
+      mending: 1
+    lore:
+    - '&8RARE · Ausrüstung'
+    - '&7Wiederverwendbare Nahkampfwaffe'
+    - '&7Verbraucht sich nicht beim Aktivieren.'
+    - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
+    - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
+  gale_axe:
+    material: DIAMOND_AXE
+    name: '&bSturmaxt'
+    rarity: rare
+    gear: true
+    item-model: mobarmy:gale_axe
+    enchantments:
+      sharpness: 6
+      efficiency: 6
+      unbreaking: 4
+      mending: 1
+    lore:
+    - '&8RARE · Ausrüstung'
+    - '&7Waffe und normales Holzwerkzeug'
+    - '&7Verbraucht sich nicht beim Aktivieren.'
+    - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
+    - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
+  tempest_bow:
+    material: BOW
+    name: '&bSturmbogen'
+    rarity: rare
+    gear: true
+    item-model: mobarmy:tempest_bow
+    enchantments:
+      power: 5
+      punch: 2
+      unbreaking: 4
+      mending: 1
+    lore:
+    - '&8RARE · Ausrüstung'
+    - '&7Fernkampf · benötigt normale Pfeile'
+    - '&7Verbraucht sich nicht beim Aktivieren.'
+    - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
+    - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
+  abyss_sword:
+    material: NETHERITE_SWORD
+    name: '&dAbgrundklinge'
+    rarity: legendary
+    gear: true
+    item-model: mobarmy:abyss_sword
+    enchantments:
+      sharpness: 8
+      looting: 4
+      unbreaking: 5
+      mending: 1
+    lore:
+    - '&8LEGENDARY · Ausrüstung'
+    - '&7Sehr seltener Boss-Fund · Nahkampf'
+    - '&7Verbraucht sich nicht beim Aktivieren.'
+    - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
+    - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
+  abyss_mace:
+    material: MACE
+    name: '&dAbgrundstreitkolben'
+    rarity: legendary
+    gear: true
+    item-model: mobarmy:abyss_mace
+    enchantments:
+      density: 6
+      wind_burst: 3
+      unbreaking: 5
+      mending: 1
+    lore:
+    - '&8LEGENDARY · Ausrüstung'
+    - '&7Sehr seltener Boss-Fund · Mace-Cap gilt'
+    - '&7Verbraucht sich nicht beim Aktivieren.'
+    - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
+    - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
+  star_bow:
+    material: BOW
+    name: '&6Sternenbogen'
+    rarity: legendary
+    gear: true
+    item-model: mobarmy:star_bow
+    enchantments:
+      power: 7
+      punch: 3
+      unbreaking: 5
+      infinity: 1
+    lore:
+    - '&8LEGENDARY · Ausrüstung'
+    - '&7Sehr seltener Boss-Fund · ein Pfeil genügt'
+    - '&7Verbraucht sich nicht beim Aktivieren.'
+    - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
+    - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
+  echo_pickaxe:
+    material: DIAMOND_PICKAXE
+    name: '&5Echospitzhacke'
+    rarity: epic
+    gear: true
+    item-model: mobarmy:echo_pickaxe
+    enchantments:
+      efficiency: 7
+      fortune: 4
+      unbreaking: 4
+      mending: 1
+    lore:
+    - '&8EPIC · Ausrüstung'
+    - '&7Bergbau außerhalb geschützter Arena-Blöcke'
+    - '&7Verbraucht sich nicht beim Aktivieren.'
+    - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
+    - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
+  runic_shovel:
+    material: IRON_SHOVEL
+    name: '&eRunenschaufel'
+    rarity: rare
+    gear: true
+    item-model: mobarmy:runic_shovel
+    enchantments:
+      efficiency: 6
+      unbreaking: 4
+      mending: 1
+    lore:
+    - '&8RARE · Ausrüstung'
+    - '&7Normales Erdwerkzeug · keine Schutz-Umgehung'
+    - '&7Verbraucht sich nicht beim Aktivieren.'
+    - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
+    - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
+  harvest_hoe:
+    material: DIAMOND_HOE
+    name: '&aErntehacke'
+    rarity: epic
+    gear: true
+    item-model: mobarmy:harvest_hoe
+    enchantments:
+      efficiency: 6
+      fortune: 4
+      unbreaking: 4
+      mending: 1
+    lore:
+    - '&8EPIC · Ausrüstung'
+    - '&7Feldarbeit und Pflanzen · Vanilla-Erz-Regeln'
+    - '&7Verbraucht sich nicht beim Aktivieren.'
+    - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
+    - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
+  storm_essence:
+    material: AMETHYST_SHARD
+    name: '&bSturmessenz'
+    rarity: rare
+    item-model: mobarmy:storm_essence
+    lore:
+    - '&8Ritualmaterial'
+    - '&7Zutat für Schmiede- und Wächterrituale.'
+    - '&7Nur Ritual-Zutaten werden verbraucht.'
+    drops:
+    - source: miniboss
+      stage: 3
+      amount: 1
+      chance: 0.2
+  void_essence:
+    material: AMETHYST_SHARD
+    name: '&5Leerenessenz'
+    rarity: rare
+    item-model: mobarmy:void_essence
+    lore:
+    - '&8Ritualmaterial'
+    - '&7Zutat für Schmiede- und Wächterrituale.'
+    - '&7Nur Ritual-Zutaten werden verbraucht.'
+    drops:
+    - source: boss
+      stage: 5
+      amount: 1
+      chance: 0.25
 weeks:
   w1:
     world: raid_w1
@@ -1442,3 +1891,250 @@ resource-pack:
   port: 8765
   url: ''
   sha1: ''
+equipment-sets:
+  warden:
+    name: '&eWächtersatz'
+    bonuses:
+      '2':
+      - type: RESISTANCE
+        amplifier: 0
+      '4':
+      - type: REGENERATION
+        amplifier: 0
+  gale:
+    name: '&bSturmsatz'
+    bonuses:
+      '2':
+      - type: SPEED
+        amplifier: 0
+      '4':
+      - type: SLOW_FALLING
+        amplifier: 0
+  abyss:
+    name: '&dAbgrundsatz'
+    bonuses:
+      '2':
+      - type: FIRE_RESISTANCE
+        amplifier: 0
+      '4':
+      - type: RESISTANCE
+        amplifier: 0
+      - type: STRENGTH
+        amplifier: 0
+loot-pools:
+  warden:
+    name: Wächterrüstung
+    chance: 0.1
+    source: miniboss
+    minimum-stage: 1
+    entries:
+    - item: warden_helmet
+      weight: 1
+    - item: warden_chestplate
+      weight: 1
+    - item: warden_leggings
+      weight: 1
+    - item: warden_boots
+      weight: 1
+  gale:
+    name: Sturmrüstung
+    chance: 0.05
+    source: miniboss
+    minimum-stage: 3
+    entries:
+    - item: gale_helmet
+      weight: 1
+    - item: gale_chestplate
+      weight: 1
+    - item: gale_leggings
+      weight: 1
+    - item: gale_boots
+      weight: 1
+  abyss:
+    name: Abgrundrüstung
+    chance: 0.01
+    source: boss
+    minimum-stage: 1
+    entries:
+    - item: abyss_helmet
+      weight: 1
+    - item: abyss_chestplate
+      weight: 1
+    - item: abyss_leggings
+      weight: 1
+    - item: abyss_boots
+      weight: 1
+  weapons:
+    name: Seltene Waffen
+    chance: 0.08
+    source: miniboss
+    minimum-stage: 2
+    entries:
+    - item: warden_blade
+      weight: 1
+    - item: gale_axe
+      weight: 1
+    - item: tempest_bow
+      weight: 1
+  mythic:
+    name: Legendäre Waffen
+    chance: 0.02
+    source: boss
+    minimum-stage: 1
+    entries:
+    - item: abyss_sword
+      weight: 1
+    - item: abyss_mace
+      weight: 1
+    - item: star_bow
+      weight: 1
+  mining:
+    name: Werkzeuge
+    chance: 0.06
+    source: miniboss
+    minimum-stage: 3
+    entries:
+    - item: echo_pickaxe
+      weight: 1
+    - item: runic_shovel
+      weight: 1
+    - item: harvest_hoe
+      weight: 1
+rituals:
+  awakening:
+    name: '&dErwachen'
+    mode: SUMMON
+    catalyst: chaos_fragment
+    duration-seconds: 8
+    cooldown-seconds: 120
+    ingredients: []
+    type: HUSK
+    health: 80
+    damage: 6
+    guardian-name: '&5Fragmentwächter'
+    result: ritual_core
+    color:
+    - 209
+    - 86
+    - 255
+    display-item: ritual_core
+  warden_forge:
+    name: '&eWächterschmiede'
+    mode: FORGE
+    catalyst: chaos_fragment
+    duration-seconds: 8
+    cooldown-seconds: 180
+    ingredients:
+    - item: raid_shard
+      amount: 24
+    - material: IRON_INGOT
+      amount: 8
+    - material: LAPIS_LAZULI
+      amount: 4
+    pool: warden
+    color:
+    - 245
+    - 205
+    - 85
+    display-item: warden_chestplate
+  gale_forge:
+    name: '&bSturmschmiede'
+    mode: FORGE
+    catalyst: chaos_fragment
+    duration-seconds: 8
+    cooldown-seconds: 240
+    ingredients:
+    - item: raid_shard
+      amount: 48
+    - item: storm_essence
+      amount: 2
+    - material: DIAMOND
+      amount: 6
+    pool: gale
+    color:
+    - 80
+    - 220
+    - 245
+    display-item: gale_chestplate
+  echo_workshop:
+    name: '&5Echowerkstatt'
+    mode: FORGE
+    catalyst: chaos_fragment
+    duration-seconds: 8
+    cooldown-seconds: 180
+    ingredients:
+    - item: raid_shard
+      amount: 32
+    - item: storm_essence
+      amount: 1
+    - material: DIAMOND
+      amount: 4
+    pool: mining
+    color:
+    - 135
+    - 100
+    - 225
+    display-item: echo_pickaxe
+  abyss_trial:
+    name: '&5Prüfung des Abgrunds'
+    mode: SUMMON
+    catalyst: chaos_fragment
+    duration-seconds: 8
+    cooldown-seconds: 300
+    ingredients:
+    - item: raid_shard
+      amount: 32
+    - item: void_essence
+      amount: 1
+    type: HUSK
+    health: 180
+    damage: 9
+    guardian-name: '&5Abgrundwächter'
+    pool: mining
+    legendary-pool: mythic
+    legendary-chance: 0.1
+    color:
+    - 160
+    - 60
+    - 210
+    display-item: abyss_mace
+  restoration:
+    name: '&aWiederherstellung'
+    mode: REPAIR
+    catalyst: chaos_fragment
+    duration-seconds: 8
+    cooldown-seconds: 60
+    ingredients:
+    - item: raid_shard
+      amount: 8
+    - material: GOLD_INGOT
+      amount: 2
+    color:
+    - 105
+    - 235
+    - 145
+    display-item: healing_bloom
+  blessing:
+    name: '&6Segen der Vorhut'
+    mode: BUFF
+    catalyst: chaos_fragment
+    duration-seconds: 8
+    cooldown-seconds: 180
+    ingredients:
+    - item: raid_shard
+      amount: 4
+    - material: EMERALD
+      amount: 2
+    radius: 6
+    effects:
+    - type: RESISTANCE
+      seconds: 30
+      amplifier: 0
+    - type: SPEED
+      seconds: 30
+      amplifier: 0
+    color:
+    - 245
+    - 215
+    - 90
+    display-item: chaos_crown
