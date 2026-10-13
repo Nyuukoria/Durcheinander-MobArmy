@@ -9,6 +9,17 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class ConfigUpgradeTest {
+    @Test void v12UpdateAddsRelicsWithoutRebuildingOrOverwritingExistingSettings()throws Exception{
+        String resource=new String(Objects.requireNonNull(getClass().getResourceAsStream("/config.yml")).readAllBytes(),StandardCharsets.UTF_8);
+        var cfg=new YamlConfiguration();cfg.loadFromString(resource);cfg.set("configuration-version",3);
+        cfg.set("weeks.w1.arena.max",List.of(40,85,42));cfg.set("items.ritual_core.name","My core");cfg.set("items.ritual_core.use.cooldown-seconds",99);
+        for(String id:List.of("ember_charm","guardian_rune","hunter_lens","weakening_fang"))cfg.set("items."+id,null);
+        MobArmy p=mock(MobArmy.class);when(p.getConfig()).thenReturn(cfg);when(p.getResource("config.yml")).thenAnswer(i->new ByteArrayInputStream(resource.getBytes(StandardCharsets.UTF_8)));
+        ConfigUpgrade.run(p);
+        assertEquals(4,cfg.getInt("configuration-version"));assertEquals(List.of(40,85,42),cfg.getIntegerList("weeks.w1.arena.max"));
+        assertEquals("My core",cfg.getString("items.ritual_core.name"));assertEquals(99,cfg.getInt("items.ritual_core.use.cooldown-seconds"));
+        for(String id:List.of("ember_charm","guardian_rune","hunter_lens","weakening_fang")){assertTrue(cfg.contains("items."+id,true));assertEquals(0,cfg.getInt("items."+id+".use.consume"));}
+    }
     @Test void v11DemoUpgradesExistingGeometryAndReusableItems()throws Exception{
         String resource=new String(Objects.requireNonNull(getClass().getResourceAsStream("/config.yml")).readAllBytes(),StandardCharsets.UTF_8);
         var cfg=new YamlConfiguration();cfg.loadFromString(resource);cfg.set("configuration-version",2);
@@ -28,7 +39,7 @@ class ConfigUpgradeTest {
         cfg.set("items.raid_shard.name","Old shard");cfg.set("items.raid_shard.drops",List.of(Map.of("source","mob","chance",.42)));
         MobArmy p=mock(MobArmy.class);when(p.getConfig()).thenReturn(cfg);when(p.getResource("config.yml")).thenAnswer(i->new ByteArrayInputStream(resource.getBytes(StandardCharsets.UTF_8)));
         ConfigUpgrade.run(p);
-        assertEquals(3,cfg.getInt("configuration-version"));assertEquals(List.of(80,64,-4),cfg.getIntegerList("weeks.old.lobby.min"));assertEquals(List.of(-23,64,-30),cfg.getIntegerList("weeks.custom.lobby.min"));
+        assertEquals(4,cfg.getInt("configuration-version"));assertEquals(List.of(80,64,-4),cfg.getIntegerList("weeks.old.lobby.min"));assertEquals(List.of(-23,64,-30),cfg.getIntegerList("weeks.custom.lobby.min"));
         assertEquals(.13,cfg.getDouble("balance.hit-cap"));assertTrue(cfg.getBoolean("testing.solo"));assertEquals(.42,cfg.getMapList("items.raid_shard.drops").getFirst().get("chance"));
         assertEquals("mobarmy:raid_shard",cfg.getString("items.raid_shard.item-model"));
         assertEquals(List.of(49,85,49),cfg.getIntegerList("weeks.old.arena.max"));assertEquals(0,cfg.getInt("items.ritual_core.use.consume"));assertTrue(cfg.contains("items.frost_talisman",true));

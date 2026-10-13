@@ -68,15 +68,23 @@ final class Items {
         if(until>now){p.tell(player,"Noch "+Rules.clock((until-now+999)/1000)+" Abklingzeit für dieses Item.");return true;}
         int consumed=cfg.getInt("consume",0);if(held.getAmount()<consumed)return true;
         List<Player> targets=new ArrayList<>();targets.add(player);double radius=cfg.getDouble("radius",0);Session session=p.session(player.getUniqueId());
-        double enemyRadius=cfg.getDouble("enemy-radius",0);
+        double enemyRadius=cfg.getDouble("enemy-radius",0);int affectedEnemies=0;
         if(enemyRadius>0){
             if(session==null||session.phase!=Session.Phase.FIGHT){p.tell(player,"Dieses Relikt wirkt auf Gegner während einer Raid-Stage.");return true;}
-            int affected=0;
             for(UUID uuid:session.mobs){Entity e=Bukkit.getEntity(uuid);if(e instanceof LivingEntity mob&&mob.getWorld().equals(player.getWorld())&&mob.getLocation().distanceSquared(player.getLocation())<=enemyRadius*enemyRadius){
-                boolean boss=session.contribution.containsKey(uuid);mob.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS,(boss?3:cfg.getInt("enemy-slow-seconds",6))*20,boss?0:1,true,true,true));affected++;
-                mob.getWorld().spawnParticle(Particle.SNOWFLAKE,mob.getLocation().add(0,1,0),18,.4,.6,.4,.02);
+                boolean boss=session.contribution.containsKey(uuid);
+                if(cfg.contains("enemy-slow-seconds"))mob.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS,(boss?3:cfg.getInt("enemy-slow-seconds",6))*20,boss?0:1,true,true,true));
+                for(var effect:cfg.getMapList("enemy-effects")){
+                    PotionEffectType type=PotionEffectType.getByName(String.valueOf(effect.get("type")));if(type==null)continue;
+                    int seconds=((Number)effect.get("seconds")).intValue(),amplifier=((Number)effect.get("amplifier")).intValue();
+                    if(boss&&effect.get("boss-seconds") instanceof Number n)seconds=n.intValue();
+                    if(boss&&effect.get("boss-amplifier") instanceof Number n)amplifier=n.intValue();
+                    mob.addPotionEffect(new PotionEffect(type,seconds*20,amplifier,true,true,true));
+                }
+                affectedEnemies++;
+                mob.getWorld().spawnParticle(cfg.contains("enemy-slow-seconds")?Particle.SNOWFLAKE:Particle.ENCHANT,mob.getLocation().add(0,1,0),18,.4,.6,.4,.02);
             }}
-            if(affected==0){p.tell(player,"Keine Raid-Gegner in Reichweite. Das Relikt bleibt bereit.");return true;}
+            if(affectedEnemies==0){p.tell(player,"Keine Raid-Gegner in Reichweite. Das Relikt bleibt bereit.");return true;}
         }
         if(radius>0&&session!=null)for(Player other:p.engine.players(session))if(other!=player&&other.getWorld().equals(player.getWorld())&&other.getLocation().distanceSquared(player.getLocation())<=radius*radius)targets.add(other);
         for(var effect:cfg.getMapList("effects")){
@@ -87,7 +95,7 @@ final class Items {
         if(consumed>0)held.setAmount(held.getAmount()-consumed);
         p.state.set("item-cooldowns."+player.getUniqueId()+"."+id,now+cfg.getLong("cooldown-seconds",60)*1000);p.saveState();
         for(Player target:targets){p.presentation.burst(target.getLocation());target.playSound(target.getLocation(),Sound.BLOCK_AMETHYST_BLOCK_CHIME,0.8f,1.2f);}
-        p.tell(player,cfg.getString("message","Relikt aktiviert.")+" &7("+targets.size()+" Spieler)");return true;
+        p.tell(player,cfg.getString("message","Relikt aktiviert.")+" &7("+(enemyRadius>0?affectedEnemies+" Gegner":targets.size()+" Spieler")+")");return true;
     }
     boolean ritual(Player player,org.bukkit.block.Block cauldron,ItemStack held){
         String id=id(held);if(id==null)return false;var cfg=p.getConfig().getConfigurationSection("items."+id+".ritual");if(cfg==null)return false;

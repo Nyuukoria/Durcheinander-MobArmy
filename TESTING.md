@@ -1,15 +1,15 @@
-# In-game checks for 1.2.0
+# In-game checks for 1.3.0
 
 Automated tests verify rules, command grammar and a mocked party-entry/teleport flow. The following checks exercise Minecraft's native movement, rendering and multiplayer behavior.
 
-1. Update over an existing stopped demo. Start and confirm plugin version 1.2.0, new separate lobby and full arena ceiling. Old generated layouts migrate once; custom worlds with generate-demo false should remain hand-built.
+1. Update over an existing stopped demo. Start and confirm plugin version 1.3.0, new separate lobby and full arena ceiling. Old generated layouts migrate once; custom worlds with generate-demo false should remain hand-built.
 2. Join a portal. A private `/raid` hint appears; no inventory GUI opens automatically. The waiting room has no walkable connection to the combat space. `/raid` opens voting. Leader Ready teleports everyone after the countdown; combat begins only after all successful arrivals.
 3. Complete a stage. Collect miniboss loot before return. After up to 12 seconds, leftover custom loot is stored for the leader and everyone is teleported back to the lobby. Invite a new player between stages, elect a different leader, and start again.
 4. With test mode OFF and week 1 minimum 2, each of two people can deal 50% boss/miniboss HP. With week 2 minimum 3 each can deal 33⅓%; with week 3 minimum 5 each can deal 20%. Extra members do not change the cap. Test mode ON uses 100%.
 5. Test high mace smashes, bows and strong hits; normal hit cap remains 20%, mace 5%. At the final tiny fractional HP, the boss should finish rather than become stuck by rounding.
 6. Use wind charges against the ground and nearby players in the raid. They work with visibly reduced, capped boost; they do not destroy blocks or cause explosion damage. Elytra/fireworks remain blocked. Check wall/outside pearl destinations and cooldown.
 7. Watch ordinary spiders and spider jockeys at original walls and pillars: no upward climbing. Place a two-high player wall away from an original wall: climbing is permitted there. Mounted skeletons remain alive if the spider dies; wave waits for the rider too.
-8. Enable the new resource pack. Test all seven custom textures in inventory and hand. Each item has lore. Authentic Chaosfragment on a default-world cauldron produces a floating core, runic ring, spiral, phase text, sounds and a final guardian after six seconds. Break the cauldron halfway: the catalyst remains in inventory with no extra mailbox copy. Restart halfway: the catalyst still remains once.
+8. Enable the new resource pack. Test all eleven custom textures in inventory and hand. Each item has lore. Authentic Chaosfragment on a default-world cauldron produces a floating core, runic ring, spiral, phase text, sounds and a final guardian after six seconds. Break the cauldron halfway: the catalyst remains in inventory with no extra mailbox copy. Restart halfway: the catalyst still remains once.
 9. Ritualkern right-click keeps the item, grants resistance/regeneration and applies 60-second cooldown. Crown right-click applies speed/haste to the nearby party without consuming it, with 75-second cooldown. Relog does not reset item cooldowns. Renamed vanilla items cannot trigger abilities or a ritual.
 10. Test Raidsplitter count/take on real PDC shards and renamed vanilla prismarine shards. Only real shards count; insufficient requested quantity removes nothing. NPC integration must pay only after API removal succeeds.
 11. Check portal hologram readability, animated outline, locked red state, exact reward countdown, raid BossBar/ActionBar and per-player contribution display. Stopping/leaving removes that party's HUD. Reward expiry and first boss clear stop drops.
@@ -30,3 +30,10 @@ For a public event, use the production config and manually balanced equipment/pl
 - Ritual beginnen und Kessel entfernen: Katalysator bleibt genau einmal im Inventar, keine zusätzliche Kopie im Postfach. Wiederverwendung nach 120 Sekunden. Alte ausstehende, bereits bezahlte Rituale aus 1.1 werden weiterhin einmal erstattet.
 
 Automatisch getestet werden Gelände-Steigungen/Spawn-Pads, Config-Migration, lokal erreichbarer ZIP-Download, SHA-1 und HTTP-Methoden. Minecraft-Rendering und echtes Multiplayer-Spiel bleiben manuelle Prüfungen.
+
+## Zusätzliche Prüfung für 1.3
+
+- Alle elf Icons im Inventar und in der Hand prüfen: echte 16×16-Pixeloptik, keine verschwommenen Kanten. `/raid pack reload` lädt das neue Pack; beim Verbinden annehmen.
+- `/raid kit` enthält alle zehn wiederverwendbaren Relikte. Glutamulett gewährt 15s Feuerresistenz, Wächterrune vier zusätzliche Herzen für 8s.
+- Jägerlinse markiert nur Raid-Gegner in 16 Blöcken für 12s und gewährt 30s Nachtsicht. Schwächungszahn wirkt 6s auf normale Raid-Gegner, 3s auf Bosse. Kein Effekt darf Spieler oder andere Welt-Mobs treffen. Ohne Gegner wird kein Cooldown verbraucht.
+- Alle Items bleiben nach Rechtsklick erhalten; Cooldowns gelten auch nach Relog und für weitere Kopien derselben Item-ID.

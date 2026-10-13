@@ -16,9 +16,12 @@ class ResourcePacksTest {
         byte[] bundle=new ResourcePacks(p).bundle();var files=new HashMap<String,byte[]>();
         try(var zip=new ZipInputStream(new ByteArrayInputStream(bundle))){for(ZipEntry entry;(entry=zip.getNextEntry())!=null;)files.put(entry.getName(),zip.readAllBytes());}
         assertTrue(files.containsKey("pack.mcmeta"));assertFalse(files.containsKey("index.txt"));
-        for(String id:List.of("chaos_fragment","ritual_core","chaos_crown","raid_shard","frost_talisman","healing_bloom","gale_sigil")){
+        for(String id:List.of("chaos_fragment","ritual_core","chaos_crown","raid_shard","frost_talisman","healing_bloom","gale_sigil","ember_charm","guardian_rune","hunter_lens","weakening_fang")){
             assertTrue(files.containsKey("assets/mobarmy/items/"+id+".json"),id);assertTrue(files.containsKey("assets/mobarmy/models/item/"+id+".json"),id);
-            var png=ImageIO.read(new ByteArrayInputStream(files.get("assets/mobarmy/textures/item/"+id+".png")));assertNotNull(png,id);assertEquals(png.getWidth(),png.getHeight());assertTrue(png.getColorModel().hasAlpha());
+            var png=ImageIO.read(new ByteArrayInputStream(files.get("assets/mobarmy/textures/item/"+id+".png")));assertNotNull(png,id);assertEquals(16,png.getWidth());assertEquals(16,png.getHeight());assertTrue(png.getColorModel().hasAlpha());
+            var colors=new HashSet<Integer>();boolean transparent=false;
+            for(int y=0;y<16;y++)for(int x=0;x<16;x++){int rgba=png.getRGB(x,y),alpha=rgba>>>24;assertTrue(alpha==0||alpha==255,id+" has a soft edge");if(alpha==255)colors.add(rgba);else transparent=true;}
+            assertTrue(transparent,id);assertFalse(colors.isEmpty(),id);assertTrue(colors.size()<=6,id+" has too many colors");
         }
     }
 }

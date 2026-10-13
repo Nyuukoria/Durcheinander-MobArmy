@@ -1,5 +1,5 @@
 # Demo v3: compact separate preparation room and roofed 100x100 landscape.
-configuration-version: 3
+configuration-version: 4
 timezone: Europe/Berlin
 entry-timeout-seconds: 120
 loot-timeout-seconds: 120
@@ -193,6 +193,108 @@ items:
       - type: SLOW_FALLING
         seconds: 8
         amplifier: 0
+  ember_charm:
+    name: '&6Glutamulett'
+    lore:
+    - '&8Wiederverwendbares Feuerrelikt'
+    - '&7Rechtsklick: Feuerresistenz (15s).'
+    - '&6Schützt dich vor Feuer und Lava.'
+    - '&7Abklingzeit: 45 Sekunden · bleibt erhalten.'
+    use:
+      consume: 0
+      radius: 0
+      cooldown-seconds: 45
+      message: '&6Das Glutamulett schützt dich vor Feuer.'
+      effects:
+      - type: FIRE_RESISTANCE
+        seconds: 15
+        amplifier: 0
+    material: AMETHYST_SHARD
+    item-model: mobarmy:ember_charm
+    drops:
+    - source: miniboss
+      stage: 1
+      amount: 1
+      chance: 0.5
+  guardian_rune:
+    name: '&9Wächterrune'
+    lore:
+    - '&8Wiederverwendbares Schutzrelikt'
+    - '&7Rechtsklick: Absorption II (8s).'
+    - '&9Vier zusätzliche Herzen als kurzer Schutzschild.'
+    - '&7Abklingzeit: 75 Sekunden · bleibt erhalten.'
+    use:
+      consume: 0
+      radius: 0
+      cooldown-seconds: 75
+      message: '&9Die Wächterrune errichtet einen Schutzschild.'
+      effects:
+      - type: ABSORPTION
+        seconds: 8
+        amplifier: 1
+    material: AMETHYST_SHARD
+    item-model: mobarmy:guardian_rune
+    drops:
+    - source: miniboss
+      stage: 2
+      amount: 1
+      chance: 0.5
+  hunter_lens:
+    name: '&eJägerlinse'
+    lore:
+    - '&8Wiederverwendbares Aufklärungsrelikt'
+    - '&7Rechtsklick während einer Stage: markiert'
+    - '&7Raid-Gegner in 16 Blöcken für 12s.'
+    - '&eDu erhältst zusätzlich Nachtsicht (30s).'
+    - '&7Abklingzeit: 35 Sekunden · bleibt erhalten.'
+    use:
+      consume: 0
+      radius: 0
+      enemy-radius: 16
+      cooldown-seconds: 35
+      message: '&eDie Jägerlinse markiert nahe Gegner.'
+      enemy-effects:
+      - type: GLOWING
+        seconds: 12
+        amplifier: 0
+      effects:
+      - type: NIGHT_VISION
+        seconds: 30
+        amplifier: 0
+    material: AMETHYST_SHARD
+    item-model: mobarmy:hunter_lens
+    drops:
+    - source: miniboss
+      stage: 3
+      amount: 1
+      chance: 0.5
+  weakening_fang:
+    name: '&5Schwächungszahn'
+    lore:
+    - '&8Wiederverwendbares Schwächungsrelikt'
+    - '&7Rechtsklick: Raid-Gegner in 8 Blöcken'
+    - '&7erhalten Schwäche I (6s), Bosse nur 3s.'
+    - '&5Verursacht keinen direkten Schaden.'
+    - '&7Abklingzeit: 50 Sekunden · bleibt erhalten.'
+    use:
+      consume: 0
+      radius: 0
+      enemy-radius: 8
+      cooldown-seconds: 50
+      message: '&5Der Schwächungszahn dämpft gegnerische Angriffe.'
+      enemy-effects:
+      - type: WEAKNESS
+        seconds: 6
+        boss-seconds: 3
+        amplifier: 0
+      effects: []
+    material: AMETHYST_SHARD
+    item-model: mobarmy:weakening_fang
+    drops:
+    - source: miniboss
+      stage: 4
+      amount: 1
+      chance: 0.5
 weeks:
   w1:
     world: raid_w1

@@ -1,4 +1,4 @@
-# Durcheinander MobArmy 1.2.0
+# Durcheinander MobArmy 1.3.0
 
 Spigot **Minecraft Java 26.3 / Java 25**. Konfigurierbare Raids mit drei Wochen, fünf Stages, Gruppen, Leader-Voting, Bossen, eigenen Items und Kesselritualen. Verwendet nur Bukkit/Spigot-APIs.
 
@@ -8,7 +8,7 @@ Spigot **Minecraft Java 26.3 / Java 25**. Konfigurierbare Raids mit drei Wochen,
 2. Bei einer neuen Installation `local-test/setup.bat` mit Internet starten. Setup baut Spigot und fragt dich selbst nach der Minecraft-EULA.
 3. `local-test/start-server.bat` starten. Auf `Done` warten und Minecraft Java **26.3** mit `localhost:25565` verbinden.
 4. In der Serverkonsole `op DEIN_NAME` eingeben.
-5. Im Spiel `/raid kit` (inklusive aller sechs wiederverwendbaren Relikte) und `/raid demo w1` benutzen. Die Reward-Zeit im Admin-Menü auswählen.
+5. Im Spiel `/raid kit` (inklusive aller zehn wiederverwendbaren Relikte) und `/raid demo w1` benutzen. Die Reward-Zeit im Admin-Menü auswählen.
 6. In das animierte Portal gehen oder `/raid join demo_w1` benutzen. Du landest im **getrennten Vorraum**. Das Menü öffnet sich nur durch `/raid`.
 7. In `/raid` den Leader wählen und als Leader **Ready** drücken. Nach drei Sekunden wird die gesamte Gruppe in die überdachte Arena teleportiert. Die Wave beginnt erst, wenn alle angekommen sind.
 8. Nach einer Stage kurz Beute einsammeln, dann geht es automatisch zurück in den Vorraum. Mit `/raid` und Ready die nächste Stage starten.
@@ -17,13 +17,20 @@ Spigot **Minecraft Java 26.3 / Java 25**. Konfigurierbare Raids mit drei Wochen,
 
 Die Demo liefert die Texturen automatisch von deinem PC an Minecraft: den Ressourcenpaket-Dialog beim Verbinden **annehmen**. Das funktioniert nach dem Setup auch ohne Internet. `/raid pack status` zeigt den Ladezustand; `/raid pack reload` fordert das Pack erneut an. Falls du Server-Packs deaktiviert hast, bei diesem Server **Server-Ressourcenpakete: Aktiviert** einstellen und erneut verbinden. Alternativ `resource-pack/MobArmy-resource-pack-26.3.zip` im Client-Ordner `resourcepacks` aktivieren. Andere Launcher benötigen dabei ihren eigenen Minecraft-Ordner.
 
-128×128 ist ein gültiges Texturmaß; Minecraft verlangt keine 16×16-Dateien. Das Pack muss aber im **Client** geladen sein, eine Plugin-JAR allein installiert keine Texturen.
+Alle elf Item-Texturen sind jetzt echte **16×16-PNGs** mit kleinen Farbpaletten, harten Pixelkanten und transparentem Hintergrund. Das Pack wird im **Client** geladen.
 
 ### Eine vorhandene Demo aktualisieren
 
 Server mit `stop` beenden, neue ZIP über denselben Ordner entpacken, dann `local-test/start-server.bat` starten. Der Launcher ersetzt das Plugin automatisch und setzt die Demo-Flags. Java/Git/Spigot werden dabei wiederverwendet.
 
 Die alten **generierten Demo-Arenen** werden beim ersten Start auf Layout 3 umgebaut: **9×9-Vorraum**, geschlossene **100×100-Landschaftsarena**, sanfte Hügel, Wege, Ruinen und kleine Bäume/Kristallgebilde. Die drei Welten behalten ihre eigenen Themen. Der erste Start benötigt durch den Umbau länger. Alte versionierte Plugin-JARs sichert der Launcher außerhalb des Plugin-Suchpfads, um doppelte Plugin-Versionen zu vermeiden. Eigene Welten mit `generate-demo: false` werden nicht gebaut. Andere Konfigurationen, Loot-Postfach und Fortschritt bleiben erhalten.
+
+## Neu in 1.3
+
+- Alle sieben bisherigen Icons komplett vereinfacht und als 16×16-Pixeltexturen mit höchstens sechs deckenden Farben neu erstellt. Keine weichen Kanten, Verläufe oder äußeren Glows.
+- Vier zusätzliche wiederverwendbare Relikte: Glutamulett, Wächterrune, Jägerlinse und Schwächungszahn. Zehn Relikte plus Raidsplitter-Währung haben eigene Texturen.
+- Neue Gegner-Effekte betreffen nur aktive Raid-Gegner, verursachen keinen direkten Schaden und umgehen keine Boss-Anteile. Boss-Schwäche hält kürzer an.
+- Bestehende 1.2-Arenen und angepasste Relikt-Einstellungen bleiben beim Upgrade erhalten; neue Items werden ergänzt. Minecraft bekommt durch den geänderten Pack-Hash die neuen Texturen.
 
 ## Neu in 1.2
 
@@ -43,7 +50,7 @@ Die alten **generierten Demo-Arenen** werden beim ersten Start auf Layout 3 umge
 - Spinnen dürfen an Spielerblöcken klettern, an ursprünglichen Arena-Wänden und Pfeilern wird das Hochklettern tickweise verhindert. Reiter bleiben dabei erhalten. Keine NMS-Abhängigkeit.
 - Animierte Portalringe, wandernde Partikel, farbiger Status und lesbares Textdisplay mit Restzeit bis auf Sekunden.
 - Raid-Bossbar und Actionbar mit Stage, Wave, Gegnern, Leader, Spielerzahl, Reward-Zeit und deinem Boss-Anteil.
-- Sieben eigene transparente 64×64-/128×128-Item-Texturen, neue Lore und nutzbare Relikte. Siehe `ITEMS.md`.
+- Elf eigene transparente 16×16-Item-Texturen, neue Lore und nutzbare Relikte. Siehe `ITEMS.md`.
 - Kesselritual in drei Phasen mit schwebendem Kern, rotierenden Runen, Energie-Spirale, Sounds und finalem Ausbruch. Der Katalysator bleibt erhalten, auch bei Abbruch. Die 120-Sekunden-Abklingzeit läuft weiter. Verbrauch aus älteren angefangenen Ritualen wird beim Neustart erstattet.
 - Kontextabhängige Tab-Vervollständigung für Wochen, Portale, Aktionen, Zeitangaben, Item-IDs, Spieler und Mengen; respektiert Permissions.
 - Demo-Sperren aus; `/raid cooldown clear` und `/raid demo reset` zum manuellen Zurücksetzen.
@@ -113,7 +120,7 @@ mvn clean verify
 python3 tools/build_release.py
 ```
 
-JAR: `target/DurcheinanderMobArmy-1.2.0.jar`. Resource Pack: `target/MobArmy-resource-pack-26.3.zip`. Das Pack verwendet Format 97.1. GitHub Actions baut JAR, Pack und ZIP und prüft die Windows-Setup-Skripte.
+JAR: `target/DurcheinanderMobArmy-1.3.0.jar`. Resource Pack: `target/MobArmy-resource-pack-26.3.zip`. Das Pack verwendet Format 97.1. GitHub Actions baut JAR, Pack und ZIP und prüft die Windows-Setup-Skripte.
 
 Automatische Tests prüfen Timer/Mitternacht/Boss-Abschluss, Schaden und Mindestspieler-Anteile, Waves/Reiter, komplette Tab-Grammatik, Spinnen-Regelausnahme, GUI-freien Eintritt und den Gruppen-Teleport. Sichtbarkeit, native Wind-Charge-Physik, Spinnen-Bewegung und Multiplayer-Balance bitte mit `TESTING.md` im Spiel prüfen.
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Build an original static voxel boss model. Uses only vanilla texture references."""
 import json
+import struct
 from pathlib import Path
 from zipfile import ZipFile, ZIP_DEFLATED
 
@@ -17,13 +18,15 @@ def box(a, b, texture):
 
 def build():
     write('pack.mcmeta', {'pack': {'description': 'Yuuki • MobArmy 26.3 • Chaos Guardian', 'min_format': [97, 1], 'max_format': [97, 1]}})
-    items=['chaos_fragment','ritual_core','chaos_crown','raid_shard','frost_talisman','healing_bloom','gale_sigil']
+    items=['chaos_fragment','ritual_core','chaos_crown','raid_shard','frost_talisman','healing_bloom','gale_sigil','ember_charm','guardian_rune','hunter_lens','weakening_fang']
     for item in items+['chaos_guardian']:
         model=f'mobarmy:item/{item}'
         write(f'assets/mobarmy/items/{item}.json', {'model': {'type': 'minecraft:model', 'model': model}})
     for item in items:
         texture = PACK / f'assets/mobarmy/textures/item/{item}.png'
         if not texture.is_file(): raise SystemExit(f'Missing item texture: {texture}')
+        data=texture.read_bytes()
+        if data[:8]!=b'\x89PNG\r\n\x1a\n' or struct.unpack('>II',data[16:24])!=(16,16): raise SystemExit(f'Item texture must be a real 16x16 PNG: {texture}')
         write(f'assets/mobarmy/models/item/{item}.json', {'parent': 'minecraft:item/generated', 'textures': {'layer0': f'mobarmy:item/{item}'}})
     elements = [
         box([4, 2, 5], [7.5, 10, 11], 'stone'), box([8.5, 2, 5], [12, 10, 11], 'stone'),
