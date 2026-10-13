@@ -22,11 +22,11 @@ final class Engine {
         if(!player.hasPermission("mobarmy.play")||now-entryTimes.getOrDefault(id,0L)<2000)return false;
         entryTimes.put(id,now);
         if(p.session(id)!=null)return false;
-        if(portal.lockReason()!=null){p.tell(player,portal.lockReason()+" &7Bitte außerhalb des Portals warten.");return false;}
-        if(portal.session!=null&&portal.session.dead.contains(id)){p.tell(player,"Du bist in diesem Durchlauf ausgeschieden.");return false;}
-        if(!p.getConfig().getBoolean("testing.disable-wipe-cooldown")&&portal.day.equals(p.today())&&p.state.getLong("cooldowns."+p.today()+"."+id)>now){p.tell(player,"Wipe-Sperre aktiv. /raid status zeigt die Portalinfos.");return false;}
+        if(portal.lockReason()!=null){String reason=p.tr(player,!portal.open?"portal.reason.closed":portal.session!=null?"portal.reason.stage":"portal.reason.busy","stage",portal.session==null?1:portal.session.stage);p.say(player,"raid.blocked","reason",reason);return false;}
+        if(portal.session!=null&&portal.session.dead.contains(id)){p.say(player,"raid.eliminated");return false;}
+        if(!p.getConfig().getBoolean("testing.disable-wipe-cooldown")&&portal.day.equals(p.today())&&p.state.getLong("cooldowns."+p.today()+"."+id)>now){p.say(player,"raid.wipe");return false;}
         // One physical arena can serve only one portal at a time.
-        if(p.portals.values().stream().anyMatch(q->q!=portal&&q.week.equals(portal.week)&&q.session!=null)){p.tell(player,"Diese Arena wird schon benutzt.");return false;}
+        if(p.portals.values().stream().anyMatch(q->q!=portal&&q.week.equals(portal.week)&&q.session!=null)){p.say(player,"raid.busy");return false;}
         if(portal.session==null){
             Session s=new Session(portal,p.arenas.get(portal.week),id);
             int progress=p.state.getInt("progress."+portal.id+"."+id,1);
@@ -37,17 +37,17 @@ final class Engine {
         p.returns.put(id,portal.exit.clone());p.saveState();
         if(!player.teleport(s.arena.lobbySpawn)){leave(player,false);return false;}
         p.presentation.transfer(player);
-        p.tell(player,p.getConfig().getString("messages.private-join","&dWillkommen im Vorraum! &fMach &e/raid &fum den Leader zu wählen. Nur der Leader startet die Stage mit Ready."));
+        p.say(player,"raid.welcome");
         p.presentation.hud(s);return true;
     }
     void ready(Player player){
         Session s=p.session(player.getUniqueId());if(s==null)return;
-        if(!s.leader.equals(player.getUniqueId())){p.tell(player,"Nur der Leader kann starten.");return;}
+        if(!s.leader.equals(player.getUniqueId())){p.say(player,"raid.only-leader");return;}
         if(s.phase!=Session.Phase.LOBBY)return;
-        if(s.members.size()<s.arena.minimum()){p.tell(player,"Mindestens "+s.arena.minimum()+" Spieler erforderlich.");return;}
+        if(s.members.size()<s.arena.minimum()){p.say(player,"raid.need-players","count",s.members.size(),"minimum",s.arena.minimum());return;}
         s.uses.clear();s.appleTimes.clear();s.pearlTimes.clear();s.votes.clear();s.wave=0;s.miniboss=false;
         s.stagePlayers=s.members.size();s.arena.gate(false);s.phase(Session.Phase.ENTERING);
-        players(s).forEach(pl->{pl.closeInventory();pl.sendTitle(p.text(pl,"Stufe "+s.stage),p.text(pl,"Die Gruppe wird in die Arena teleportiert …"),10,50,10);});
+        players(s).forEach(pl->{pl.closeInventory();pl.sendTitle(p.tr(pl,"raid.enter-title","stage",s.stage),p.tr(pl,"raid.enter-subtitle"),10,50,10);});
     }
     void tick(){
         for(Portal portal:p.portals.values()){
@@ -81,7 +81,7 @@ final class Engine {
                 long timeout=p.getConfig().getLong(s.stage<5?"stage-loot-timeout-seconds":"loot-timeout-seconds",s.stage<5?12:120)*1000;
                 if(s.drops.isEmpty()||now-s.phaseSince>=timeout){
                     for(UUID id:new ArrayList<>(s.drops)){Entity e=Bukkit.getEntity(id);if(e instanceof Item item&&p.items.id(item.getItemStack())!=null){p.items.deliver(s.leader,item.getItemStack());item.remove();}}
-                    s.drops.clear();if(s.stage<5){s.stage++;s.phase(Session.Phase.LOBBY);players(s).forEach(pl->{pl.teleport(s.arena.lobbySpawn);p.tell(pl,"Stage geschafft! Mit /raid den Leader wählen und die nächste Stage starten.");});p.saveState();}else finish(s);
+                    s.drops.clear();if(s.stage<5){s.stage++;s.phase(Session.Phase.LOBBY);players(s).forEach(pl->{pl.teleport(s.arena.lobbySpawn);p.say(pl,"raid.stage-clear");});p.saveState();}else finish(s);
                 }
             }
         }
@@ -122,13 +122,13 @@ final class Engine {
                 }
                 if(s.mobs.isEmpty())throw new IllegalArgumentException("Empty wave");
             }
-            players(s).forEach(pl->pl.sendTitle(p.text(pl,"Stufe "+s.stage),p.text(pl,mini?"Miniboss":boss?"Endboss":"Welle "+s.wave),5,40,5));
+            players(s).forEach(pl->pl.sendTitle(p.tr(pl,"raid.enter-title","stage",s.stage),p.tr(pl,mini?"raid.miniboss":boss?"raid.boss":"raid.wave-title","wave",s.wave),5,40,5));
             s.waveStartMobs=s.mobs.size();aggro(s);
         }catch(Exception e){p.getLogger().log(java.util.logging.Level.SEVERE,"Failed to spawn wave",e);abortStage(s,"Fehler in der Wave-Config. Admin informieren.");}
     }
     Location spawnPoint(Session s){
         List<Location> candidates=s.arena.spawnCandidates();List<SpawnPlanner.Point> players=players(s).stream().map(pl->point(pl.getLocation())).toList();List<SpawnPlanner.Point> occupied=s.mobs.stream().map(Bukkit::getEntity).filter(Objects::nonNull).map(e->point(e.getLocation())).toList();
-        int index=SpawnPlanner.choose(candidates.stream().map(Engine::point).toList(),players,occupied,p.getConfig().getDouble("balance.minimum-spawn-distance",8),p.getConfig().getDouble("balance.mob-spawn-spacing",4),random);
+        int index=SpawnPlanner.choose(candidates.stream().map(Engine::point).toList(),players,occupied,p.getConfig().getDouble("balance.minimum-spawn-distance",18),p.getConfig().getDouble("balance.mob-spawn-spacing",4),random);
         return index<0?null:candidates.get(index).clone();
     }
     static SpawnPlanner.Point point(Location l){return new SpawnPlanner.Point(l.getX(),l.getY(),l.getZ());}
@@ -161,6 +161,7 @@ final class Engine {
     static void set(LivingEntity mob,Attribute a,double value){AttributeInstance attr=mob.getAttribute(a);if(attr!=null)attr.setBaseValue(value);}
     void aggro(Session s){List<Player> ps=players(s).stream().filter(pl->!pl.isDead()&&s.arena.bounds.contains(pl.getLocation())).toList();if(ps.isEmpty())return;int i=0;for(UUID id:s.mobs){Entity e=Bukkit.getEntity(id);if(e instanceof Mob m)m.setTarget(ps.get(i++%ps.size()));}}
     void killed(LivingEntity entity,List<ItemStack> drops){
+        if(p.bossDamage!=null)p.bossDamage.discard(entity.getUniqueId());if(p.bosses!=null)p.bosses.unmodel(entity.getUniqueId());
         if(p.ritualSystem!=null&&p.ritualSystem.killed(entity,drops))return;
         if(rituals.containsKey(entity.getUniqueId())){String result=rituals.remove(entity.getUniqueId());drops.clear();if(!result.isEmpty())drops.add(p.items.make(result,1));return;}
         Session s=find(entity.getUniqueId());if(s==null)return;
@@ -201,7 +202,7 @@ final class Engine {
     }
     void vote(Player voter,UUID candidate){Session s=p.session(voter.getUniqueId());if(s==null||s.phase!=Session.Phase.LOBBY||!s.members.contains(candidate))return;s.votes.put(voter.getUniqueId(),candidate);long votes=s.votes.values().stream().filter(candidate::equals).count();if(Rules.majority((int)votes,s.members.size())){s.leader=candidate;s.votes.clear();p.state.set("progress."+s.portal.id+"."+candidate,s.stage);p.saveState();}}
     void abortStage(Session s,String message){clearMobs(s);s.arena.gate(false);restoreBlocks(s);s.phase(Session.Phase.LOBBY);s.wave=0;players(s).forEach(pl->{pl.teleport(s.arena.lobbySpawn);p.tell(pl,message);});}
-    void clearMobs(Session s){nextWave.remove(s);for(UUID id:s.mobs){Entity e=Bukkit.getEntity(id);if(e!=null){for(Entity passenger:e.getPassengers())passenger.remove();e.remove();}}s.mobs.clear();s.contribution.clear();if(s.bar!=null){s.bar.removeAll();s.bar=null;}}
+    void clearMobs(Session s){nextWave.remove(s);for(UUID id:s.mobs){if(p.bossDamage!=null)p.bossDamage.discard(id);if(p.bosses!=null)p.bosses.unmodel(id);Entity e=Bukkit.getEntity(id);if(e!=null){for(Entity passenger:e.getPassengers())passenger.remove();e.remove();}}s.mobs.clear();s.contribution.clear();if(s.bar!=null){s.bar.removeAll();s.bar=null;}}
     void skipWave(Session s){
         if(s.phase!=Session.Phase.FIGHT)throw new IllegalArgumentException("Wave-Skip benötigt eine laufende Kampfphase.");
         if(s.miniboss||(s.stage==5&&s.wave>=5)){skipStage(s);return;}

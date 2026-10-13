@@ -24,5 +24,10 @@ class ResourcePacksTest {
             for(int y=0;y<16;y++)for(int x=0;x<16;x++){int rgba=png.getRGB(x,y),alpha=rgba>>>24;assertTrue(alpha==0||alpha==255,id+" has a soft edge");if(alpha==255)colors.add(rgba);else transparent=true;}
             assertTrue(transparent,id);assertFalse(colors.isEmpty(),id);assertTrue(colors.size()<=6,id+" has too many colors");
         }
+        String rod=new String(files.get("assets/mobarmy/items/angler_rod.json"),java.nio.charset.StandardCharsets.UTF_8);
+        String crossbow=new String(files.get("assets/mobarmy/items/ranger_crossbow.json"),java.nio.charset.StandardCharsets.UTF_8);
+        assertTrue(rod.contains("minecraft:fishing_rod/cast"));assertTrue(files.containsKey("assets/mobarmy/models/item/angler_rod_cast.json"));
+        for(String state:List.of("pulling_0","pulling_1","pulling_2","arrow","rocket"))assertTrue(files.containsKey("assets/mobarmy/models/item/ranger_crossbow_"+state+".json"));
+        for(String property:List.of("minecraft:using_item","minecraft:crossbow/pull","minecraft:charge_type"))assertTrue(crossbow.contains(property));
     }
 }

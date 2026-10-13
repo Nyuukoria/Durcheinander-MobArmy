@@ -31,7 +31,7 @@ class EngineFlowTest {
         try(MockedStatic<Bukkit> bukkit=mockStatic(Bukkit.class)){
             bukkit.when(()->Bukkit.getWorld("world")).thenReturn(source);bukkit.when(()->Bukkit.getPlayer(any(UUID.class))).thenAnswer(i->players.get(i.getArgument(0)));
             assertTrue(engine.join(first,portal));assertTrue(engine.join(second,portal));
-            verify(p.menus,never()).party(any(Player.class),anyInt());verify(p).tell(eq(first),contains("/raid"));assertEquals(88.5,one.get().getX());
+            verify(p.menus,never()).party(any(Player.class),anyInt());verify(p).say(first,"raid.welcome");assertEquals(88.5,one.get().getX());
             Session s=portal.session;when(p.session(first.getUniqueId())).thenReturn(s);engine.ready(first);assertEquals(Session.Phase.ENTERING,s.phase);verify(a,never()).gate(true);
             engine.tick();assertEquals(Session.Phase.FIGHT,s.phase);assertTrue(s.arena.bounds.contains(one.get()));assertTrue(s.arena.bounds.contains(two.get()));verify(a).gate(true);
         }

@@ -49,10 +49,21 @@ final class Equipment implements Listener {
     boolean custom(ItemStack... items){return Arrays.stream(items).anyMatch(item->p.items.id(item)!=null);}
     @EventHandler public void craft(PrepareItemCraftEvent e){if(custom(e.getInventory().getMatrix()))e.getInventory().setResult(null);}
     @EventHandler(ignoreCancelled=true) public void crafted(CraftItemEvent e){if(custom(e.getInventory().getMatrix()))e.setCancelled(true);}
-    @EventHandler public void anvil(PrepareAnvilEvent e){if(custom(e.getInventory().getItem(0),e.getInventory().getItem(1)))e.setResult(null);}
-    @EventHandler public void grind(PrepareGrindstoneEvent e){if(custom(e.getInventory().getItem(0),e.getInventory().getItem(1)))e.setResult(null);}
-    @EventHandler public void smith(PrepareSmithingEvent e){if(custom(e.getInventory().getItem(0),e.getInventory().getItem(1),e.getInventory().getItem(2)))e.setResult(null);}
-    @EventHandler(ignoreCancelled=true) public void smithClick(SmithItemEvent e){if(custom(e.getInventory().getItem(0),e.getInventory().getItem(1),e.getInventory().getItem(2)))e.setCancelled(true);}
+    boolean utility(ItemStack item){String id=p.items.id(item);return id!=null&&p.getConfig().getBoolean("items."+id+".utility");}
+    boolean utilityInputs(ItemStack first,ItemStack second){return utility(first)&&(!custom(second)||Objects.equals(p.items.id(first),p.items.id(second)));}
+    @EventHandler public void anvil(PrepareAnvilEvent e){
+        ItemStack first=e.getInventory().getItem(0),second=e.getInventory().getItem(1);
+        if(utilityInputs(first,second)){
+            ItemStack result=e.getResult();if(result==null)return;var meta=result.getItemMeta();meta.getPersistentDataContainer().set(p.itemKey,org.bukkit.persistence.PersistentDataType.STRING,p.items.id(first));
+            String name=e.getInventory().getRenameText(),old=ChatColor.stripColor(first.getItemMeta().getDisplayName());if(name!=null&&!name.equals(old)){var key=new NamespacedKey(p,"utility_name");if(name.isBlank())meta.getPersistentDataContainer().remove(key);else meta.getPersistentDataContainer().set(key,org.bukkit.persistence.PersistentDataType.STRING,name);}
+            result.setItemMeta(meta);e.setResult(result);return;
+        }if(custom(first,second))e.setResult(null);
+    }
+    ItemStack ordinary(ItemStack result){if(result==null)return null;var meta=result.getItemMeta();meta.getPersistentDataContainer().remove(p.itemKey);meta.getPersistentDataContainer().remove(new NamespacedKey(p,"utility_name"));meta.setItemModel(null);meta.setDisplayName(null);meta.setLore(null);meta.setRarity(null);result.setItemMeta(meta);return result;}
+    @EventHandler public void grind(PrepareGrindstoneEvent e){if(utilityInputs(e.getInventory().getItem(0),e.getInventory().getItem(1))||utilityInputs(e.getInventory().getItem(1),e.getInventory().getItem(0)))e.setResult(ordinary(e.getResult()));else if(custom(e.getInventory().getItem(0),e.getInventory().getItem(1)))e.setResult(null);}
+    boolean utilitySmith(org.bukkit.inventory.SmithingInventory inv){return utility(inv.getItem(1))&&!custom(inv.getItem(0),inv.getItem(2));}
+    @EventHandler public void smith(PrepareSmithingEvent e){if(utilitySmith(e.getInventory()))e.setResult(ordinary(e.getResult()));else if(custom(e.getInventory().getItem(0),e.getInventory().getItem(1),e.getInventory().getItem(2)))e.setResult(null);}
+    @EventHandler(ignoreCancelled=true) public void smithClick(SmithItemEvent e){if(!utilitySmith(e.getInventory())&&custom(e.getInventory().getItem(0),e.getInventory().getItem(1),e.getInventory().getItem(2)))e.setCancelled(true);}
     @EventHandler(ignoreCancelled=true) public void enchant(PrepareItemEnchantEvent e){if(custom(e.getItem()))e.setCancelled(true);}
     List<Integer> repairSlots(Player player){
         var inv=player.getInventory();Set<Integer> candidates=new LinkedHashSet<>();for(int i=36;i<=39;i++)candidates.add(i);for(int i=0;i<9;i++)candidates.add(i);candidates.add(40);

@@ -28,3 +28,9 @@ Fehlende Zutaten verhindern den Start vollständig. Kessel entfernt, ausgeloggt,
 4. `/raid kit gear`, beschädigte Ausrüstung in Hotbar/Rüstung/Nebenhand legen, dann `restoration` testen.
 5. `awakening` beziehungsweise `abyss_trial` starten und den Wächter besiegen.
 6. Für weitere Versuche: `/raid cooldown clear`. **Nur im Solo-Testmodus** löscht dieser Befehl auch Item-/Ritual-Cooldowns. Produktionsregeln bleiben bestehen. Aktive Zeremonien vorher abbrechen.
+
+## Wandererschmiede und übersichtliche Rezepte (1.6)
+
+`wanderer_forge`: 32 echte Raidsplitter, 6 Diamanten und 8 Eisenbarren. Chaosfragment in der Haupthand bleibt erhalten. Acht Sekunden Zeremonie, 60 Sekunden Abklingzeit. Ein zufälliges Alltagswerkzeug ist bei erfolgreichem Abschluss garantiert; alle acht Werkzeuge sind gleich wahrscheinlich.
+
+`/rezepte rituals`: kurze Ritual-Karten. Anklicken zeigt Ergebnis, Ablauf und Zutaten als eigene Karten. Im Kesselmenü: Linksklick startet, Rechtsklick öffnet die Beschreibung. Item-Karten enthalten keine langen Zutaten-/Drop-Listen mehr; sie stehen in der jeweiligen Detailansicht. Die angezeigte Sprache folgt `/raid language de|en`.

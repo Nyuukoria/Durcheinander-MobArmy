@@ -1,6 +1,6 @@
 # Ausrüstung, Setboni und Seltenheiten
 
-Alle 21 Ausrüstungsteile funktionieren als normale Minecraft-Rüstung/Waffen/Werkzeuge mit Haltbarkeit. Sie werden nicht beim Benutzen verbraucht. Verzauberungen oberhalb der üblichen Grenze sind echte Enchantments. Mending repariert mit normalen XP; Raid-Gegner selbst geben weiterhin keine XP. Das Wiederherstellungsritual repariert getragene Custom-Rüstung sowie Custom-Werkzeuge in Hotbar/Nebenhand.
+Die ursprünglichen 21 Raid-Ausrüstungsteile funktionieren als normale Minecraft-Rüstung/Waffen/Werkzeuge mit Haltbarkeit. Sie werden nicht beim Benutzen verbraucht. Verzauberungen oberhalb der üblichen Grenze sind echte Enchantments. Mending repariert mit normalen XP; Raid-Gegner selbst geben weiterhin keine XP. Das Wiederherstellungsritual repariert getragene Custom-Rüstung sowie Custom-Werkzeuge in Hotbar/Nebenhand.
 
 ## Drei vollständige Sets
 
@@ -49,9 +49,30 @@ Sturmessenz: Stage-3-Miniboss, 20 %. Leerenessenz: Endboss, 25 %. Beide sind Rit
 
 ## Ausprobieren und Erhalten
 
-- `/raid kit gear`: OP-Testkit mit allen 21 Teilen; selbst ausrüsten. Überlauf landet in `/raid loot`.
+- `/raid kit gear`: OP-Testkit mit allen 29 Teilen; selbst ausrüsten. Überlauf landet in `/raid loot`.
 - `/raid gear`: getragene Set-Teile prüfen.
 - `/rezepte gear` und `/rezepte sets`: Werte, Boni und Drop-Chancen ansehen.
 - Normal spielen: nur bei aktiven Rewards droppen Raid-Pools. Schmiederituale bieten gezielte Fortschrittswege gegen Zutaten.
 
 Werkbank, Amboss, Schleifstein, Enchanting und Schmiedetisch akzeptieren die Custom-Items nicht als normale Zutaten. Das verhindert, dass hohe Enchantments, Set-IDs oder Modelle bei Vanilla-Kombinationen verloren gehen. Repariere mit Mending oder Ritual. Weitergeben, Lagern und die vorhandene Shop-API bleiben möglich.
+
+## Acht Alltagswerkzeuge ab 1.6
+
+Alle acht besitzen eigene 16×16-Pixeltexturen. Angel- und Armbrustzustände bleiben über eigene Modellzuordnungen erhalten.
+
+Diese Werkzeuge besitzen eigene Pixeltexturen und verwenden normale Minecraft-Mechaniken und Verzauberungsgrenzen. Sie haben keine zusätzlichen Rechtsklick-Zauber, fällen keine kompletten Bäume und bauen keine Erzadern automatisch ab.
+
+| ID | Funktion | Verzauberungen |
+|---|---|---|
+| `silk_pickaxe` | Diamantspitzhacke, Blöcke vollständig erhalten | Effizienz V, Behutsamkeit I, Haltbarkeit III, Reparatur I |
+| `forester_axe` | Diamantaxt, gewöhnliches Holzfällen | Effizienz V, Haltbarkeit III, Reparatur I |
+| `pathfinder_shovel` | Diamantschaufel, Erde/Sand/Graswege | Effizienz V, Behutsamkeit I, Haltbarkeit III, Reparatur I |
+| `cultivator_hoe` | Diamanthacke, Feldarbeit/Ernte | Effizienz V, Glück III, Haltbarkeit III, Reparatur I |
+| `harvest_shears` | Schere, Blätter/Wolle/Ranken | Effizienz V, Haltbarkeit III, Reparatur I |
+| `angler_rod` | Normales Angeln | Glück des Meeres III, Köder III, Haltbarkeit III, Reparatur I |
+| `ranger_crossbow` | Armbrust, normale Pfeile/Feuerwerkskörper | Schnellladen III, Mehrfachschuss I, Haltbarkeit III, Reparatur I |
+| `returning_trident` | Dreizack mit Rückkehr nach dem Wurf | Treue III, Harpune V, Haltbarkeit III, Reparatur I |
+
+Die Raid-Sicherheitsregeln gelten weiter, zum Beispiel keine Feuerwerkskörper in der Arena. Diese acht Werkzeuge gehören keinem Rüstungsset an. Normale XP-Reparatur und Amboss funktionieren. Am Schleifstein bzw. beim Netherit-Upgrade wird das Item zu gewöhnlicher Vanilla-Ausrüstung; die spezielle Item-ID und Lore entfallen, damit spätere Inventar-Aktualisierungen entfernte Enchantments nicht wiederherstellen. Beim Upgrade bleiben normale Enchantments erhalten.
+
+Miniboss ab Stufe 2: 4 % Pool-Chance, genau ein Werkzeug; 0,5 % je einzelner ID. Wandererschmiede: garantiert ein zufälliges Werkzeug, 12,5 % je ID. Zutaten: 32 Raidsplitter, 6 Diamanten, 8 Eisenbarren. Details im Rezeptmenü; `/raid kit gear` zum Testen.

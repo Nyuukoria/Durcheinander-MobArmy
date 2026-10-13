@@ -1,4 +1,4 @@
-# Durcheinander MobArmy 1.5.0
+# Durcheinander MobArmy 1.6.0
 
 Spigot **Minecraft Java 26.3 / Java 25**. Konfigurierbare Raids mit drei Wochen, fünf Stages, Gruppen, Leader-Voting, Bossen, eigenen Items und Kesselritualen. Verwendet nur Bukkit/Spigot-APIs.
 
@@ -17,13 +17,26 @@ Spigot **Minecraft Java 26.3 / Java 25**. Konfigurierbare Raids mit drei Wochen,
 
 Die Demo liefert die Texturen automatisch von deinem PC an Minecraft: den Ressourcenpaket-Dialog beim Verbinden **annehmen**. Das funktioniert nach dem Setup auch ohne Internet. `/raid pack status` zeigt den Ladezustand; `/raid pack reload` fordert das Pack erneut an. Falls du Server-Packs deaktiviert hast, bei diesem Server **Server-Ressourcenpakete: Aktiviert** einstellen und erneut verbinden. Alternativ `resource-pack/MobArmy-resource-pack-26.3.zip` im Client-Ordner `resourcepacks` aktivieren. Andere Launcher benötigen dabei ihren eigenen Minecraft-Ordner.
 
-Alle 34 Item-Texturen sind jetzt echte **16×16-PNGs** mit kleinen Farbpaletten, harten Pixelkanten und transparentem Hintergrund. Das Pack wird im **Client** geladen.
+Die 34 eigenen Item-Texturen sind echte **16×16-PNGs** mit kleinen Farbpaletten, harten Pixelkanten und transparentem Hintergrund. Das Pack wird im **Client** geladen.
 
 ### Eine vorhandene Demo aktualisieren
 
 Server mit `stop` beenden, neue ZIP über denselben Ordner entpacken, dann `local-test/start-server.bat` starten. Der Launcher ersetzt das Plugin automatisch und setzt die Demo-Flags. Java/Git/Spigot werden dabei wiederverwendet.
 
 Alte Layouts vor Version 1.2 werden vollständig neu gebaut; neuere **generierte Demo-Arenen** erhalten Layout 4 als Reparatur: Wand-/Boden-/Deckenlöcher werden geschlossen, die Endertruhe ausgerichtet und Wandtasten ergänzt. Das Layout enthält einen **9×9-Vorraum** und eine geschlossene **100×100-Landschaftsarena** mit sanften Hügeln, Wegen, Ruinen und kleinen Bäumen/Kristallgebilden. Die drei Welten behalten ihre eigenen Themen. Der erste Start benötigt durch den Umbau länger. Alte versionierte Plugin-JARs sichert der Launcher außerhalb des Plugin-Suchpfads, um doppelte Plugin-Versionen zu vermeiden. Eigene Welten mit `generate-demo: false` werden nicht gebaut. Andere Konfigurationen, Loot-Postfach und Fortschritt bleiben erhalten.
+
+## Neu in 1.6
+
+- **Boss-Schaden korrigiert:** Der persönliche Anteil zählt den tatsächlichen Lebensverlust nach einem Treffer. Treffer ohne Lebensverlust verbrauchen keinen Anteil. Kleine Float-Rundungsreste nach einem berechtigten letzten Treffer werden beendet. Die Anzeige nutzt Zehntelprozent und rundet nicht vorzeitig auf 100 %. Produktionslimits bleiben erhalten.
+- **Spawns weiter entfernt:** mindestens 18 Blöcke horizontal von jedem Spieler. Eine größere Höhendifferenz zählt nicht als Abstand. Die Gegner verteilen sich weiterhin auf unterschiedliche Spawnflächen.
+- **Animierte Obsidian-Golems:** sechs bewegliche Teile, Schritte nach tatsächlicher Bewegung, Kopfbewegung, Armschläge und Trefferreaktion. Alle drei Wächtervarianten behalten Obsidian als Hauptmaterial. Ein normaler Eisengolem übernimmt KI und Trefferfläche; die sichtbare Größe passt zu seiner Höhe. Keine versetzte, starre Mitfahrer-Figur. Boss-Vorschauen schauen die beschwörende Person an.
+- **Acht Alltagswerkzeuge:** Seidenspitzhacke, Forstaxt, Pfadfinderschaufel, Feldhacke, Gartenschere, Anglerglück, Waldläuferarmbrust und Heimkehrdreizack. Eigene 16×16-Pixeltexturen und normale Minecraft-Verzauberungen. Angel und Armbrust haben eigene Modellzustände; der geworfene Dreizack verwendet die normale Minecraft-Entität. Keine automatische Baumfällung, Erzadern, Ernte oder Teleports. Einzelne Blöcke und normales Angeln bleiben die übliche Minecraft-Spielweise.
+- **Erhalten:** 4 % Chance auf eines der acht Alltagswerkzeuge pro belohntem Miniboss ab Stufe 2; je Werkzeug 0,5 %. Das neue Ritual **Wandererschmiede** garantiert eines von acht zufälligen Werkzeugen gegen 32 Raidsplitter, 6 Diamanten und 8 Eisenbarren. Der Chaosfragment-Katalysator bleibt erhalten. `/raid kit gear` enthält nun alle 29 Ausrüstungsteile.
+- **Vanilla-Werkstätten für Alltagswerkzeuge:** normale Amboss-Reparatur, Verzauberungsbücher und Umbenennen. Eigene Namen bleiben beim Sprachwechsel bestehen. Schleifstein und Netherit-Aufwertung machen daraus ein gewöhnliches Vanilla-Werkzeug; normale Enchantments beim Aufwerten bleiben erhalten. Alte Raid-Sets mit erhöhten Enchantments bleiben geschützt.
+- **Klarere Oberfläche:** kurze Lore mit Leerzeilen, maximal 36 sichtbare Zeichen je Zeile, 28 Karten mit Abstand pro Rezeptseite. Item anklicken: Fundorte/Drops getrennt von Ritualwegen. Ritual anklicken: Zutaten als eigene Gegenstände und klare Schritte. Im Kesselmenü startet Linksklick das Ritual, Rechtsklick zeigt das Rezept.
+- **Feste deutsche/englische Texte:** Gruppenmenü, Rezeptansichten, HUD, Portalstatus, Perlen-, Relikt-, Ritual- und Packmeldungen sowie häufige Admin-Rückmeldungen verwenden vollständige Vorlagen. IDs, Commands und Namen werden als Werte eingesetzt, statt Wort für Wort übersetzt. Persönliche Sprache bleibt unter `/raid language de|en` erhalten.
+
+**Upgrade:** Server stoppen, ZIP darüber entpacken, `local-test/start-server.bat` starten. Ressourcenpaket annehmen oder `/raid pack reload`. Alte Wellen/Portalfortschritte und angepasste Boss-Lebenspunkte bleiben erhalten; Standard-Golemträger, neue Ausrüstung, kurze Lore und 18-Blöcke-Spawnabstand werden migriert.
 
 ## Neu in 1.5
 
@@ -42,7 +55,7 @@ Alte Layouts vor Version 1.2 werden vollständig neu gebaut; neuere **generierte
 - Drei komplette Rüstungssets (12 Teile): Wächter, Sturm und Abgrund. Zwei-/Vier-Teil-Boni gelten beim Tragen oder Halten in allen Welten. Getragene Rüstung benutzt normale Eisen-/Diamant-/Netherit-Modelle mit Gold-/Quarz-/Amethyst-Trims; eigene 16×16-Icons erscheinen im Inventar und in der Hand.
 - Neun Waffen/Werkzeuge mit echter Haltbarkeit, hohen Verzauberungen und normalen Minecraft-Funktionen: unter anderem Schärfe VIII, Bogenstärke VII, Dichte VI, Effizienz VII und Glück IV. Raid-Damage-Caps gelten weiter. Looting erhöht nicht die konfigurierten Raid-Pool-Chancen.
 - Gewichtete Beute-Gruppen mit genau einem Item bei erfolgreichem Wurf. Legendäre Rüstung hat 1 % Gruppen-Chance, legendäre Waffen 2 % beim belohnten Endboss. Konkrete Chancen stehen im Rezepte-Menü und in `EQUIPMENT.md`.
-- Sieben Kesselrituale: Erwachen, Wächterschmiede, Sturmschmiede, Echowerkstatt, Abgrundprüfung, Wiederherstellung und Segen. Zutaten werden geprüft und bezahlt, der Chaosfragment-Katalysator bleibt erhalten. Abbruch/Neustart einer nicht vollendeten Zeremonie erstattet Zutaten ins Postfach; Cooldowns bleiben bestehen.
+- Acht Kesselrituale einschließlich Wandererschmiede; zuvor: Erwachen, Wächterschmiede, Sturmschmiede, Echowerkstatt, Abgrundprüfung, Wiederherstellung und Segen. Zutaten werden geprüft und bezahlt, der Chaosfragment-Katalysator bleibt erhalten. Abbruch/Neustart einer nicht vollendeten Zeremonie erstattet Zutaten ins Postfach; Cooldowns bleiben bestehen.
 - Abgrundprüfung beschwört einen stärkeren Wächter. Nach einem Spieler-Sieg bekommt die ausführende Person ein Werkzeug; 10 % Chance ersetzen es durch eine legendäre Waffe. Wächter verschwinden nach 10 Minuten ohne Sieg-Beute. Die bereits vollendete Beschwörung erstattet ihre Zutaten nicht.
 - `/rezepte` ist ein lesbarer Item-/Set-/Ritual-Katalog. `/raid gear` zeigt deine getragenen Set-Teile. Die Test-Kits geben Ausrüstung und Ritualzutaten; Überlauf landet in `/raid loot`.
 - Custom-Items sind für normale Werkbank-/Amboss-/Schmiedetisch-/Schleifstein-/Enchanting-Vorgänge gesperrt, damit Item-IDs und hohe Verzauberungen erhalten bleiben. Mending und das Ritual reparieren sie. Shop-API und direkte normale Werkzeugnutzung bleiben verfügbar.
@@ -151,7 +164,7 @@ mvn clean verify
 python3 tools/build_release.py
 ```
 
-JAR: `target/DurcheinanderMobArmy-1.5.0.jar`. Resource Pack: `target/MobArmy-resource-pack-26.3.zip`. Das Pack verwendet Format 97.1. GitHub Actions baut JAR, Pack und ZIP und prüft die Windows-Setup-Skripte.
+JAR: `target/DurcheinanderMobArmy-1.6.0.jar`. Resource Pack: `target/MobArmy-resource-pack-26.3.zip`. Das Pack verwendet Format 97.1. GitHub Actions baut JAR, Pack und ZIP und prüft die Windows-Setup-Skripte.
 
 Automatische Tests prüfen Timer/Mitternacht/Boss-Abschluss, Schaden und Mindestspieler-Anteile, Waves/Reiter, komplette Tab-Grammatik, Spinnen-Regelausnahme, GUI-freien Eintritt und den Gruppen-Teleport. Sichtbarkeit, native Wind-Charge-Physik, Spinnen-Bewegung und Multiplayer-Balance bitte mit `TESTING.md` im Spiel prüfen.
 

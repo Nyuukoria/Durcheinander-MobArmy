@@ -36,7 +36,7 @@ final class Protection implements Listener {
             Portal portal=p.portalAt(e.getTo());if(portal!=null){e.setCancelled(true);return;}
             if(s!=null){
                 Location target=s.phase==Session.Phase.FIGHT?Pearls.safe(player,s.arena,e.getTo()):null;
-                if(target==null){e.setCancelled(true);p.tell(player,"Kein sicherer Enderperlen-Zielpunkt innerhalb der Arena.");return;}e.setTo(target);
+                if(target==null){e.setCancelled(true);p.say(player,"pearl.no-target");return;}e.setTo(target);
             }
         }
         if(destination!=null&&s==null&&!p.commands.builders.contains(player.getUniqueId())){e.setCancelled(true);return;}
@@ -66,18 +66,19 @@ final class Protection implements Listener {
             if(!(attacker instanceof Player player)||!victim.members.contains(player.getUniqueId())||victim.phase!=Session.Phase.FIGHT){e.setCancelled(true);return;}
             LivingEntity mob=(LivingEntity)e.getEntity();boolean boss=victim.contribution.containsKey(mob.getUniqueId());
             boolean mace=by.getDamager() instanceof Player&&player.getInventory().getItemInMainHand().getType()==Material.MACE;
+            if(boss&&p.bossDamage!=null)p.bossDamage.flush(mob);
+            if(mob.getHealth()<=0||mob.isDead()){e.setCancelled(true);return;}
             double dealt=boss?victim.contribution.get(mob.getUniqueId()).getOrDefault(player.getUniqueId(),0.0):0;
             double share=Rules.bossShare(victim.arena.minimum());
-            if(boss&&mob.getHealth()<0.0001&&victim.contribution.get(mob.getUniqueId()).values().stream().mapToDouble(Double::doubleValue).sum()>=mob.getAttribute(Attribute.MAX_HEALTH).getValue()-0.001){e.setCancelled(true);mob.setHealth(0);return;}
             double cap=Rules.damage(e.getFinalDamage(),mob.getAttribute(Attribute.MAX_HEALTH).getValue(),dealt,mace,boss,p.getConfig().getDouble("balance.hit-cap",0.2),p.getConfig().getDouble("balance.mace-cap",0.05),share);
             if(cap<=0){e.setCancelled(true);return;}
             // Bukkit re-evaluates armor modifiers after setDamage. Binary search caps FINAL damage.
             if(e.getFinalDamage()>cap){double lo=0,hi=e.getDamage();for(int i=0;i<24;i++){double mid=(lo+hi)/2;e.setDamage(mid);if(e.getFinalDamage()>cap)hi=mid;else lo=mid;}e.setDamage(lo);}
         }
     }
-    @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true) public void contributed(EntityDamageByEntityEvent e){Session s=p.engine.find(e.getEntity().getUniqueId());Entity attacker=source(e.getDamager());if(s!=null&&attacker instanceof Player player&&s.contribution.containsKey(e.getEntity().getUniqueId())){double actual=Math.min(e.getFinalDamage(),((LivingEntity)e.getEntity()).getHealth());s.contribution.get(e.getEntity().getUniqueId()).merge(player.getUniqueId(),actual,Double::sum);}}
+    @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true) public void contributed(EntityDamageByEntityEvent e){Session s=p.engine.find(e.getEntity().getUniqueId());Entity attacker=source(e.getDamager());if(s!=null&&attacker instanceof Player player&&s.contribution.containsKey(e.getEntity().getUniqueId())){p.bossDamage.accepted(s,(LivingEntity)e.getEntity(),player,e.getFinalDamage(),((LivingEntity)e.getEntity()).getAttribute(Attribute.MAX_HEALTH).getValue());}}
     @EventHandler(priority=EventPriority.HIGHEST,ignoreCancelled=true) public void healMob(EntityRegainHealthEvent e){if(p.engine.find(e.getEntity().getUniqueId())!=null)e.setCancelled(true);}
-    @EventHandler(priority=EventPriority.HIGHEST) public void mobDeath(EntityDeathEvent e){if("boss-preview".equals(e.getEntity().getPersistentDataContainer().get(p.entityKey,org.bukkit.persistence.PersistentDataType.STRING))){e.setDroppedExp(0);e.getDrops().clear();return;}if(p.engine.find(e.getEntity().getUniqueId())!=null||p.engine.rituals.containsKey(e.getEntity().getUniqueId())||(p.ritualSystem!=null&&p.ritualSystem.guardians.containsKey(e.getEntity().getUniqueId()))){e.setDroppedExp(0);p.engine.killed(e.getEntity(),e.getDrops());}}
+    @EventHandler(priority=EventPriority.HIGHEST) public void mobDeath(EntityDeathEvent e){if("boss-preview".equals(e.getEntity().getPersistentDataContainer().get(p.entityKey,org.bukkit.persistence.PersistentDataType.STRING))){e.setDroppedExp(0);e.getDrops().clear();return;}if(p.engine.find(e.getEntity().getUniqueId())!=null||p.engine.rituals.containsKey(e.getEntity().getUniqueId())||(p.ritualSystem!=null&&p.ritualSystem.guardians.containsKey(e.getEntity().getUniqueId()))){e.setDroppedExp(0);if(p.bossDamage!=null)p.bossDamage.flush(e.getEntity());p.engine.killed(e.getEntity(),e.getDrops());}}
     @EventHandler(ignoreCancelled=true) public void itemSpawn(ItemSpawnEvent e){Arena a=p.arena(e.getEntity().getWorld());if(a==null)return;for(Portal portal:p.portals.values())if(portal.session!=null&&portal.session.arena==a)portal.session.drops.add(e.getEntity().getUniqueId());}
     @EventHandler(ignoreCancelled=true) public void target(EntityTargetLivingEntityEvent e){Session s=p.engine.find(e.getEntity().getUniqueId());if(s!=null&&(!(e.getTarget() instanceof Player player)||!s.members.contains(player.getUniqueId())))e.setCancelled(true);}
     @EventHandler(ignoreCancelled=true) public void launch(ProjectileLaunchEvent e){
@@ -96,7 +97,7 @@ final class Protection implements Listener {
         if(e.useItemInHand()==Event.Result.DENY)return;
         if(item!=null&&item.getType()==Material.ENDER_PEARL&&(e.getAction()==Action.RIGHT_CLICK_AIR||e.getAction()==Action.RIGHT_CLICK_BLOCK)){
             Session session=p.session(player.getUniqueId());if(session!=null){long remaining=p.getConfig().getLong("balance.pearl-cooldown-seconds",3)*1000-(System.currentTimeMillis()-session.pearlTimes.getOrDefault(player.getUniqueId(),0L));
-                if(session.phase!=Session.Phase.FIGHT||remaining>0){e.setUseItemInHand(Event.Result.DENY);p.tell(player,session.phase!=Session.Phase.FIGHT?"Enderperlen sind nur während des Kampfes verfügbar.":"Enderperle bereit in "+Rules.clock((remaining+999)/1000)+".");return;}
+                if(session.phase!=Session.Phase.FIGHT||remaining>0){e.setUseItemInHand(Event.Result.DENY);if(session.phase!=Session.Phase.FIGHT)p.say(player,"pearl.combat-only");else p.say(player,"pearl.cooldown","time",Rules.clock((remaining+999)/1000));return;}
             }
         }
         if(e.getHand()==EquipmentSlot.HAND&&e.getAction()==Action.RIGHT_CLICK_BLOCK&&e.getClickedBlock()!=null&&e.getClickedBlock().getType().name().endsWith("CAULDRON")&&p.items.ritual(player,e.getClickedBlock(),item)){e.setCancelled(true);return;}

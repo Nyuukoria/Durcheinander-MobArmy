@@ -46,7 +46,7 @@ final class Items {
     ItemStack refreshed(ItemStack item){
         String id=id(item);if(id==null||!ids().contains(id))return item.clone();
         ItemStack result=item.clone();var meta=result.getItemMeta();var template=make(id,item.getAmount()).getItemMeta();
-        meta.setDisplayName(template.getDisplayName());meta.setLore(template.getLore());meta.setItemModel(template.getItemModel());
+        String utilityName=meta.getPersistentDataContainer().get(new NamespacedKey(p,"utility_name"),org.bukkit.persistence.PersistentDataType.STRING);meta.setDisplayName(utilityName==null?template.getDisplayName():utilityName);meta.setLore(template.getLore());meta.setItemModel(template.getItemModel());
         if(template.hasCustomModelData())meta.setCustomModelData(template.getCustomModelData());Equipment.decorate(p.getConfig().getConfigurationSection("items."+id),meta);result.setItemMeta(meta);return result;
     }
     void refresh(Player player){for(int slot=0;slot<player.getInventory().getSize();slot++){ItemStack item=player.getInventory().getItem(slot);if(item!=null&&id(item)!=null)player.getInventory().setItem(slot,p.language==null?refreshed(item):p.language.localized(player.getUniqueId(),refreshed(item)));}}
@@ -66,12 +66,12 @@ final class Items {
     boolean activate(Player player,ItemStack held){
         String id=id(held);if(id==null)return false;var cfg=p.getConfig().getConfigurationSection("items."+id+".use");if(cfg==null)return false;
         long now=System.currentTimeMillis(),until=p.state.getLong("item-cooldowns."+player.getUniqueId()+"."+id);
-        if(until>now){p.tell(player,"Noch "+Rules.clock((until-now+999)/1000)+" Abklingzeit für dieses Item.");return true;}
+        if(until>now){p.say(player,"relic.cooldown","time",Rules.clock((until-now+999)/1000));return true;}
         int consumed=cfg.getInt("consume",0);if(held.getAmount()<consumed)return true;
         List<Player> targets=new ArrayList<>();targets.add(player);double radius=cfg.getDouble("radius",0);Session session=p.session(player.getUniqueId());
         double enemyRadius=cfg.getDouble("enemy-radius",0);int affectedEnemies=0;
         if(enemyRadius>0){
-            if(session==null||session.phase!=Session.Phase.FIGHT){p.tell(player,"Dieses Relikt wirkt auf Gegner während einer Raid-Stage.");return true;}
+            if(session==null||session.phase!=Session.Phase.FIGHT){p.say(player,"relic.combat-only");return true;}
             for(UUID uuid:session.mobs){Entity e=Bukkit.getEntity(uuid);if(e instanceof LivingEntity mob&&mob.getWorld().equals(player.getWorld())&&mob.getLocation().distanceSquared(player.getLocation())<=enemyRadius*enemyRadius){
                 boolean boss=session.contribution.containsKey(uuid);
                 if(cfg.contains("enemy-slow-seconds"))mob.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS,(boss?3:cfg.getInt("enemy-slow-seconds",6))*20,boss?0:1,true,true,true));
@@ -85,7 +85,7 @@ final class Items {
                 affectedEnemies++;
                 mob.getWorld().spawnParticle(cfg.contains("enemy-slow-seconds")?Particle.SNOWFLAKE:Particle.ENCHANT,mob.getLocation().add(0,1,0),18,.4,.6,.4,.02);
             }}
-            if(affectedEnemies==0){p.tell(player,"Keine Raid-Gegner in Reichweite. Das Relikt bleibt bereit.");return true;}
+            if(affectedEnemies==0){p.say(player,"relic.no-enemies");return true;}
         }
         if(radius>0&&session!=null)for(Player other:p.engine.players(session))if(other!=player&&other.getWorld().equals(player.getWorld())&&other.getLocation().distanceSquared(player.getLocation())<=radius*radius)targets.add(other);
         for(var effect:cfg.getMapList("effects")){
@@ -96,7 +96,7 @@ final class Items {
         if(consumed>0)held.setAmount(held.getAmount()-consumed);
         p.state.set("item-cooldowns."+player.getUniqueId()+"."+id,now+cfg.getLong("cooldown-seconds",60)*1000);p.saveState();
         for(Player target:targets){p.presentation.burst(target.getLocation());target.playSound(target.getLocation(),Sound.BLOCK_AMETHYST_BLOCK_CHIME,0.8f,1.2f);}
-        p.tell(player,cfg.getString("message","Relikt aktiviert.")+" &7("+(enemyRadius>0?affectedEnemies+" Gegner":targets.size()+" Spieler")+")");return true;
+        p.say(player,"relic.activated","name",p.language.itemName(player,id));return true;
     }
     boolean ritual(Player player,org.bukkit.block.Block cauldron,ItemStack held){
         String id=id(held);if(!"chaos_fragment".equals(id))return false;

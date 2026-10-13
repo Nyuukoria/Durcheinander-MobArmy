@@ -49,11 +49,13 @@ final class Portal {
             }
             label=labels.get("de");
         }
-        String timer=rewards()?"&aRewards &f"+Rules.clock((deadline-System.currentTimeMillis())/1000):bossKilled?"&7Boss bereits abgeschlossen":"&7Training · keine Rewards";
-        String reason=lockReason();String status=reason==null?"&a&lOFFEN":!open?"&c&lGESCHLOSSEN":session!=null?"&c&lSTUFE "+session.stage+" · GESPERRT":"&c&lARENA BELEGT";
-        String displayId=id.length()>20?id.substring(0,19)+"…":id;
-        String content="&d&l◆ MOB ARMY ◆\n&f"+displayId+" &8· &b"+week+"\n"+status+"\n"+timer+"\n"+(reason==null?"&7Hineingehen → Vorraum":"&7Bitte hier warten");
-        labels.forEach((lang,text)->text.setText(MobArmy.color(plugin.language==null?content:Language.translate(lang,content,plugin.language.phrases))));
+        String reason=lockReason();String displayId=id.length()>20?id.substring(0,19)+"…":id;
+        labels.forEach((lang,text)->{
+            String timer=plugin.language==null?"Training":plugin.language.trCode(lang,rewards()?"portal.rewards":bossKilled?"portal.finished":"portal.training","time",Rules.clock((deadline-System.currentTimeMillis())/1000));
+            String status=plugin.language==null?(open?"OPEN":"CLOSED"):plugin.language.trCode(lang,reason==null?"portal.open":!open?"portal.closed":session!=null?"portal.stage":"portal.busy","stage",session==null?1:session.stage);
+            String hint=plugin.language==null?"":plugin.language.trCode(lang,reason==null?"portal.enter":"portal.wait");
+            text.setText(MobArmy.color("&d&l◆ MOB ARMY ◆\n&f"+displayId+" &8· &b"+week+"\n"+status+"\n"+timer+"\n"+hint));
+        });
         shown.keySet().removeIf(uuid->Bukkit.getPlayer(uuid)==null);for(Player player:w.getPlayers())visibility(player);
     }
 }

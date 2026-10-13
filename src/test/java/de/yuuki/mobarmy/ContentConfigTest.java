@@ -27,12 +27,12 @@ class ContentConfigTest {
             assertFalse(enchantments.contains("infinity")&&enchantments.contains("mending"),id+" has conflicting bow enchants");
             if(item.contains("set"))assertTrue(cfg.contains("equipment-sets."+item.getString("set")),id);
         }
-        assertEquals(21,gear);
+        assertEquals(29,gear);
         var pools=cfg.getConfigurationSection("loot-pools");for(String id:pools.getKeys(false)){
             var pool=pools.getConfigurationSection(id);assertTrue(pool.getDouble("chance")>0&&pool.getDouble("chance")<=.1);
             for(var row:pool.getMapList("entries"))assertTrue(items.contains(row.get("item").toString()),id);assertNotNull(LootTables.choose(pool,0));
         }
-        var rituals=cfg.getConfigurationSection("rituals");assertEquals(7,rituals.getKeys(false).size());
+        var rituals=cfg.getConfigurationSection("rituals");assertEquals(8,rituals.getKeys(false).size());
         for(String id:rituals.getKeys(false)){
             var ritual=rituals.getConfigurationSection(id);assertTrue(items.contains(ritual.getString("catalyst")));assertTrue(items.contains(ritual.getString("display-item")));
             if(ritual.contains("pool"))assertTrue(pools.contains(ritual.getString("pool")));if(ritual.contains("legendary-pool"))assertTrue(pools.contains(ritual.getString("legendary-pool")));

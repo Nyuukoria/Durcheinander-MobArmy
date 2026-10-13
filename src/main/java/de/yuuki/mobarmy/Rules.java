@@ -15,6 +15,9 @@ public final class Rules {
         if (boss) cap = Math.min(cap, Math.max(0, maxHealth * share - dealt));
         return Math.max(0, Math.min(incoming, cap));
     }
+    public static double healthEpsilon(double maximum){return Math.max(1e-6,8.0*Math.ulp((float)maximum));}
+    public static boolean finishedHealth(double maximum,double remaining,double credited){double epsilon=healthEpsilon(maximum);return remaining>0&&remaining<=epsilon&&credited>=maximum-epsilon;}
+    public static double percentUsed(double dealt,double maximum){return maximum<=0?0:Math.max(0,Math.min(100,Math.floor(1000*dealt/maximum)/10.0));}
     public static int units(int base, int players, int minimum, double scale) {
         return Math.max(1, (int) Math.ceil(base * (1 + Math.max(0, players - minimum) * scale)));
     }

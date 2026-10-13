@@ -7,9 +7,12 @@ import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.*;
+import org.bukkit.event.*;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import java.util.*;
 
-final class Bosses {
+final class Bosses implements Listener {
+    final Map<UUID,GolemRig> rigs=new HashMap<>();long animations;
     final MobArmy p;final Map<UUID,UUID> previews=new HashMap<>();final Map<UUID,Long> pulse=new HashMap<>();final NamespacedKey abilityKey;
     Bosses(MobArmy p){this.p=p;abilityKey=new NamespacedKey(p,"boss_ability");}
     Set<String> ids(){return p.getConfig().getConfigurationSection("boss-types").getKeys(false);}
@@ -21,13 +24,14 @@ final class Bosses {
     static boolean permitted(String type){return !Set.of("PHANTOM","VEX","EVOKER").contains(type.toUpperCase(Locale.ROOT));}
     void model(LivingEntity mob,ConfigurationSection cfg,String tag){
         String item=cfg.getString("model-item");if(item==null)return;
-        ItemDisplay display=mob.getWorld().spawn(mob.getLocation(),ItemDisplay.class);display.setItemStack(p.items.make(item,1));display.setItemDisplayTransform(ItemDisplay.ItemDisplayTransform.FIXED);
-        display.setPersistent(false);display.getPersistentDataContainer().set(p.entityKey,PersistentDataType.STRING,tag);var t=display.getTransformation();t.getTranslation().set(0,-.45f,0);display.setTransformation(t);mob.addPassenger(display);mob.setInvisible(true);
+        String variant=cfg.getString("model-variant",item.equals("boss_model_frost")?"frost":item.equals("boss_model_ember")?"ember":"abyss");
+        if(!Set.of("abyss","frost","ember").contains(variant))throw new IllegalArgumentException("Unknown golem variant: "+variant);
+        unmodel(mob.getUniqueId());rigs.put(mob.getUniqueId(),new GolemRig(p,mob,variant,tag));
     }
     void attach(Mob mob,ConfigurationSection cfg){if(cfg.contains("ability"))mob.getPersistentDataContainer().set(abilityKey,PersistentDataType.STRING,cfg.getString("ability"));}
     void summon(Player player,String id){
         var cfg=definition(id);if(!permitted(cfg.getString("type")))throw new IllegalArgumentException("Phantoms, Vex and Evokers are disabled");Location at=player.getLocation().clone().add(player.getLocation().getDirection().setY(0).normalize().multiply(3));
-        at.setY(player.getLocation().getY());if(!at.getBlock().isPassable()||!at.clone().add(0,1,0).getBlock().isPassable())throw new IllegalArgumentException("Vor dir ist kein freier Platz.");
+        at.setY(player.getLocation().getY());at.setYaw(player.getLocation().getYaw()+180);if(!at.getBlock().isPassable()||!at.clone().add(0,1,0).getBlock().isPassable()||cfg.contains("model-item")&&!at.clone().add(0,2,0).getBlock().isPassable())throw new IllegalArgumentException("Vor dir ist kein freier Platz.");
         if(previews.size()>=12)throw new IllegalArgumentException("Zuerst Boss-Vorschauen entfernen: /raid boss clear");
         Entity entity=at.getWorld().spawnEntity(at,EntityType.valueOf(cfg.getString("type")));if(!(entity instanceof Mob mob)){entity.remove();throw new IllegalArgumentException("Boss must be a mob");}
         try{mob.setAI(false);mob.setInvulnerable(true);mob.setSilent(true);mob.setGravity(false);mob.setPersistent(false);mob.setCanPickupItems(false);mob.setRemoveWhenFarAway(false);mob.setCustomName(MobArmy.color(p.text(player,cfg.getString("name"))+" &8[DEMO]"));mob.setCustomNameVisible(true);
@@ -36,10 +40,10 @@ final class Bosses {
             Engine.set(mob,org.bukkit.attribute.Attribute.MAX_HEALTH,cfg.getDouble("health",100));mob.setHealth(cfg.getDouble("health",100));
             mob.getPersistentDataContainer().set(p.entityKey,PersistentDataType.STRING,"boss-preview");model(mob,cfg,"boss-preview");previews.put(mob.getUniqueId(),player.getUniqueId());
         }catch(RuntimeException e){remove(mob);throw e;}
-        p.tell(player,"Boss-Vorschau beschworen. Keine Angriffe, Drops oder Raid-Fortschritte.");
+        p.say(player,"admin.boss-preview");
     }
     void clear(Player player,boolean all){for(var e:new ArrayList<>(previews.entrySet()))if(all||e.getValue().equals(player.getUniqueId())){Entity mob=Bukkit.getEntity(e.getKey());if(mob!=null)remove(mob);previews.remove(e.getKey());}}
-    static void remove(Entity mob){for(Entity child:mob.getPassengers())child.remove();mob.remove();}
+    void remove(Entity mob){unmodel(mob.getUniqueId());for(Entity child:mob.getPassengers())child.remove();mob.remove();}
     void tick(){
         long now=System.currentTimeMillis();Set<UUID> alive=new HashSet<>();
         previews.keySet().removeIf(id->Bukkit.getEntity(id)==null);
@@ -58,5 +62,9 @@ final class Bosses {
         }
         pulse.keySet().retainAll(alive);
     }
-    void shutdown(){for(UUID id:previews.keySet()){Entity e=Bukkit.getEntity(id);if(e!=null)remove(e);}previews.clear();pulse.clear();}
+    void unmodel(UUID mob){GolemRig rig=rigs.remove(mob);if(rig!=null)rig.remove();}
+    void hurt(UUID mob){GolemRig rig=rigs.get(mob);if(rig!=null)rig.hurt();}
+    @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true) public void attack(EntityDamageByEntityEvent e){GolemRig rig=rigs.get(e.getDamager().getUniqueId());if(rig!=null)rig.attack();}
+    void animate(){if(++animations%2!=0)return;for(var entry:new ArrayList<>(rigs.entrySet())){if(!entry.getValue().valid())unmodel(entry.getKey());else entry.getValue().animate();}}
+    void shutdown(){for(UUID id:previews.keySet()){Entity e=Bukkit.getEntity(id);if(e!=null)remove(e);}previews.clear();pulse.clear();for(UUID id:new ArrayList<>(rigs.keySet()))unmodel(id);}
 }

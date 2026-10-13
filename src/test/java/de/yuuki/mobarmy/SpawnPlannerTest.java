@@ -3,6 +3,11 @@ import org.junit.jupiter.api.Test;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 class SpawnPlannerTest {
+    @Test void eighteenBlockHorizontalGapCannotBeSatisfiedByAHeightDifference(){
+        var player=new SpawnPlanner.Point(0,64,0);var near=new SpawnPlanner.Point(6,85,0);var far=new SpawnPlanner.Point(18,64,0);
+        assertEquals(1,SpawnPlanner.choose(List.of(near,far),List.of(player),List.of(),18,4,new Random(1)));
+        assertEquals(-1,SpawnPlanner.choose(List.of(near),List.of(player),List.of(),18,4,new Random(1)));
+    }
     @Test void spreadNeverReusesAnOccupiedPadWhileSpacedPadsRemain(){
         var pads=List.of(new SpawnPlanner.Point(-20,64,-20),new SpawnPlanner.Point(20,64,-20),new SpawnPlanner.Point(-20,64,20),new SpawnPlanner.Point(20,64,20));
         List<SpawnPlanner.Point> occupied=new ArrayList<>();Random random=new Random(9);

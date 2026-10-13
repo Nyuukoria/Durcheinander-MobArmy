@@ -45,23 +45,19 @@ final class ResourcePacks implements Listener {
         return bytes.toByteArray();
     }
     void offer(Player player){
-        if(url.isBlank()){p.tell(player,"&eTexturen nicht automatisch verfügbar. Aktiviere die beiliegende Resource-Pack-ZIP in Minecraft.");return;}
-        statuses.put(player.getUniqueId(),"angefordert");
+        if(url.isBlank()){p.say(player,"pack.unavailable");return;}
+        statuses.put(player.getUniqueId(),"requested");
         player.removeResourcePack(ID);
         player.addResourcePack(ID,url,hash,"MobArmy: Custom-Items und Chaoswächter-Texturen laden?",false);
     }
-    String status(Player player){return statuses.getOrDefault(player.getUniqueId(),url.isBlank()?"nicht konfiguriert":"noch nicht angefordert");}
+    String status(Player player){return p.tr(player,"pack.state."+statuses.getOrDefault(player.getUniqueId(),url.isBlank()?"not_configured":"not_requested"));}
     @EventHandler public void quit(org.bukkit.event.player.PlayerQuitEvent e){statuses.remove(e.getPlayer().getUniqueId());}
     @EventHandler public void status(PlayerResourcePackStatusEvent e){
         if(!ID.equals(e.getID()))return;
-        String state=switch(e.getStatus()){
-            case SUCCESSFULLY_LOADED->"geladen";case ACCEPTED->"angenommen";case DOWNLOADED->"heruntergeladen";
-            case DECLINED->"abgelehnt";case FAILED_DOWNLOAD->"Download fehlgeschlagen";case FAILED_RELOAD->"Laden fehlgeschlagen";
-            case INVALID_URL->"ungültige URL";case DISCARDED->"verworfen";
-        };
+        String state=e.getStatus().name().toLowerCase(Locale.ROOT);
         statuses.put(e.getPlayer().getUniqueId(),state);
-        if(e.getStatus()==PlayerResourcePackStatusEvent.Status.SUCCESSFULLY_LOADED){p.items.refresh(e.getPlayer());p.tell(e.getPlayer(),"&aMobArmy-Texturen geladen.");}
-        else if(Set.of("abgelehnt","Download fehlgeschlagen","Laden fehlgeschlagen","ungültige URL","verworfen").contains(state))p.tell(e.getPlayer(),"&eResource-Pack: "+state+". Server-Ressourcenpakete einschalten, dann &f/raid pack reload&e. Alternativ die ZIP unter Optionen → Ressourcenpakete aktivieren.");
+        if(e.getStatus()==PlayerResourcePackStatusEvent.Status.SUCCESSFULLY_LOADED){p.items.refresh(e.getPlayer());p.say(e.getPlayer(),"pack.loaded");}
+        else if(Set.of("declined","failed_download","failed_reload","invalid_url","discarded").contains(state))p.say(e.getPlayer(),"pack.failed","state",status(e.getPlayer()));
     }
     void restart(){if(host!=null)host.close();host=null;url="";hash=null;start();}
     void close(){if(host!=null)host.close();statuses.clear();}

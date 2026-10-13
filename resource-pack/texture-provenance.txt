@@ -1,0 +1,1 @@
+The eight new 1.6 utility sprites were created with the built-in Imagegen tool, then formatted as exact 16x16 transparent PNGs with at most six opaque colors by tools/format_item_texture.py. Prompts: texture-prompts.json. All item sprite filenames are stable item IDs. Model geometry and state routing are authored in tools/build_pack.py.

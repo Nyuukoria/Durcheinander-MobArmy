@@ -1,8 +1,8 @@
-# In-game checks for 1.5.0
+# In-game checks for 1.6.0
 
 Automated tests verify rules, command grammar and a mocked party-entry/teleport flow. The following checks exercise Minecraft's native movement, rendering and multiplayer behavior.
 
-1. Update over an existing stopped demo. Start and confirm plugin version 1.5.0, new separate lobby and full arena ceiling. Old generated layouts migrate once; custom worlds with generate-demo false should remain hand-built.
+1. Update over an existing stopped demo. Start and confirm plugin version 1.6.0, new separate lobby and full arena ceiling. Old generated layouts migrate once; custom worlds with generate-demo false should remain hand-built.
 2. Join a portal. A private `/raid` hint appears; no inventory GUI opens automatically. The waiting room has no walkable connection to the combat space. `/raid` opens voting. Leader Ready teleports everyone after the countdown; combat begins only after all successful arrivals.
 3. Complete a stage. Collect miniboss loot before return. After up to 12 seconds, leftover custom loot is stored for the leader and everyone is teleported back to the lobby. Invite a new player between stages, elect a different leader, and start again.
 4. With test mode OFF and week 1 minimum 2, each of two people can deal 50% boss/miniboss HP. With week 2 minimum 3 each can deal 33⅓%; with week 3 minimum 5 each can deal 20%. Extra members do not change the cap. Test mode ON uses 100%.
@@ -65,3 +65,17 @@ Automatische Tests decken gewichtete Chancen/Grenzfälle, Zutatenprüfung ohne T
 - Portal mit langer ID, Sprachwechsel und Relog: Anzeige bleibt über dem Portal, keine doppelte Sprachversion. `/raid portal delete demo_w1`, Neustart und `/raid demo w1` von anderer Position: alter Trigger/Text/Partikel verschwunden, neue Position funktioniert. Selbst gebaute Rahmen bleiben Weltblöcke.
 
 Automatische Tests prüfen Demo-Fortschritt ohne Beute, Spawnabstände, sicheren Perlen-Suchbereich, Set-Zählung mit Händen, Sprachübersetzung ohne veränderte Befehle, alle Gegner-/Bossreferenzen, Migration und Ressourcenpaket. Client-Rendering, Minecraft-Physik und echte Mehrspieler-Interaktionen sind weiterhin In-game-Prüfungen.
+
+## Zusätzliche Prüfung für 1.6
+
+- Ressourcenpaket neu laden. Alle acht Alltagswerkzeuge müssen eigene Pixeltexturen haben. Angel auswerfen, Armbrust laden und mit Pfeilen/Feuerwerksraketen abfeuern; eigene Textur bleibt sichtbar.
+
+- Solo einen Mini-/Endboss mit schnellen Treffern, Pfeilen und Mace besiegen. Unwirksame Treffer während Schadens-Immunität dürfen den persönlichen Anteil nicht erhöhen. Letztes Restleben muss verschwinden; Anzeige nicht vorzeitig 100 %. Produktionsmodus mit zwei/drei/fünf Spielern wiederholen.
+- Beim Start jeder Welle mindestens 18 Blöcke horizontal Abstand zu allen Spielern. Spieler auf Hügeln dürfen nicht durch große Höhendifferenzen einen nahen Spawn ermöglichen.
+- Alle drei Obsidian-Golems im Raid und per `/raid boss summon abyss_guardian`, `frost_guardian`, `ember_guardian` ansehen. Füße auf Boden, Höhe passend zu Eisengolem-Trefferfläche, richtige Vorderseite. Gehen, Arme beim Angriff, Kopf und Trefferreaktion beobachten. Vorschauen haben weiterhin keine KI, zeigen aber Ruhebewegung. Skip/Tod/Stop/Logout dürfen keine Körperteile zurücklassen.
+- `/raid kit gear`: acht neue Alltagswerkzeuge. Einzelnes Holzfällen, Behutsamkeit, Pflanzen, Schere, normales Angeln, Armbrust laden/schießen und Dreizack werfen/zurückkehren lassen. Keine zusätzliche automatische Weltbearbeitung. Natürliche Itemzustände/Modelle und normale Verzauberungen prüfen.
+- Utility-Werkzeug am Amboss reparieren/umbenennen und mit passenden Vanilla-Büchern bearbeiten. Eigener Name bleibt nach Sprachwechsel und Neustart. Schleifstein und Netherit-Upgrade liefern gewöhnliche Vanilla-Ausrüstung ohne Plugin-ID; nach Inventar-Schließen dürfen Enchantments nicht unerwartet zurückkehren. Alte Raid-Rüstung/Waffen bleiben für solche Kombinationen gesperrt.
+- `/rezepte`: 28 Karten mit Abstand, korrekte Vor-/Zurück-Seiten, Item-Details mit eigenen Fundort-/Ritual-Karten, Zutaten separat. Keine Entnahme über Shift-Klick, Zahlentasten, Drag oder Doppelklick. Im Kesselmenü Rechtsklick liest, Linksklick startet. Wandererschmiede garantiert eines von acht Werkzeugen.
+- Deutsch/Englisch umschalten und Gruppe, Rezepte, HUD, Portal, Packhinweise, Perlen-/Relikt-Cooldowns sowie Ritual-Fehler prüfen. Namen/IDs/Commands dürfen nicht übersetzt werden. Lore hat Leerzeilen und kurze Zeilen; Stats stehen in normalen Minecraft-Tooltips.
+
+Automatische Regressionen prüfen echten Lebensverlust gegenüber gemeldetem Schaden, zwei Treffer im gleichen Tick, Float-Restleben, Produktions-Anteile, 18-Blöcke-Abstand, Modellgrenzen/Fuß-/Kopfhöhe und Gelenkposen, kurze Lore, alle Übersetzungs-Schlüssel/Platzhalter, Rezeptwege und Config-Migration. Client-Rendering, Vanilla-Werkstatt-UI und echte Minecraft-Physik bleiben In-game-Prüfungen.

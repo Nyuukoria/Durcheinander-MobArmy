@@ -9,6 +9,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class EquipmentTest {
+    @Test void vanillaWorkstationsAcceptOnlyTheNewUtilityToolsAndCompatibleInputs(){
+        MobArmy p=mock(MobArmy.class);var cfg=new YamlConfiguration();cfg.set("items.pick.utility",true);when(p.getConfig()).thenReturn(cfg);p.items=mock(Items.class);ItemStack pick=mock(ItemStack.class),vanilla=mock(ItemStack.class),other=mock(ItemStack.class);when(p.items.id(pick)).thenReturn("pick");when(p.items.id(other)).thenReturn("warden_blade");Equipment gear=new Equipment(p);
+        assertTrue(gear.utilityInputs(pick,vanilla));assertTrue(gear.utilityInputs(pick,pick));assertFalse(gear.utilityInputs(vanilla,pick));assertFalse(gear.utilityInputs(pick,other));
+    }
+    @Test void convertingAUtilityToolToVanillaRemovesOurIdentityAndModelsSoRefreshCannotRestoreEnchants(){
+        MobArmy p=mock(MobArmy.class);when(p.getName()).thenReturn("MobArmy");p.itemKey=org.bukkit.NamespacedKey.fromString("mobarmy:custom_item");ItemStack result=mock(ItemStack.class);var meta=mock(org.bukkit.inventory.meta.ItemMeta.class);var data=mock(org.bukkit.persistence.PersistentDataContainer.class);when(result.getItemMeta()).thenReturn(meta);when(meta.getPersistentDataContainer()).thenReturn(data);
+        new Equipment(p).ordinary(result);verify(data).remove(p.itemKey);verify(meta).setItemModel(null);verify(meta).setLore(null);verify(meta).setRarity(null);verify(meta,never()).addEnchant(any(),anyInt(),anyBoolean());
+    }
     @Test void heldWeaponAndToolCountWithArmorButDuplicateCopiesAndInventoryDoNot(){
         var cfg=new YamlConfiguration();for(String id:List.of("blade","tool")){cfg.set("items."+id+".gear",true);cfg.set("items."+id+".set","warden");}cfg.set("items.boot.set","warden");cfg.set("items.boot.slot","boots");
         MobArmy p=mock(MobArmy.class);when(p.getConfig()).thenReturn(cfg);p.items=mock(Items.class);ItemStack blade=mock(ItemStack.class),tool=mock(ItemStack.class),boot=mock(ItemStack.class);when(p.items.id(blade)).thenReturn("blade");when(p.items.id(tool)).thenReturn("tool");when(p.items.id(boot)).thenReturn("boot");

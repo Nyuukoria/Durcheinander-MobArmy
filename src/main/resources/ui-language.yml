@@ -1,0 +1,444 @@
+de:
+  gui:
+    back: '&fZurück'
+    next: '&fWeiter'
+    close: '&cSchließen'
+    items: '&dGegenstände'
+    gear: '&bAusrüstung'
+    sets: '&eSets'
+    rituals: '&5Rituale'
+    recipes: Rezepte
+    details: '&eKlicken: Details und Beschaffung'
+    catalogue-title: '&dRezepte · {category} · {page}'
+    item-title: '&dRezepte · {name}'
+    ritual-title: '&5Ritual · {name}'
+    drops: '&aFundorte'
+    drop-chance: '&7Chance pro Gegner: &f{chance}%'
+    drop-source: '&7{source} · ab Stufe {stage}'
+    drop-none: '&7Kein direkter Raid-Drop.'
+    rewards-only: '&8Nur bei aktiven Belohnungen.'
+    no-recipe: '&7Kein Schmiederezept vorhanden.'
+    ritual-route: '&7Klicken: Zutaten und Ablauf'
+    ritual-result: '&dErgebnis'
+    ingredients: '&eZutaten'
+    ingredient-consumed: '&8Wird beim Ritual verbraucht.'
+    recipe-instructions: '&bSo führst du das Ritual aus'
+    recipe-step1: '&71. Kessel in {world} aufstellen.'
+    recipe-step2: '&72. Chaosfragment in die Haupthand.'
+    recipe-step3: '&73. Kessel rechtsklicken.'
+    recipe-catalyst: '&8Das Chaosfragment bleibt erhalten.'
+    duration: '&7Dauer: &f{seconds} s'
+    cooldown: '&7Abklingzeit: &f{seconds} s'
+    start-ritual: '&eLinksklick: Ritual beginnen'
+    read-ritual: '&7Rechtsklick: Rezept ansehen'
+    drop-exact: '&7{source} · Stufe {stage}'
+    no-ingredients: '&7Keine Zutaten nötig.'
+  source:
+    mob: Raid-Gegner
+    miniboss: Miniboss
+    boss: Endboss
+    ritual: Ritualwächter
+  phase:
+    LOBBY: Vorbereitung
+    ENTERING: Teleport
+    FIGHT: Kampf
+    LOOT: Beute einsammeln
+  party:
+    title: '&dGruppe · Stufe {stage}'
+    vote: '&7Klicken: als Gruppenleitung wählen'
+    votes: '&7Stimmen: &f{votes}'
+    stage: '&dStufe {stage} / 5'
+    majority: '&7Die Mehrheit entscheidet.'
+    share: '&7Schadenslimit pro Person: &f{share}%'
+    start: '&aStufe starten'
+    only-leader: '&7Nur die Gruppenleitung kann starten.'
+    count: '&7Spieler: &f{count} &7· benötigt: &f{minimum}'
+    phase: '&7Status: &f{phase}'
+    leave: '&cRaid verlassen'
+    menu: '&fGruppenmenü'
+  mail:
+    title: '&dBeutepostfach'
+    hint: '&fLinks: Abholen'
+    give: '&7Rechts: an die Gruppe weitergeben'
+    give-title: '&dBeute weitergeben'
+    no-party: Keine Gruppe zum Verteilen gespeichert.
+  raid:
+    welcome: Willkommen! Mit &e/raid &fkannst du die Gruppenleitung wählen.
+    only-leader: Nur die Gruppenleitung kann die Stufe starten.
+    need-players: 'Es fehlen Spieler: {count}/{minimum}.'
+    stage-clear: 'Stufe geschafft! Starte die nächste Stufe im Gruppenmenü: &e/raid'
+    enter-title: Stufe {stage}
+    enter-subtitle: Deine Gruppe betritt die Arena …
+    wave-title: Welle {wave}
+    miniboss: Miniboss
+    boss: Endboss
+    portal-status: '{id} · {week} · {state} · {phase}'
+    eliminated: Du bist für diesen Durchlauf ausgeschieden.
+    busy: Diese Arena wird bereits benutzt.
+    wipe: 'Wipe-Sperre aktiv. Portalinfos: &e/raid status'
+    blocked: '{reason} Bitte warte außerhalb des Portals.'
+  hud:
+    title: '&d{arena} &7| &fStufe {stage}/5 &7| &f{phase}'
+    lobby: Vorraum · Gruppenleitung startet
+    entering: Teleport in {seconds} s
+    fight: '{wave} · {count} Gegner'
+    loot: Beute einsammeln · Rückkehr folgt
+    rewards: '&aBelohnungen: {time}'
+    training: '&7Training'
+    action: '&fLeitung: &d{leader} &7| &fSpieler: {count}/{minimum}+ &7| {rewards}{share}'
+    share: ' &7| &fBoss-Schaden: {used}/{limit}%'
+  portal:
+    open: '&a&lOFFEN'
+    closed: '&c&lGESCHLOSSEN'
+    stage: '&c&lSTUFE {stage} · GESPERRT'
+    busy: '&c&lARENA BELEGT'
+    rewards: '&aBelohnungen &f{time}'
+    finished: '&7Boss bereits besiegt'
+    training: '&7Training · keine Beute'
+    enter: '&7Hineingehen → Vorraum'
+    wait: '&7Bitte hier warten'
+    reason:
+      closed: Das Portal ist geschlossen.
+      stage: Stufe {stage} läuft gerade.
+      busy: Die Arena ist belegt.
+  pearl:
+    no-target: Hier gibt es keinen sicheren Landeplatz.
+    combat-only: Enderperlen kannst du im Kampf nutzen.
+    cooldown: Enderperle wieder bereit in {time}.
+  relic:
+    cooldown: Wieder bereit in {time}.
+    combat-only: Dieses Relikt kannst du im Raid-Kampf nutzen.
+    no-enemies: Keine Raid-Gegner in Reichweite. Das Relikt bleibt bereit.
+    activated: '{name} aktiviert.'
+  ritual:
+    title: '&5Kesselrituale'
+    place: Du brauchst einen Kessel in {world}, höchstens 6 Blöcke entfernt.
+    begin: '{name} beginnt. Bleib am Kessel.'
+    refund: Ritual abgebrochen. Zutaten liegen in &e/raid loot&f.
+    phase:
+      circle: Runenkreis
+      energy: Energie sammeln
+      shape: Schmieden
+      complete: Vollenden
+    permission: Du darfst keine Raids benutzen.
+    location-lost: Der Kessel fehlt oder ist zu weit weg.
+    catalyst: Halte ein Chaosfragment in der Haupthand.
+    active: Hier läuft bereits ein Ritual.
+    limit: Zu viele aktive Rituale. Versuch es später.
+    cooldown: Dieses Ritual ist in {time} wieder bereit.
+    repair-empty: Trage oder halte beschädigte Spezialausrüstung.
+    ingredients-missing: Dir fehlen Zutaten. Das Rezept zeigt, was du brauchst.
+    expired: Der Ritualwächter ist verschwunden.
+    cancelled: Rituale beendet. Erstattete Zutaten findest du in &e/raid loot&f.
+    no-victory: Der Wächter wurde ohne Spieler besiegt. Keine Beute.
+    victory: 'Prüfung geschafft! Beute: Inventar oder &e/raid loot&f.'
+    repaired: '{count} Ausrüstungsteile repariert.'
+    complete: Ritual abgeschlossen.
+  language:
+    changed: 'Sprache: Deutsch'
+  gear:
+    status: 'Aktive Set-Teile: {sets}. Details unter &e/rezepte sets&f.'
+    none: keine
+  admin:
+    skip: Welle/Stufe übersprungen. Keine zusätzliche Beute.
+    boss-preview: 'Boss-Vorschau erstellt. Entfernen: &e/raid boss clear'
+    boss-cleared: Boss-Vorschauen entfernt.
+    portal-deleted: Portal {id} dauerhaft entfernt.
+    portals-deleted: '{count} Portale dauerhaft entfernt.'
+    demo-enabled: 'Demo aktiv: Solo-Einstieg, keine Wipe-Sperre.'
+    timer-updated: Belohnungszeit aktualisiert. Ein besiegter Boss bleibt abgeschlossen.
+    position: Position {number} gesetzt.
+    demo-reset: Demo zurückgesetzt. Wähle bei Bedarf eine neue Belohnungszeit.
+    demo-rebuilt: Demo-Arena {week} neu aufgebaut.
+    cooldowns: Abklingzeiten und Demo-Sperren entfernt.
+    wipe-cleared: Wipe-Sperre entfernt.
+    test-on: 'Demo aktiv: Solo-Einstieg, Boss-Limit 100 %, keine Wipe-Sperre.'
+    test-off: 'Demo aus: Die normalen Raid-Regeln gelten.'
+    build-on: Baumodus eingeschaltet.
+    build-off: Baumodus ausgeschaltet.
+    kit-gear: Ausrüstung gegeben. Überschuss liegt in &e/raid loot&f.
+    kit-ritual: Ritualzutaten gegeben. Kessel aufstellen und mit Chaosfragment rechtsklicken.
+    reloaded: Raid-Konfiguration neu geladen.
+    boss-list: 'Boss-IDs: {ids}'
+  timer:
+    title: '&dBelohnungszeit wählen'
+    duration: '&e{minutes} Minuten'
+    training: '&7Training ohne Beute'
+    midnight: '&7Endet spätestens um Mitternacht.'
+    ready: 'Portal {id} ist bereit. Betreten: &e/raid join {id}'
+  help:
+    player: '&dRaid-Befehle
+
+      &f/raid join <portal> | start | leave | loot | status
+
+      /rezepte items|gear|sets|rituals
+
+      /raid language de|en | gear | pack status|reload
+
+      /raid ritual <id> | ritual cancel
+
+      '
+    admin: '&dAdmin-Befehle
+
+      &f/raid demo <week> | demo reset [id|all]
+
+      /raid skip wave|stage [id]
+
+      /raid boss list | boss summon <id> | boss clear [all]
+
+      /raid portal pos1|pos2|create <week> [id]|delete <id|all>
+
+      /raid timer set|add <time> [id] | timer clear [id]
+
+      /raid kit basic|gear|ritual | item give|take|count <id> [player] [amount]
+
+      /raid cooldown clear [player|all] | test on|off | reload'
+  pack:
+    prompt: 'MobArmy: Item-Texturen und Golem-Modelle'
+    unavailable: Aktiviere die beiliegende Ressourcenpaket-ZIP in Minecraft.
+    loaded: MobArmy-Ressourcenpaket geladen.
+    failed: 'Ressourcenpaket: {state}. Aktiviere Server-Ressourcenpakete und nutze &e/raid pack reload&f.'
+    status: 'Ressourcenpaket: {state}. Neu laden: &e/raid pack reload'
+    state:
+      requested: angefordert
+      not_configured: nicht eingerichtet
+      not_requested: noch nicht angefordert
+      successfully_loaded: geladen
+      accepted: angenommen
+      downloaded: heruntergeladen
+      declined: abgelehnt
+      failed_download: Download fehlgeschlagen
+      failed_reload: Laden fehlgeschlagen
+      invalid_url: ungültiger Link
+      discarded: verworfen
+  error:
+    players-only: Dieser Befehl ist nur im Spiel verfügbar.
+    permission: 'Dir fehlt die Berechtigung: {permission}'
+    portal: 'Unbekanntes Portal: {id}'
+    portal-needed: 'Wähle ein Portal. Verfügbar: {ids}'
+    demo-only: Dieser Befehl ist nur für die Demo verfügbar.
+    no-party: Betritt zuerst eine Raid-Gruppe.
+    wave-fight: Du kannst nur eine laufende Kampfwelle überspringen.
+    offline: 'Spieler ist offline: {name}'
+en:
+  gui:
+    back: '&fBack'
+    next: '&fNext'
+    close: '&cClose'
+    items: '&dItems'
+    gear: '&bEquipment'
+    sets: '&eSets'
+    rituals: '&5Rituals'
+    recipes: Recipes
+    details: '&eClick: details and how to obtain'
+    catalogue-title: '&dRecipes · {category} · {page}'
+    item-title: '&dRecipes · {name}'
+    ritual-title: '&5Ritual · {name}'
+    drops: '&aWhere to find it'
+    drop-chance: '&7Chance per enemy: &f{chance}%'
+    drop-source: '&7{source} · from stage {stage}'
+    drop-none: '&7No direct raid drop.'
+    rewards-only: '&8Requires active rewards.'
+    no-recipe: '&7No forging recipe available.'
+    ritual-route: '&7Click: ingredients and instructions'
+    ritual-result: '&dResult'
+    ingredients: '&eIngredients'
+    ingredient-consumed: '&8Consumed when the ritual begins.'
+    recipe-instructions: '&bHow to perform the ritual'
+    recipe-step1: '&71. Place a cauldron in {world}.'
+    recipe-step2: '&72. Hold a Chaos Fragment.'
+    recipe-step3: '&73. Right-click the cauldron.'
+    recipe-catalyst: '&8The Chaos Fragment is kept.'
+    duration: '&7Duration: &f{seconds} s'
+    cooldown: '&7Cooldown: &f{seconds} s'
+    start-ritual: '&eLeft-click: begin ritual'
+    read-ritual: '&7Right-click: view recipe'
+    drop-exact: '&7{source} · stage {stage}'
+    no-ingredients: '&7No ingredients required.'
+  source:
+    mob: Raid enemy
+    miniboss: Miniboss
+    boss: Final boss
+    ritual: Ritual guardian
+  phase:
+    LOBBY: Preparation
+    ENTERING: Entering
+    FIGHT: Combat
+    LOOT: Collecting loot
+  party:
+    title: '&dParty · Stage {stage}'
+    vote: '&7Click: vote for party leader'
+    votes: '&7Votes: &f{votes}'
+    stage: '&dStage {stage} / 5'
+    majority: '&7A majority decides the leader.'
+    share: '&7Damage limit per player: &f{share}%'
+    start: '&aStart stage'
+    only-leader: '&7Only the party leader can start.'
+    count: '&7Players: &f{count} &7· required: &f{minimum}'
+    phase: '&7Status: &f{phase}'
+    leave: '&cLeave raid'
+    menu: '&fParty menu'
+  mail:
+    title: '&dLoot mailbox'
+    hint: '&fLeft-click: collect'
+    give: '&7Right-click: give to your party'
+    give-title: '&dShare loot'
+    no-party: No party is available for sharing loot.
+  raid:
+    welcome: Welcome! Use &e/raid &fto vote for your party leader.
+    only-leader: Only the party leader can start the stage.
+    need-players: 'Not enough players: {count}/{minimum}.'
+    stage-clear: 'Stage complete! Start the next stage in the party menu: &e/raid'
+    enter-title: Stage {stage}
+    enter-subtitle: Your party is entering the arena …
+    wave-title: Wave {wave}
+    miniboss: Miniboss
+    boss: Final boss
+    portal-status: '{id} · {week} · {state} · {phase}'
+    eliminated: You have been eliminated from this run.
+    busy: This arena is already in use.
+    wipe: 'Wipe cooldown active. Portal details: &e/raid status'
+    blocked: '{reason} Please wait outside the portal.'
+  hud:
+    title: '&d{arena} &7| &fStage {stage}/5 &7| &f{phase}'
+    lobby: Lobby · party leader starts
+    entering: Teleporting in {seconds} s
+    fight: '{wave} · {count} enemies'
+    loot: Collect loot · returning soon
+    rewards: '&aRewards: {time}'
+    training: '&7Training'
+    action: '&fLeader: &d{leader} &7| &fPlayers: {count}/{minimum}+ &7| {rewards}{share}'
+    share: ' &7| &fBoss damage: {used}/{limit}%'
+  portal:
+    open: '&a&lOPEN'
+    closed: '&c&lCLOSED'
+    stage: '&c&lSTAGE {stage} · LOCKED'
+    busy: '&c&lARENA OCCUPIED'
+    rewards: '&aRewards &f{time}'
+    finished: '&7Boss already defeated'
+    training: '&7Training · no loot'
+    enter: '&7Walk in → preparation room'
+    wait: '&7Please wait here'
+    reason:
+      closed: The portal is closed.
+      stage: Stage {stage} is in progress.
+      busy: The arena is occupied.
+  pearl:
+    no-target: There is no safe landing spot here.
+    combat-only: You can use ender pearls during combat.
+    cooldown: Ender pearl ready in {time}.
+  relic:
+    cooldown: Ready again in {time}.
+    combat-only: Use this relic during raid combat.
+    no-enemies: No raid enemies in range. The relic is still ready.
+    activated: '{name} activated.'
+  ritual:
+    title: '&5Cauldron rituals'
+    place: You need a cauldron in {world}, within 6 blocks.
+    begin: '{name} begins. Stay near the cauldron.'
+    refund: Ritual cancelled. Your ingredients are in &e/raid loot&f.
+    phase:
+      circle: Rune circle
+      energy: Gathering energy
+      shape: Shaping
+      complete: Completing
+    permission: You do not have permission to play raids.
+    location-lost: The cauldron is missing or too far away.
+    catalyst: Hold a Chaos Fragment in your main hand.
+    active: A ritual is already in progress here.
+    limit: Too many active rituals. Try again later.
+    cooldown: This ritual is ready again in {time}.
+    repair-empty: Wear or hold damaged custom equipment.
+    ingredients-missing: You are missing ingredients. Check the recipe for the amounts.
+    expired: The ritual guardian has disappeared.
+    cancelled: Rituals ended. Refunded ingredients are in &e/raid loot&f.
+    no-victory: The guardian was defeated without a player. No loot awarded.
+    victory: Trial complete! Your loot is in your inventory or &e/raid loot&f.
+    repaired: Repaired {count} equipment items.
+    complete: Ritual complete.
+  language:
+    changed: 'Language: English'
+  gear:
+    status: 'Active set pieces: {sets}. Details in &e/rezepte sets&f.'
+    none: none
+  admin:
+    skip: Wave/stage skipped. No additional loot.
+    boss-preview: Boss preview created. Remove it with &e/raid boss clear
+    boss-cleared: Boss previews removed.
+    portal-deleted: Portal {id} permanently deleted.
+    portals-deleted: Permanently deleted {count} portals.
+    demo-enabled: 'Demo enabled: solo entry, no wipe cooldown.'
+    timer-updated: Reward duration updated. A defeated boss stays completed.
+    position: Position {number} set.
+    demo-reset: Demo reset. Choose a new reward duration if needed.
+    demo-rebuilt: Demo arena {week} rebuilt.
+    cooldowns: Cooldowns and demo locks cleared.
+    wipe-cleared: Wipe cooldown cleared.
+    test-on: 'Demo enabled: solo entry, 100% boss limit, no wipe cooldown.'
+    test-off: 'Demo disabled: normal raid rules apply.'
+    build-on: Build mode enabled.
+    build-off: Build mode disabled.
+    kit-gear: Equipment given. Overflow is in &e/raid loot&f.
+    kit-ritual: Ritual ingredients given. Place a cauldron and right-click it with a Chaos Fragment.
+    reloaded: Raid configuration reloaded.
+    boss-list: 'Boss IDs: {ids}'
+  timer:
+    title: '&dChoose reward duration'
+    duration: '&e{minutes} minutes'
+    training: '&7Training without loot'
+    midnight: '&7Ends at midnight at the latest.'
+    ready: Portal {id} is ready. Join with &e/raid join {id}
+  help:
+    player: '&dRaid commands
+
+      &f/raid join <portal> | start | leave | loot | status
+
+      /rezepte items|gear|sets|rituals
+
+      /raid language de|en | gear | pack status|reload
+
+      /raid ritual <id> | ritual cancel
+
+      '
+    admin: '&dAdmin commands
+
+      &f/raid demo <week> | demo reset [id|all]
+
+      /raid skip wave|stage [id]
+
+      /raid boss list | boss summon <id> | boss clear [all]
+
+      /raid portal pos1|pos2|create <week> [id]|delete <id|all>
+
+      /raid timer set|add <time> [id] | timer clear [id]
+
+      /raid kit basic|gear|ritual | item give|take|count <id> [player] [amount]
+
+      /raid cooldown clear [player|all] | test on|off | reload'
+  pack:
+    prompt: 'MobArmy: item textures and golem models'
+    unavailable: Enable the included resource-pack ZIP in Minecraft.
+    loaded: MobArmy resource pack loaded.
+    failed: 'Resource pack: {state}. Enable server resource packs and use &e/raid pack reload&f.'
+    status: 'Resource pack: {state}. Reload with &e/raid pack reload'
+    state:
+      requested: requested
+      not_configured: not configured
+      not_requested: not requested
+      successfully_loaded: loaded
+      accepted: accepted
+      downloaded: downloaded
+      declined: declined
+      failed_download: download failed
+      failed_reload: loading failed
+      invalid_url: invalid URL
+      discarded: discarded
+  error:
+    players-only: This command is only available in-game.
+    permission: 'You need this permission: {permission}'
+    portal: 'Unknown portal: {id}'
+    portal-needed: 'Choose a portal. Available: {ids}'
+    demo-only: This command is available in demo mode only.
+    no-party: Join a raid party first.
+    wave-fight: You can only skip an active combat wave.
+    offline: 'Player is offline: {name}'

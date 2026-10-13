@@ -12,11 +12,17 @@ import java.util.regex.*;
 
 final class Language {
     record Phrase(String de,String en){}
-    final MobArmy p;final List<Phrase> phrases;
-    Language(MobArmy p){this.p=p;var cfg=YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(p.getResource("languages.yml")),StandardCharsets.UTF_8));phrases=cfg.getMapList("phrases").stream().map(row->new Phrase(row.get("de").toString(),row.get("en").toString())).toList();}
+    final MobArmy p;final List<Phrase> phrases;final YamlConfiguration ui;
+    Language(MobArmy p){this.p=p;var cfg=YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(p.getResource("languages.yml")),StandardCharsets.UTF_8));ui=YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(p.getResource("ui-language.yml")),StandardCharsets.UTF_8));phrases=cfg.getMapList("phrases").stream().map(row->new Phrase(row.get("de").toString(),row.get("en").toString())).toList();}
+    String tr(CommandSender player,String key,Object... values){return trCode(code(player),key,values);}
+    String trCode(String language,String key,Object... values){return format(ui.getString(language+"."+key,ui.getString("de."+key,key)),values);}
+    static String format(String template,Object... values){if(values.length%2!=0)throw new IllegalArgumentException("Translation values must be key/value pairs");for(int i=0;i<values.length;i+=2)template=template.replace("{"+values[i]+"}",Objects.toString(values[i+1],""));return template;}
+    String itemName(CommandSender player,String id){String path="items."+id+"."+(code(player).equals("en")?"name-en":"name");return p.getConfig().getString(path,p.getConfig().getString("items."+id+".name",id));}
+    String recipeName(CommandSender player,org.bukkit.configuration.ConfigurationSection recipe){return recipe.getString(code(player).equals("en")?"name-en":"name",recipe.getString("name","Ritual"));}
+    String sets(CommandSender player,Map<String,Integer> worn){return worn.isEmpty()?tr(player,"gear.none"):String.join(", ",worn.entrySet().stream().map(e->p.getConfig().getString("equipment-sets."+e.getKey()+"."+(code(player).equals("en")?"name-en":"name"),e.getKey())+": "+e.getValue()).toList());}
     String code(UUID player){return p.state.getString("languages."+player,p.getConfig().getString("default-language","de"));}
     String code(CommandSender sender){return sender instanceof Player player?code(player.getUniqueId()):p.getConfig().getString("default-language","de");}
-    void set(Player player,String code){if(!Set.of("de","en").contains(code))throw new IllegalArgumentException("/raid language de|en");p.state.set("languages."+player.getUniqueId(),code);p.saveState();p.items.refresh(player);for(Portal portal:p.portals.values())portal.refreshVisibility(player);p.tell(player,code.equals("en")?"Language set to English.":"Sprache auf Deutsch gesetzt.");}
+    void set(Player player,String code){if(!Set.of("de","en").contains(code))throw new IllegalArgumentException("/raid language de|en");p.state.set("languages."+player.getUniqueId(),code);p.saveState();p.items.refresh(player);for(Portal portal:p.portals.values())portal.refreshVisibility(player);player.closeInventory();p.say(player,"language.changed");}
     String text(CommandSender player,String text){return translate(code(player),text,phrases);}
     String text(UUID player,String text){return translate(code(player),text,phrases);}
     static String translate(String code,String source,List<Phrase> phrases){
@@ -34,15 +40,8 @@ final class Language {
     }
     ItemStack localized(UUID owner,ItemStack item){
         if(item==null)return null;ItemStack result=item.clone();var meta=result.getItemMeta();if(meta==null)return result;String id=p.items==null?null:p.items.id(item);var cfg=id==null?null:p.getConfig().getConfigurationSection("items."+id);boolean english=code(owner).equals("en");
-        if(cfg!=null){meta.setDisplayName(MobArmy.color(cfg.getString(english?"name-en":"name",cfg.getString("name",id))));List<String> lore=cfg.getStringList(english&&cfg.contains("lore-en")?"lore-en":"lore");meta.setLore(lore.stream().map(line->MobArmy.color(text(owner,line))).toList());}
-        else{if(meta.hasDisplayName())meta.setDisplayName(MobArmy.color(text(owner,meta.getDisplayName())));if(meta.hasLore())meta.setLore(meta.getLore().stream().map(line->MobArmy.color(text(owner,line))).toList());}
+        if(cfg!=null){String renamed=meta.getPersistentDataContainer().get(new NamespacedKey(p,"utility_name"),org.bukkit.persistence.PersistentDataType.STRING);meta.setDisplayName(renamed==null?MobArmy.color(cfg.getString(english?"name-en":"name",cfg.getString("name",id))):renamed);boolean translated=english&&cfg.contains("lore-en");List<String> lore=cfg.getStringList(translated?"lore-en":"lore");meta.setLore(TextLayout.wrap(lore.stream().map(line->MobArmy.color(english&&!translated?text(owner,line):line)).toList(),36));}
         result.setItemMeta(meta);return result;
     }
-    void open(Player player,Inventory inventory){
-        for(int slot=0;slot<inventory.getSize();slot++){ItemStack item=inventory.getItem(slot);if(item==null)continue;
-            // Recipe previews have additional lines that must survive localization.
-            var meta=item.getItemMeta();if(meta.hasDisplayName())meta.setDisplayName(MobArmy.color(text(player,meta.getDisplayName())));if(meta.hasLore())meta.setLore(meta.getLore().stream().map(line->MobArmy.color(text(player,line))).toList());item.setItemMeta(meta);inventory.setItem(slot,item);
-        }
-        player.openInventory(inventory);
-    }
+    void open(Player player,Inventory inventory){player.openInventory(inventory);}
 }

@@ -1,4 +1,4 @@
-configuration-version: 6
+configuration-version: 7
 timezone: Europe/Berlin
 entry-timeout-seconds: 120
 loot-timeout-seconds: 120
@@ -18,7 +18,7 @@ balance:
   count-per-extra-player: 0.25
   health-per-extra-player: 0.04
   maximum-wave-mobs: 250
-  minimum-spawn-distance: 8
+  minimum-spawn-distance: 18
   maximum-build-height: 2
   pearl-cooldown-seconds: 3
   apple-cooldown-seconds: 30
@@ -32,16 +32,19 @@ balance:
 messages:
   join: '&dEine Gruppe hat das Portal betreten'
   stage: '&dStage {stage} ist abgeschlossen'
-  private-join: '&dWillkommen im Vorraum! &fMach &e/raid &fum den Leader zu wählen. Nur der Leader startet die Stage mit Ready.'
+  private-join: '&dWillkommen im Vorraum! &fMach &e/raid &fum den Leader zu wählen. Nur der Leader startet
+    die Stage mit Ready.'
 items:
   chaos_fragment:
     material: AMETHYST_SHARD
     name: '&dChaosfragment'
     lore:
-    - '&8Wiederverwendbarer Ritual-Katalysator'
-    - '&7Rechtsklick auf einen Kessel öffnet die Ritualwahl.'
-    - '&dSchmieden, Wächterprüfungen, Reparatur und Segen.'
-    - '&7Katalysator bleibt erhalten; Zutaten je Rezept.'
+    - '&8Ritual-Katalysator'
+    - ''
+    - '&7Rechtsklick auf einen Kessel:'
+    - '&7öffnet die Ritualauswahl.'
+    - ''
+    - '&8Bleibt nach dem Ritual erhalten.'
     item-model: mobarmy:chaos_fragment
     drops:
     - source: miniboss
@@ -58,18 +61,22 @@ items:
       cooldown-seconds: 120
     name-en: '&dChaos Fragment'
     lore-en:
-    - '&8Reusable ritual catalyst'
-    - '&7Right-click a cauldron to choose a ritual.'
-    - '&dForging, guardian trials, repairs and blessings.'
-    - '&7The catalyst is kept; each recipe lists its ingredients.'
+    - '&8Ritual catalyst'
+    - ''
+    - '&7Right-click a cauldron'
+    - '&7to choose a ritual.'
+    - ''
+    - '&8Kept after every ritual.'
   ritual_core:
     material: HEART_OF_THE_SEA
     name: '&bRitualkern'
     lore:
-    - '&8Wiederverwendbares Schutzrelikt'
-    - '&7Rechtsklick: Resistenz I + Regeneration I (8s).'
-    - '&bAbklingzeit: 60 Sekunden.'
-    - '&7Bleibt bei jeder Benutzung erhalten.'
+    - '&8Relikt · wiederverwendbar'
+    - ''
+    - '&fRechtsklick'
+    - '&7Resistenz I und Regeneration I · 8 s'
+    - ''
+    - '&8Abklingzeit: 60 s'
     item-model: mobarmy:ritual_core
     use:
       consume: 0
@@ -85,18 +92,23 @@ items:
         amplifier: 0
     name-en: '&bRitual Core'
     lore-en:
-    - '&8Reusable defensive relic'
-    - '&7Right-click: Resistance I + Regeneration I (8s).'
-    - '&bCooldown: 60 seconds.'
-    - '&7Kept after every use.'
+    - '&8Relic · reusable'
+    - ''
+    - '&fRight-click'
+    - '&7Resistance I and Regeneration I · 8 s'
+    - ''
+    - '&8Cooldown: 60 s'
   chaos_crown:
     material: NETHER_STAR
     name: '&6Krone des Durcheinanders'
     lore:
-    - '&8Wiederverwendbares Gruppenrelikt'
-    - '&7Rechtsklick: Tempo I + Eile I (10s).'
-    - '&dWirkt auf deine Gruppe im Umkreis von 8 Blöcken.'
-    - '&7Abklingzeit: 75 Sekunden.'
+    - '&8Relikt · wiederverwendbar'
+    - ''
+    - '&fRechtsklick'
+    - '&7Tempo I und Eile I · 10 s'
+    - '&7Für die Gruppe in 8 Blöcken.'
+    - ''
+    - '&8Abklingzeit: 75 s'
     item-model: mobarmy:chaos_crown
     drops:
     - source: boss
@@ -116,10 +128,13 @@ items:
         amplifier: 0
     name-en: '&6Crown of Chaos'
     lore-en:
-    - '&8Reusable party relic'
-    - '&7Right-click: Speed I + Haste I (10s).'
-    - '&dAffects your party within 8 blocks.'
-    - '&7Cooldown: 75 seconds.'
+    - '&8Relic · reusable'
+    - ''
+    - '&fRight-click'
+    - '&7Speed I and Haste I · 10 s'
+    - '&7For your party within 8 blocks.'
+    - ''
+    - '&8Cooldown: 75 s'
   raid_shard:
     material: PRISMARINE_SHARD
     name: '&5Raidsplitter'
@@ -133,16 +148,16 @@ items:
     item-model: mobarmy:raid_shard
     shop-token: true
     lore:
-    - '&8Handelsware · Dungeon-Währung'
-    - '&7Für den Verkauf in einem kompatiblen NPC-Shop.'
-    - '&7Den Verkaufspreis bestimmt der jeweilige Shop.'
-    - '&bSammeln, aufbewahren und später verkaufen.'
+    - '&8Dungeon-Währung'
+    - ''
+    - '&7Zutat für viele Rituale.'
+    - '&7In kompatiblen NPC-Shops verkaufbar.'
     name-en: '&5Raid Shard'
     lore-en:
-    - '&8Trade goods · dungeon currency'
-    - '&7Sell in a compatible NPC shop.'
-    - '&7The shop determines the selling price.'
-    - '&bCollect, store and sell later.'
+    - '&8Dungeon currency'
+    - ''
+    - '&7Ingredient for many rituals.'
+    - '&7Sell in compatible NPC shops.'
   boss_model:
     material: PAPER
     name: '&dChaoswächter-Modell'
@@ -155,10 +170,14 @@ items:
     material: AMETHYST_SHARD
     name: '&bFrosttalisman'
     lore:
-    - '&8Wiederverwendbares Kontrollrelikt'
-    - '&7Rechtsklick: Gegner im Umkreis von 8 Blöcken'
-    - '&7erhalten Langsamkeit II (6s); Bosse I (3s).'
-    - '&bAbklingzeit: 40 Sekunden · bleibt erhalten.'
+    - '&8Relikt · wiederverwendbar'
+    - ''
+    - '&fRechtsklick'
+    - '&7Langsamkeit II · 6 s'
+    - '&7Raid-Gegner in 8 Blöcken.'
+    - '&8Bosse: Langsamkeit I · 3 s'
+    - ''
+    - '&8Abklingzeit: 40 s'
     item-model: mobarmy:frost_talisman
     drops:
     - source: miniboss
@@ -174,18 +193,25 @@ items:
       effects: []
     name-en: '&bFrost Talisman'
     lore-en:
-    - '&8Reusable control relic'
-    - '&7Right-click: enemies within 8 blocks'
-    - '&7receive Slowness II (6s); bosses I (3s).'
-    - '&bCooldown: 40 seconds · item is kept.'
+    - '&8Relic · reusable'
+    - ''
+    - '&fRight-click'
+    - '&7Slowness II · 6 s'
+    - '&7Raid enemies within 8 blocks.'
+    - '&8Bosses: Slowness I · 3 s'
+    - ''
+    - '&8Cooldown: 40 s'
   healing_bloom:
     material: AMETHYST_SHARD
     name: '&aLebensblüte'
     lore:
-    - '&8Wiederverwendbares Heilrelikt'
-    - '&7Rechtsklick: Regeneration II (6s).'
-    - '&aWirkt auf deine Gruppe im Umkreis von 8 Blöcken.'
-    - '&7Abklingzeit: 90 Sekunden · bleibt erhalten.'
+    - '&8Relikt · wiederverwendbar'
+    - ''
+    - '&fRechtsklick'
+    - '&7Regeneration II · 6 s'
+    - '&7Für die Gruppe in 8 Blöcken.'
+    - ''
+    - '&8Abklingzeit: 90 s'
     item-model: mobarmy:healing_bloom
     drops:
     - source: miniboss
@@ -203,18 +229,23 @@ items:
         amplifier: 1
     name-en: '&aHealing Bloom'
     lore-en:
-    - '&8Reusable healing relic'
-    - '&7Right-click: Regeneration II (6s).'
-    - '&aAffects your party within 8 blocks.'
-    - '&7Cooldown: 90 seconds · item is kept.'
+    - '&8Relic · reusable'
+    - ''
+    - '&fRight-click'
+    - '&7Regeneration II · 6 s'
+    - '&7For your party within 8 blocks.'
+    - ''
+    - '&8Cooldown: 90 s'
   gale_sigil:
     material: AMETHYST_SHARD
     name: '&3Windrune'
     lore:
-    - '&8Wiederverwendbares Bewegungsrelikt'
-    - '&7Rechtsklick: Tempo II + langsamer Fall (8s).'
-    - '&3Zum Ausweichen und für sichere Windcharge-Sprünge.'
-    - '&7Abklingzeit: 35 Sekunden · bleibt erhalten.'
+    - '&8Relikt · wiederverwendbar'
+    - ''
+    - '&fRechtsklick'
+    - '&7Tempo II und langsamer Fall · 8 s'
+    - ''
+    - '&8Abklingzeit: 35 s'
     item-model: mobarmy:gale_sigil
     drops:
     - source: miniboss
@@ -235,17 +266,21 @@ items:
         amplifier: 0
     name-en: '&3Gale Sigil'
     lore-en:
-    - '&8Reusable movement relic'
-    - '&7Right-click: Speed II + Slow Falling (8s).'
-    - '&3Dodge enemies and land wind charge jumps safely.'
-    - '&7Cooldown: 35 seconds · item is kept.'
+    - '&8Relic · reusable'
+    - ''
+    - '&fRight-click'
+    - '&7Speed II and Slow Falling · 8 s'
+    - ''
+    - '&8Cooldown: 35 s'
   ember_charm:
     name: '&6Glutamulett'
     lore:
-    - '&8Wiederverwendbares Feuerrelikt'
-    - '&7Rechtsklick: Feuerresistenz (15s).'
-    - '&6Schützt dich vor Feuer und Lava.'
-    - '&7Abklingzeit: 45 Sekunden · bleibt erhalten.'
+    - '&8Relikt · wiederverwendbar'
+    - ''
+    - '&fRechtsklick'
+    - '&7Feuerresistenz · 15 s'
+    - ''
+    - '&8Abklingzeit: 45 s'
     use:
       consume: 0
       radius: 0
@@ -264,17 +299,22 @@ items:
       chance: 0.5
     name-en: '&6Ember Charm'
     lore-en:
-    - '&8Reusable fire relic'
-    - '&7Right-click: Fire Resistance (15s).'
-    - '&6Protects you from fire and lava.'
-    - '&7Cooldown: 45 seconds · item is kept.'
+    - '&8Relic · reusable'
+    - ''
+    - '&fRight-click'
+    - '&7Fire Resistance · 15 s'
+    - ''
+    - '&8Cooldown: 45 s'
   guardian_rune:
     name: '&9Wächterrune'
     lore:
-    - '&8Wiederverwendbares Schutzrelikt'
-    - '&7Rechtsklick: Absorption II (8s).'
-    - '&9Vier zusätzliche Herzen als kurzer Schutzschild.'
-    - '&7Abklingzeit: 75 Sekunden · bleibt erhalten.'
+    - '&8Relikt · wiederverwendbar'
+    - ''
+    - '&fRechtsklick'
+    - '&7Absorption II · 8 s'
+    - '&7Vier zusätzliche Herzen.'
+    - ''
+    - '&8Abklingzeit: 75 s'
     use:
       consume: 0
       radius: 0
@@ -293,18 +333,24 @@ items:
       chance: 0.5
     name-en: '&9Guardian Rune'
     lore-en:
-    - '&8Reusable defensive relic'
-    - '&7Right-click: Absorption II (8s).'
-    - '&9Four temporary extra hearts.'
-    - '&7Cooldown: 75 seconds · item is kept.'
+    - '&8Relic · reusable'
+    - ''
+    - '&fRight-click'
+    - '&7Absorption II · 8 s'
+    - '&7Four temporary extra hearts.'
+    - ''
+    - '&8Cooldown: 75 s'
   hunter_lens:
     name: '&eJägerlinse'
     lore:
-    - '&8Wiederverwendbares Aufklärungsrelikt'
-    - '&7Rechtsklick während einer Stage: markiert'
-    - '&7Raid-Gegner in 16 Blöcken für 12s.'
-    - '&eDu erhältst zusätzlich Nachtsicht (30s).'
-    - '&7Abklingzeit: 35 Sekunden · bleibt erhalten.'
+    - '&8Relikt · wiederverwendbar'
+    - ''
+    - '&fRechtsklick'
+    - '&7Markiert Raid-Gegner · 12 s'
+    - '&7Reichweite: 16 Blöcke'
+    - '&7Nachtsicht · 30 s'
+    - ''
+    - '&8Abklingzeit: 35 s'
     use:
       consume: 0
       radius: 0
@@ -328,19 +374,25 @@ items:
       chance: 0.5
     name-en: '&eHunter Lens'
     lore-en:
-    - '&8Reusable scouting relic'
-    - '&7Right-click during combat: highlights'
-    - '&7raid enemies within 16 blocks for 12s.'
-    - '&eAlso grants Night Vision (30s).'
-    - '&7Cooldown: 35 seconds · item is kept.'
+    - '&8Relic · reusable'
+    - ''
+    - '&fRight-click'
+    - '&7Highlights raid enemies · 12 s'
+    - '&7Range: 16 blocks'
+    - '&7Night Vision · 30 s'
+    - ''
+    - '&8Cooldown: 35 s'
   weakening_fang:
     name: '&5Schwächungszahn'
     lore:
-    - '&8Wiederverwendbares Schwächungsrelikt'
-    - '&7Rechtsklick: Raid-Gegner in 8 Blöcken'
-    - '&7erhalten Schwäche I (6s), Bosse nur 3s.'
-    - '&5Verursacht keinen direkten Schaden.'
-    - '&7Abklingzeit: 50 Sekunden · bleibt erhalten.'
+    - '&8Relikt · wiederverwendbar'
+    - ''
+    - '&fRechtsklick'
+    - '&7Schwäche I · 6 s'
+    - '&7Raid-Gegner in 8 Blöcken.'
+    - '&8Bosse: 3 s'
+    - ''
+    - '&8Abklingzeit: 50 s'
     use:
       consume: 0
       radius: 0
@@ -362,11 +414,14 @@ items:
       chance: 0.5
     name-en: '&5Weakening Fang'
     lore-en:
-    - '&8Reusable weakening relic'
-    - '&7Right-click: raid enemies within 8 blocks'
-    - '&7receive Weakness I (6s); bosses only 3s.'
-    - '&5Deals no direct damage.'
-    - '&7Cooldown: 50 seconds · item is kept.'
+    - '&8Relic · reusable'
+    - ''
+    - '&fRight-click'
+    - '&7Weakness I · 6 s'
+    - '&7Raid enemies within 8 blocks.'
+    - '&8Bosses: 3 s'
+    - ''
+    - '&8Cooldown: 50 s'
   warden_helmet:
     material: IRON_HELMET
     name: '&eWächtersatz · Helm'
@@ -384,22 +439,24 @@ items:
       material: gold
       pattern: sentry
     lore:
-    - '&8RARE · Rüstung · &eWächtersatz'
-    - '&7Setbonus beim Tragen/Halten:'
-    - '&72 Teile: Resistenz I'
-    - '&74 Teile: zusätzlich Regeneration I'
-    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
-    - '&7Reparatur: Mending oder Kesselritual.'
-    - '&eErhalten: Miniboss ab Stufe 1; Details /rezepte gear.'
+    - '&8Wächter · Selten'
+    - ''
+    - '&72 Teile: &fResistenz I'
+    - '&74 Teile: &fRegeneration I'
+    - ''
+    - '&8Zählt beim Tragen zum Set.'
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Drops und Rezepte: /rezepte'
     name-en: '&eWarden Helmet'
     lore-en:
-    - '&8RARE · Armor · &eWarden set'
-    - '&7Set bonuses while worn/held:'
-    - '&72 pieces: Resistance I'
-    - '&74 pieces: also Regeneration I'
-    - '&7Bonuses in all worlds; fade within 3s of removal.'
-    - '&7Repair with Mending or a cauldron ritual.'
-    - '&eObtain: Miniboss from stage 1; details /rezepte gear.'
+    - '&8Warden · Rare'
+    - ''
+    - '&72 pieces: &fResistance I'
+    - '&74 pieces: &fRegeneration I'
+    - ''
+    - '&8Counts while worn.'
+    - '&8Repair with XP or a ritual.'
+    - '&8Drops and recipes: /rezepte'
   warden_chestplate:
     material: IRON_CHESTPLATE
     name: '&eWächtersatz · Brustplatte'
@@ -416,22 +473,24 @@ items:
       material: gold
       pattern: sentry
     lore:
-    - '&8RARE · Rüstung · &eWächtersatz'
-    - '&7Setbonus beim Tragen/Halten:'
-    - '&72 Teile: Resistenz I'
-    - '&74 Teile: zusätzlich Regeneration I'
-    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
-    - '&7Reparatur: Mending oder Kesselritual.'
-    - '&eErhalten: Miniboss ab Stufe 1; Details /rezepte gear.'
+    - '&8Wächter · Selten'
+    - ''
+    - '&72 Teile: &fResistenz I'
+    - '&74 Teile: &fRegeneration I'
+    - ''
+    - '&8Zählt beim Tragen zum Set.'
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Drops und Rezepte: /rezepte'
     name-en: '&eWarden Chestplate'
     lore-en:
-    - '&8RARE · Armor · &eWarden set'
-    - '&7Set bonuses while worn/held:'
-    - '&72 pieces: Resistance I'
-    - '&74 pieces: also Regeneration I'
-    - '&7Bonuses in all worlds; fade within 3s of removal.'
-    - '&7Repair with Mending or a cauldron ritual.'
-    - '&eObtain: Miniboss from stage 1; details /rezepte gear.'
+    - '&8Warden · Rare'
+    - ''
+    - '&72 pieces: &fResistance I'
+    - '&74 pieces: &fRegeneration I'
+    - ''
+    - '&8Counts while worn.'
+    - '&8Repair with XP or a ritual.'
+    - '&8Drops and recipes: /rezepte'
   warden_leggings:
     material: IRON_LEGGINGS
     name: '&eWächtersatz · Beinschutz'
@@ -448,22 +507,24 @@ items:
       material: gold
       pattern: sentry
     lore:
-    - '&8RARE · Rüstung · &eWächtersatz'
-    - '&7Setbonus beim Tragen/Halten:'
-    - '&72 Teile: Resistenz I'
-    - '&74 Teile: zusätzlich Regeneration I'
-    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
-    - '&7Reparatur: Mending oder Kesselritual.'
-    - '&eErhalten: Miniboss ab Stufe 1; Details /rezepte gear.'
+    - '&8Wächter · Selten'
+    - ''
+    - '&72 Teile: &fResistenz I'
+    - '&74 Teile: &fRegeneration I'
+    - ''
+    - '&8Zählt beim Tragen zum Set.'
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Drops und Rezepte: /rezepte'
     name-en: '&eWarden Leggings'
     lore-en:
-    - '&8RARE · Armor · &eWarden set'
-    - '&7Set bonuses while worn/held:'
-    - '&72 pieces: Resistance I'
-    - '&74 pieces: also Regeneration I'
-    - '&7Bonuses in all worlds; fade within 3s of removal.'
-    - '&7Repair with Mending or a cauldron ritual.'
-    - '&eObtain: Miniboss from stage 1; details /rezepte gear.'
+    - '&8Warden · Rare'
+    - ''
+    - '&72 pieces: &fResistance I'
+    - '&74 pieces: &fRegeneration I'
+    - ''
+    - '&8Counts while worn.'
+    - '&8Repair with XP or a ritual.'
+    - '&8Drops and recipes: /rezepte'
   warden_boots:
     material: IRON_BOOTS
     name: '&eWächtersatz · Stiefel'
@@ -481,22 +542,24 @@ items:
       material: gold
       pattern: sentry
     lore:
-    - '&8RARE · Rüstung · &eWächtersatz'
-    - '&7Setbonus beim Tragen/Halten:'
-    - '&72 Teile: Resistenz I'
-    - '&74 Teile: zusätzlich Regeneration I'
-    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
-    - '&7Reparatur: Mending oder Kesselritual.'
-    - '&eErhalten: Miniboss ab Stufe 1; Details /rezepte gear.'
+    - '&8Wächter · Selten'
+    - ''
+    - '&72 Teile: &fResistenz I'
+    - '&74 Teile: &fRegeneration I'
+    - ''
+    - '&8Zählt beim Tragen zum Set.'
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Drops und Rezepte: /rezepte'
     name-en: '&eWarden Boots'
     lore-en:
-    - '&8RARE · Armor · &eWarden set'
-    - '&7Set bonuses while worn/held:'
-    - '&72 pieces: Resistance I'
-    - '&74 pieces: also Regeneration I'
-    - '&7Bonuses in all worlds; fade within 3s of removal.'
-    - '&7Repair with Mending or a cauldron ritual.'
-    - '&eObtain: Miniboss from stage 1; details /rezepte gear.'
+    - '&8Warden · Rare'
+    - ''
+    - '&72 pieces: &fResistance I'
+    - '&74 pieces: &fRegeneration I'
+    - ''
+    - '&8Counts while worn.'
+    - '&8Repair with XP or a ritual.'
+    - '&8Drops and recipes: /rezepte'
   gale_helmet:
     material: DIAMOND_HELMET
     name: '&bSturmsatz · Helm'
@@ -514,22 +577,24 @@ items:
       material: quartz
       pattern: spire
     lore:
-    - '&8EPIC · Rüstung · &bSturmsatz'
-    - '&7Setbonus beim Tragen/Halten:'
-    - '&72 Teile: Tempo I'
-    - '&74 Teile: zusätzlich langsamer Fall'
-    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
-    - '&7Reparatur: Mending oder Kesselritual.'
-    - '&eErhalten: Miniboss ab Stufe 3; Details /rezepte gear.'
+    - '&8Sturm · Episch'
+    - ''
+    - '&72 Teile: &fTempo I'
+    - '&74 Teile: &fLangsamer Fall'
+    - ''
+    - '&8Zählt beim Tragen zum Set.'
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Drops und Rezepte: /rezepte'
     name-en: '&bGale Helmet'
     lore-en:
-    - '&8EPIC · Armor · &bGale set'
-    - '&7Set bonuses while worn/held:'
-    - '&72 pieces: Speed I'
-    - '&74 pieces: also Slow Falling'
-    - '&7Bonuses in all worlds; fade within 3s of removal.'
-    - '&7Repair with Mending or a cauldron ritual.'
-    - '&eObtain: Miniboss from stage 3; details /rezepte gear.'
+    - '&8Gale · Epic'
+    - ''
+    - '&72 pieces: &fSpeed I'
+    - '&74 pieces: &fSlow Falling'
+    - ''
+    - '&8Counts while worn.'
+    - '&8Repair with XP or a ritual.'
+    - '&8Drops and recipes: /rezepte'
   gale_chestplate:
     material: DIAMOND_CHESTPLATE
     name: '&bSturmsatz · Brustplatte'
@@ -546,22 +611,24 @@ items:
       material: quartz
       pattern: spire
     lore:
-    - '&8EPIC · Rüstung · &bSturmsatz'
-    - '&7Setbonus beim Tragen/Halten:'
-    - '&72 Teile: Tempo I'
-    - '&74 Teile: zusätzlich langsamer Fall'
-    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
-    - '&7Reparatur: Mending oder Kesselritual.'
-    - '&eErhalten: Miniboss ab Stufe 3; Details /rezepte gear.'
+    - '&8Sturm · Episch'
+    - ''
+    - '&72 Teile: &fTempo I'
+    - '&74 Teile: &fLangsamer Fall'
+    - ''
+    - '&8Zählt beim Tragen zum Set.'
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Drops und Rezepte: /rezepte'
     name-en: '&bGale Chestplate'
     lore-en:
-    - '&8EPIC · Armor · &bGale set'
-    - '&7Set bonuses while worn/held:'
-    - '&72 pieces: Speed I'
-    - '&74 pieces: also Slow Falling'
-    - '&7Bonuses in all worlds; fade within 3s of removal.'
-    - '&7Repair with Mending or a cauldron ritual.'
-    - '&eObtain: Miniboss from stage 3; details /rezepte gear.'
+    - '&8Gale · Epic'
+    - ''
+    - '&72 pieces: &fSpeed I'
+    - '&74 pieces: &fSlow Falling'
+    - ''
+    - '&8Counts while worn.'
+    - '&8Repair with XP or a ritual.'
+    - '&8Drops and recipes: /rezepte'
   gale_leggings:
     material: DIAMOND_LEGGINGS
     name: '&bSturmsatz · Beinschutz'
@@ -578,22 +645,24 @@ items:
       material: quartz
       pattern: spire
     lore:
-    - '&8EPIC · Rüstung · &bSturmsatz'
-    - '&7Setbonus beim Tragen/Halten:'
-    - '&72 Teile: Tempo I'
-    - '&74 Teile: zusätzlich langsamer Fall'
-    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
-    - '&7Reparatur: Mending oder Kesselritual.'
-    - '&eErhalten: Miniboss ab Stufe 3; Details /rezepte gear.'
+    - '&8Sturm · Episch'
+    - ''
+    - '&72 Teile: &fTempo I'
+    - '&74 Teile: &fLangsamer Fall'
+    - ''
+    - '&8Zählt beim Tragen zum Set.'
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Drops und Rezepte: /rezepte'
     name-en: '&bGale Leggings'
     lore-en:
-    - '&8EPIC · Armor · &bGale set'
-    - '&7Set bonuses while worn/held:'
-    - '&72 pieces: Speed I'
-    - '&74 pieces: also Slow Falling'
-    - '&7Bonuses in all worlds; fade within 3s of removal.'
-    - '&7Repair with Mending or a cauldron ritual.'
-    - '&eObtain: Miniboss from stage 3; details /rezepte gear.'
+    - '&8Gale · Epic'
+    - ''
+    - '&72 pieces: &fSpeed I'
+    - '&74 pieces: &fSlow Falling'
+    - ''
+    - '&8Counts while worn.'
+    - '&8Repair with XP or a ritual.'
+    - '&8Drops and recipes: /rezepte'
   gale_boots:
     material: DIAMOND_BOOTS
     name: '&bSturmsatz · Stiefel'
@@ -611,22 +680,24 @@ items:
       material: quartz
       pattern: spire
     lore:
-    - '&8EPIC · Rüstung · &bSturmsatz'
-    - '&7Setbonus beim Tragen/Halten:'
-    - '&72 Teile: Tempo I'
-    - '&74 Teile: zusätzlich langsamer Fall'
-    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
-    - '&7Reparatur: Mending oder Kesselritual.'
-    - '&eErhalten: Miniboss ab Stufe 3; Details /rezepte gear.'
+    - '&8Sturm · Episch'
+    - ''
+    - '&72 Teile: &fTempo I'
+    - '&74 Teile: &fLangsamer Fall'
+    - ''
+    - '&8Zählt beim Tragen zum Set.'
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Drops und Rezepte: /rezepte'
     name-en: '&bGale Boots'
     lore-en:
-    - '&8EPIC · Armor · &bGale set'
-    - '&7Set bonuses while worn/held:'
-    - '&72 pieces: Speed I'
-    - '&74 pieces: also Slow Falling'
-    - '&7Bonuses in all worlds; fade within 3s of removal.'
-    - '&7Repair with Mending or a cauldron ritual.'
-    - '&eObtain: Miniboss from stage 3; details /rezepte gear.'
+    - '&8Gale · Epic'
+    - ''
+    - '&72 pieces: &fSpeed I'
+    - '&74 pieces: &fSlow Falling'
+    - ''
+    - '&8Counts while worn.'
+    - '&8Repair with XP or a ritual.'
+    - '&8Drops and recipes: /rezepte'
   abyss_helmet:
     material: NETHERITE_HELMET
     name: '&dAbgrundsatz · Helm'
@@ -644,22 +715,24 @@ items:
       material: amethyst
       pattern: silence
     lore:
-    - '&8LEGENDARY · Rüstung · &dAbgrundsatz'
-    - '&7Setbonus beim Tragen/Halten:'
-    - '&72 Teile: Feuerresistenz'
-    - '&74 Teile: zusätzlich Resistenz I + Stärke I'
-    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
-    - '&7Reparatur: Mending oder Kesselritual.'
-    - '&eErhalten: Endboss ab Stufe 1; Details /rezepte gear.'
+    - '&8Abgrund · Legendär'
+    - ''
+    - '&72 Teile: &fFeuerresistenz'
+    - '&74 Teile: &fResistenz I und Stärke I'
+    - ''
+    - '&8Zählt beim Tragen zum Set.'
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Drops und Rezepte: /rezepte'
     name-en: '&dAbyss Helmet'
     lore-en:
-    - '&8LEGENDARY · Armor · &dAbyss set'
-    - '&7Set bonuses while worn/held:'
-    - '&72 pieces: Fire Resistance'
-    - '&74 pieces: also Resistance I + Strength I'
-    - '&7Bonuses in all worlds; fade within 3s of removal.'
-    - '&7Repair with Mending or a cauldron ritual.'
-    - '&eObtain: End boss from stage 1; details /rezepte gear.'
+    - '&8Abyss · Legendary'
+    - ''
+    - '&72 pieces: &fFire Resistance'
+    - '&74 pieces: &fResistance I and Strength I'
+    - ''
+    - '&8Counts while worn.'
+    - '&8Repair with XP or a ritual.'
+    - '&8Drops and recipes: /rezepte'
   abyss_chestplate:
     material: NETHERITE_CHESTPLATE
     name: '&dAbgrundsatz · Brustplatte'
@@ -676,22 +749,24 @@ items:
       material: amethyst
       pattern: silence
     lore:
-    - '&8LEGENDARY · Rüstung · &dAbgrundsatz'
-    - '&7Setbonus beim Tragen/Halten:'
-    - '&72 Teile: Feuerresistenz'
-    - '&74 Teile: zusätzlich Resistenz I + Stärke I'
-    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
-    - '&7Reparatur: Mending oder Kesselritual.'
-    - '&eErhalten: Endboss ab Stufe 1; Details /rezepte gear.'
+    - '&8Abgrund · Legendär'
+    - ''
+    - '&72 Teile: &fFeuerresistenz'
+    - '&74 Teile: &fResistenz I und Stärke I'
+    - ''
+    - '&8Zählt beim Tragen zum Set.'
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Drops und Rezepte: /rezepte'
     name-en: '&dAbyss Chestplate'
     lore-en:
-    - '&8LEGENDARY · Armor · &dAbyss set'
-    - '&7Set bonuses while worn/held:'
-    - '&72 pieces: Fire Resistance'
-    - '&74 pieces: also Resistance I + Strength I'
-    - '&7Bonuses in all worlds; fade within 3s of removal.'
-    - '&7Repair with Mending or a cauldron ritual.'
-    - '&eObtain: End boss from stage 1; details /rezepte gear.'
+    - '&8Abyss · Legendary'
+    - ''
+    - '&72 pieces: &fFire Resistance'
+    - '&74 pieces: &fResistance I and Strength I'
+    - ''
+    - '&8Counts while worn.'
+    - '&8Repair with XP or a ritual.'
+    - '&8Drops and recipes: /rezepte'
   abyss_leggings:
     material: NETHERITE_LEGGINGS
     name: '&dAbgrundsatz · Beinschutz'
@@ -708,22 +783,24 @@ items:
       material: amethyst
       pattern: silence
     lore:
-    - '&8LEGENDARY · Rüstung · &dAbgrundsatz'
-    - '&7Setbonus beim Tragen/Halten:'
-    - '&72 Teile: Feuerresistenz'
-    - '&74 Teile: zusätzlich Resistenz I + Stärke I'
-    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
-    - '&7Reparatur: Mending oder Kesselritual.'
-    - '&eErhalten: Endboss ab Stufe 1; Details /rezepte gear.'
+    - '&8Abgrund · Legendär'
+    - ''
+    - '&72 Teile: &fFeuerresistenz'
+    - '&74 Teile: &fResistenz I und Stärke I'
+    - ''
+    - '&8Zählt beim Tragen zum Set.'
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Drops und Rezepte: /rezepte'
     name-en: '&dAbyss Leggings'
     lore-en:
-    - '&8LEGENDARY · Armor · &dAbyss set'
-    - '&7Set bonuses while worn/held:'
-    - '&72 pieces: Fire Resistance'
-    - '&74 pieces: also Resistance I + Strength I'
-    - '&7Bonuses in all worlds; fade within 3s of removal.'
-    - '&7Repair with Mending or a cauldron ritual.'
-    - '&eObtain: End boss from stage 1; details /rezepte gear.'
+    - '&8Abyss · Legendary'
+    - ''
+    - '&72 pieces: &fFire Resistance'
+    - '&74 pieces: &fResistance I and Strength I'
+    - ''
+    - '&8Counts while worn.'
+    - '&8Repair with XP or a ritual.'
+    - '&8Drops and recipes: /rezepte'
   abyss_boots:
     material: NETHERITE_BOOTS
     name: '&dAbgrundsatz · Stiefel'
@@ -741,22 +818,24 @@ items:
       material: amethyst
       pattern: silence
     lore:
-    - '&8LEGENDARY · Rüstung · &dAbgrundsatz'
-    - '&7Setbonus beim Tragen/Halten:'
-    - '&72 Teile: Feuerresistenz'
-    - '&74 Teile: zusätzlich Resistenz I + Stärke I'
-    - '&7Boni in allen Welten; nach Ablegen maximal 3s.'
-    - '&7Reparatur: Mending oder Kesselritual.'
-    - '&eErhalten: Endboss ab Stufe 1; Details /rezepte gear.'
+    - '&8Abgrund · Legendär'
+    - ''
+    - '&72 Teile: &fFeuerresistenz'
+    - '&74 Teile: &fResistenz I und Stärke I'
+    - ''
+    - '&8Zählt beim Tragen zum Set.'
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Drops und Rezepte: /rezepte'
     name-en: '&dAbyss Boots'
     lore-en:
-    - '&8LEGENDARY · Armor · &dAbyss set'
-    - '&7Set bonuses while worn/held:'
-    - '&72 pieces: Fire Resistance'
-    - '&74 pieces: also Resistance I + Strength I'
-    - '&7Bonuses in all worlds; fade within 3s of removal.'
-    - '&7Repair with Mending or a cauldron ritual.'
-    - '&eObtain: End boss from stage 1; details /rezepte gear.'
+    - '&8Abyss · Legendary'
+    - ''
+    - '&72 pieces: &fFire Resistance'
+    - '&74 pieces: &fResistance I and Strength I'
+    - ''
+    - '&8Counts while worn.'
+    - '&8Repair with XP or a ritual.'
+    - '&8Drops and recipes: /rezepte'
   warden_blade:
     material: IRON_SWORD
     name: '&eWächterklinge'
@@ -768,25 +847,23 @@ items:
       unbreaking: 4
       mending: 1
     lore:
-    - '&8RARE · Ausrüstung'
-    - '&7Wiederverwendbare Nahkampfwaffe'
-    - '&7Verbraucht sich nicht beim Aktivieren.'
-    - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
-    - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
-    - '&7Zählt als gehaltenes Teil des warden-Sets.'
-    - '&7Setboni wirken in allen Welten.'
-    - '&eErhalten: Miniboss ab Stufe 2; Details /rezepte gear.'
+    - '&8Wächter · Selten'
+    - ''
+    - '&7Schwert für den Nahkampf.'
+    - '&7Zählt in der Hand zum Wächterset.'
+    - ''
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Drops und Rezepte: /rezepte'
     set: warden
     name-en: '&eWarden Blade'
     lore-en:
-    - '&8RARE · Equipment'
-    - '&7Reusable melee weapon'
-    - '&7Using this item does not consume it.'
-    - '&7Normal durability; repair with Mending or a ritual.'
-    - '&7Raid hit caps and boss contribution limits still apply.'
-    - '&7Counts as a held piece of the Warden set.'
-    - '&7Set bonuses work in all worlds.'
-    - '&eObtain: Miniboss from stage 2; details /rezepte gear.'
+    - '&8Warden · Rare'
+    - ''
+    - '&7Sword for close combat.'
+    - '&7Counts toward the Warden set when held.'
+    - ''
+    - '&8Repair with XP or a ritual.'
+    - '&8Drops and recipes: /rezepte'
   gale_axe:
     material: DIAMOND_AXE
     name: '&bSturmaxt'
@@ -799,25 +876,23 @@ items:
       unbreaking: 4
       mending: 1
     lore:
-    - '&8RARE · Ausrüstung'
-    - '&7Waffe und normales Holzwerkzeug'
-    - '&7Verbraucht sich nicht beim Aktivieren.'
-    - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
-    - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
-    - '&7Zählt als gehaltenes Teil des gale-Sets.'
-    - '&7Setboni wirken in allen Welten.'
-    - '&eErhalten: Miniboss ab Stufe 2; Details /rezepte gear.'
+    - '&8Sturm · Episch'
+    - ''
+    - '&7Zum Kämpfen und Holzfällen.'
+    - '&7Zählt in der Hand zum Sturmset.'
+    - ''
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Drops und Rezepte: /rezepte'
     set: gale
     name-en: '&bGale Axe'
     lore-en:
-    - '&8RARE · Equipment'
-    - '&7Weapon and regular woodcutting tool'
-    - '&7Using this item does not consume it.'
-    - '&7Normal durability; repair with Mending or a ritual.'
-    - '&7Raid hit caps and boss contribution limits still apply.'
-    - '&7Counts as a held piece of the Gale set.'
-    - '&7Set bonuses work in all worlds.'
-    - '&eObtain: Miniboss from stage 2; details /rezepte gear.'
+    - '&8Gale · Epic'
+    - ''
+    - '&7For combat and woodcutting.'
+    - '&7Counts toward the Gale set when held.'
+    - ''
+    - '&8Repair with XP or a ritual.'
+    - '&8Drops and recipes: /rezepte'
   tempest_bow:
     material: BOW
     name: '&bSturmbogen'
@@ -830,25 +905,23 @@ items:
       unbreaking: 4
       mending: 1
     lore:
-    - '&8RARE · Ausrüstung'
-    - '&7Fernkampf · benötigt normale Pfeile'
-    - '&7Verbraucht sich nicht beim Aktivieren.'
-    - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
-    - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
-    - '&7Zählt als gehaltenes Teil des gale-Sets.'
-    - '&7Setboni wirken in allen Welten.'
-    - '&eErhalten: Miniboss ab Stufe 2; Details /rezepte gear.'
+    - '&8Sturm · Episch'
+    - ''
+    - '&7Bogen · benötigt normale Pfeile.'
+    - '&7Zählt in der Hand zum Sturmset.'
+    - ''
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Drops und Rezepte: /rezepte'
     set: gale
     name-en: '&bTempest Bow'
     lore-en:
-    - '&8RARE · Equipment'
-    - '&7Ranged weapon · requires normal arrows'
-    - '&7Using this item does not consume it.'
-    - '&7Normal durability; repair with Mending or a ritual.'
-    - '&7Raid hit caps and boss contribution limits still apply.'
-    - '&7Counts as a held piece of the Gale set.'
-    - '&7Set bonuses work in all worlds.'
-    - '&eObtain: Miniboss from stage 2; details /rezepte gear.'
+    - '&8Gale · Epic'
+    - ''
+    - '&7Bow · requires normal arrows.'
+    - '&7Counts toward the Gale set when held.'
+    - ''
+    - '&8Repair with XP or a ritual.'
+    - '&8Drops and recipes: /rezepte'
   abyss_sword:
     material: NETHERITE_SWORD
     name: '&dAbgrundklinge'
@@ -861,25 +934,23 @@ items:
       unbreaking: 5
       mending: 1
     lore:
-    - '&8LEGENDARY · Ausrüstung'
-    - '&7Sehr seltener Boss-Fund · Nahkampf'
-    - '&7Verbraucht sich nicht beim Aktivieren.'
-    - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
-    - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
-    - '&7Zählt als gehaltenes Teil des abyss-Sets.'
-    - '&7Setboni wirken in allen Welten.'
-    - '&eErhalten: Endboss ab Stufe 1; Details /rezepte gear.'
+    - '&8Abgrund · Legendär'
+    - ''
+    - '&7Eine besonders scharfe Klinge.'
+    - '&7Zählt in der Hand zum Abgrundset.'
+    - ''
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Drops und Rezepte: /rezepte'
     set: abyss
     name-en: '&dAbyss Sword'
     lore-en:
-    - '&8LEGENDARY · Equipment'
-    - '&7Very rare boss drop · melee'
-    - '&7Using this item does not consume it.'
-    - '&7Normal durability; repair with Mending or a ritual.'
-    - '&7Raid hit caps and boss contribution limits still apply.'
-    - '&7Counts as a held piece of the Abyss set.'
-    - '&7Set bonuses work in all worlds.'
-    - '&eObtain: End boss from stage 1; details /rezepte gear.'
+    - '&8Abyss · Legendary'
+    - ''
+    - '&7An exceptionally sharp blade.'
+    - '&7Counts toward the Abyss set when held.'
+    - ''
+    - '&8Repair with XP or a ritual.'
+    - '&8Drops and recipes: /rezepte'
   abyss_mace:
     material: MACE
     name: '&dAbgrundstreitkolben'
@@ -892,25 +963,23 @@ items:
       unbreaking: 5
       mending: 1
     lore:
-    - '&8LEGENDARY · Ausrüstung'
-    - '&7Sehr seltener Boss-Fund · Mace-Cap gilt'
-    - '&7Verbraucht sich nicht beim Aktivieren.'
-    - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
-    - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
-    - '&7Zählt als gehaltenes Teil des abyss-Sets.'
-    - '&7Setboni wirken in allen Welten.'
-    - '&eErhalten: Endboss ab Stufe 1; Details /rezepte gear.'
+    - '&8Abgrund · Legendär'
+    - ''
+    - '&7Streitkolben für Fallangriffe.'
+    - '&7Zählt in der Hand zum Abgrundset.'
+    - ''
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Drops und Rezepte: /rezepte'
     set: abyss
     name-en: '&dAbyss Mace'
     lore-en:
-    - '&8LEGENDARY · Equipment'
-    - '&7Very rare boss drop · mace damage cap applies'
-    - '&7Using this item does not consume it.'
-    - '&7Normal durability; repair with Mending or a ritual.'
-    - '&7Raid hit caps and boss contribution limits still apply.'
-    - '&7Counts as a held piece of the Abyss set.'
-    - '&7Set bonuses work in all worlds.'
-    - '&eObtain: End boss from stage 1; details /rezepte gear.'
+    - '&8Abyss · Legendary'
+    - ''
+    - '&7Mace for falling attacks.'
+    - '&7Counts toward the Abyss set when held.'
+    - ''
+    - '&8Repair with XP or a ritual.'
+    - '&8Drops and recipes: /rezepte'
   star_bow:
     material: BOW
     name: '&6Sternenbogen'
@@ -923,25 +992,23 @@ items:
       unbreaking: 5
       infinity: 1
     lore:
-    - '&8LEGENDARY · Ausrüstung'
-    - '&7Sehr seltener Boss-Fund · ein Pfeil genügt'
-    - '&7Verbraucht sich nicht beim Aktivieren.'
-    - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
-    - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
-    - '&7Zählt als gehaltenes Teil des abyss-Sets.'
-    - '&7Setboni wirken in allen Welten.'
-    - '&eErhalten: Endboss ab Stufe 1; Details /rezepte gear.'
+    - '&8Abgrund · Legendär'
+    - ''
+    - '&7Bogen · ein normaler Pfeil genügt.'
+    - '&7Zählt in der Hand zum Abgrundset.'
+    - ''
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Drops und Rezepte: /rezepte'
     set: abyss
     name-en: '&6Star Bow'
     lore-en:
-    - '&8LEGENDARY · Equipment'
-    - '&7Very rare boss drop · one arrow is enough'
-    - '&7Using this item does not consume it.'
-    - '&7Normal durability; repair with Mending or a ritual.'
-    - '&7Raid hit caps and boss contribution limits still apply.'
-    - '&7Counts as a held piece of the Abyss set.'
-    - '&7Set bonuses work in all worlds.'
-    - '&eObtain: End boss from stage 1; details /rezepte gear.'
+    - '&8Abyss · Legendary'
+    - ''
+    - '&7Bow · one normal arrow is enough.'
+    - '&7Counts toward the Abyss set when held.'
+    - ''
+    - '&8Repair with XP or a ritual.'
+    - '&8Drops and recipes: /rezepte'
   echo_pickaxe:
     material: DIAMOND_PICKAXE
     name: '&5Echospitzhacke'
@@ -954,25 +1021,23 @@ items:
       unbreaking: 4
       mending: 1
     lore:
-    - '&8EPIC · Ausrüstung'
-    - '&7Bergbau außerhalb geschützter Arena-Blöcke'
-    - '&7Verbraucht sich nicht beim Aktivieren.'
-    - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
-    - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
-    - '&7Zählt als gehaltenes Teil des gale-Sets.'
-    - '&7Setboni wirken in allen Welten.'
-    - '&eErhalten: Miniboss ab Stufe 3; Details /rezepte gear.'
+    - '&8Sturm · Episch'
+    - ''
+    - '&7Spitzhacke für schnelles Abbauen.'
+    - '&7Zählt in der Hand zum Sturmset.'
+    - ''
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Drops und Rezepte: /rezepte'
     set: gale
     name-en: '&5Echo Pickaxe'
     lore-en:
-    - '&8EPIC · Equipment'
-    - '&7Mine outside protected arena blocks'
-    - '&7Using this item does not consume it.'
-    - '&7Normal durability; repair with Mending or a ritual.'
-    - '&7Raid hit caps and boss contribution limits still apply.'
-    - '&7Counts as a held piece of the Gale set.'
-    - '&7Set bonuses work in all worlds.'
-    - '&eObtain: Miniboss from stage 3; details /rezepte gear.'
+    - '&8Gale · Epic'
+    - ''
+    - '&7Pickaxe for fast mining.'
+    - '&7Counts toward the Gale set when held.'
+    - ''
+    - '&8Repair with XP or a ritual.'
+    - '&8Drops and recipes: /rezepte'
   runic_shovel:
     material: IRON_SHOVEL
     name: '&eRunenschaufel'
@@ -984,25 +1049,23 @@ items:
       unbreaking: 4
       mending: 1
     lore:
-    - '&8RARE · Ausrüstung'
-    - '&7Normales Erdwerkzeug · keine Schutz-Umgehung'
-    - '&7Verbraucht sich nicht beim Aktivieren.'
-    - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
-    - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
-    - '&7Zählt als gehaltenes Teil des warden-Sets.'
-    - '&7Setboni wirken in allen Welten.'
-    - '&eErhalten: Miniboss ab Stufe 3; Details /rezepte gear.'
+    - '&8Wächter · Selten'
+    - ''
+    - '&7Schaufel für Erde und Sand.'
+    - '&7Zählt in der Hand zum Wächterset.'
+    - ''
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Drops und Rezepte: /rezepte'
     set: warden
     name-en: '&eRunic Shovel'
     lore-en:
-    - '&8RARE · Equipment'
-    - '&7Regular digging tool · respects protected blocks'
-    - '&7Using this item does not consume it.'
-    - '&7Normal durability; repair with Mending or a ritual.'
-    - '&7Raid hit caps and boss contribution limits still apply.'
-    - '&7Counts as a held piece of the Warden set.'
-    - '&7Set bonuses work in all worlds.'
-    - '&eObtain: Miniboss from stage 3; details /rezepte gear.'
+    - '&8Warden · Rare'
+    - ''
+    - '&7Shovel for dirt and sand.'
+    - '&7Counts toward the Warden set when held.'
+    - ''
+    - '&8Repair with XP or a ritual.'
+    - '&8Drops and recipes: /rezepte'
   harvest_hoe:
     material: DIAMOND_HOE
     name: '&aErntehacke'
@@ -1015,34 +1078,33 @@ items:
       unbreaking: 4
       mending: 1
     lore:
-    - '&8EPIC · Ausrüstung'
-    - '&7Feldarbeit und Pflanzen · Vanilla-Erz-Regeln'
-    - '&7Verbraucht sich nicht beim Aktivieren.'
-    - '&7Normale Haltbarkeit; mit Mending/Ritual reparierbar.'
-    - '&7Raid-Treffer- und Boss-Anteile gelten weiter.'
-    - '&7Zählt als gehaltenes Teil des gale-Sets.'
-    - '&7Setboni wirken in allen Welten.'
-    - '&eErhalten: Miniboss ab Stufe 3; Details /rezepte gear.'
+    - '&8Sturm · Episch'
+    - ''
+    - '&7Hacke für Felder und Pflanzen.'
+    - '&7Zählt in der Hand zum Sturmset.'
+    - ''
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Drops und Rezepte: /rezepte'
     set: gale
     name-en: '&aHarvest Hoe'
     lore-en:
-    - '&8EPIC · Equipment'
-    - '&7Farming and harvesting · vanilla ore rules'
-    - '&7Using this item does not consume it.'
-    - '&7Normal durability; repair with Mending or a ritual.'
-    - '&7Raid hit caps and boss contribution limits still apply.'
-    - '&7Counts as a held piece of the Gale set.'
-    - '&7Set bonuses work in all worlds.'
-    - '&eObtain: Miniboss from stage 3; details /rezepte gear.'
+    - '&8Gale · Epic'
+    - ''
+    - '&7Hoe for crops and plants.'
+    - '&7Counts toward the Gale set when held.'
+    - ''
+    - '&8Repair with XP or a ritual.'
+    - '&8Drops and recipes: /rezepte'
   storm_essence:
     material: AMETHYST_SHARD
     name: '&bSturmessenz'
     rarity: rare
     item-model: mobarmy:storm_essence
     lore:
-    - '&8Ritualmaterial'
-    - '&7Zutat für Schmiede- und Wächterrituale.'
-    - '&7Nur Ritual-Zutaten werden verbraucht.'
+    - '&8Ritual-Zutat'
+    - ''
+    - '&7Für Schmieden und Wächterprüfungen.'
+    - '&8Wird beim Ritual verbraucht.'
     drops:
     - source: miniboss
       stage: 3
@@ -1050,18 +1112,20 @@ items:
       chance: 0.2
     name-en: '&bStorm Essence'
     lore-en:
-    - '&8Ritual material'
-    - '&7Ingredient for forging and guardian rituals.'
-    - '&7Only ritual ingredients are consumed.'
+    - '&8Ritual ingredient'
+    - ''
+    - '&7For forging and guardian trials.'
+    - '&8Consumed when the ritual begins.'
   void_essence:
     material: AMETHYST_SHARD
     name: '&5Leerenessenz'
     rarity: rare
     item-model: mobarmy:void_essence
     lore:
-    - '&8Ritualmaterial'
-    - '&7Zutat für Schmiede- und Wächterrituale.'
-    - '&7Nur Ritual-Zutaten werden verbraucht.'
+    - '&8Ritual-Zutat'
+    - ''
+    - '&7Für Schmieden und Wächterprüfungen.'
+    - '&8Wird beim Ritual verbraucht.'
     drops:
     - source: boss
       stage: 5
@@ -1069,9 +1133,10 @@ items:
       chance: 0.25
     name-en: '&5Void Essence'
     lore-en:
-    - '&8Ritual material'
-    - '&7Ingredient for forging and guardian rituals.'
-    - '&7Only ritual ingredients are consumed.'
+    - '&8Ritual ingredient'
+    - ''
+    - '&7For forging and guardian trials.'
+    - '&8Consumed when the ritual begins.'
   boss_model_frost:
     material: PAPER
     name: '&bFrostkoloss-Modell'
@@ -1088,6 +1153,236 @@ items:
     lore: []
     name-en: '&6Ember Guardian Model'
     lore-en: []
+  silk_pickaxe:
+    material: DIAMOND_PICKAXE
+    name: '&bSeidenspitzhacke'
+    name-en: '&bSilk Pickaxe'
+    rarity: rare
+    gear: true
+    utility: true
+    item-model: mobarmy:silk_pickaxe
+    enchantments:
+      efficiency: 5
+      silk_touch: 1
+      unbreaking: 3
+      mending: 1
+    lore:
+    - '&8Alltagswerkzeug · Selten'
+    - ''
+    - '&7Blöcke unverändert abbauen.'
+    - ''
+    - '&8Normale Minecraft-Funktionen.'
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Erhalten: /rezepte'
+    lore-en:
+    - '&8Everyday equipment · Rare'
+    - ''
+    - '&7Collect blocks intact.'
+    - ''
+    - '&8Standard Minecraft mechanics.'
+    - '&8Repair with XP or a ritual.'
+    - '&8Obtain through /rezepte'
+  forester_axe:
+    material: DIAMOND_AXE
+    name: '&bForstaxt'
+    name-en: '&bForester Axe'
+    rarity: rare
+    gear: true
+    utility: true
+    item-model: mobarmy:forester_axe
+    enchantments:
+      efficiency: 5
+      unbreaking: 3
+      mending: 1
+    lore:
+    - '&8Alltagswerkzeug · Selten'
+    - ''
+    - '&7Holz abbauen, Stamm für Stamm.'
+    - ''
+    - '&8Normale Minecraft-Funktionen.'
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Erhalten: /rezepte'
+    lore-en:
+    - '&8Everyday equipment · Rare'
+    - ''
+    - '&7Chop wood, one block at a time.'
+    - ''
+    - '&8Standard Minecraft mechanics.'
+    - '&8Repair with XP or a ritual.'
+    - '&8Obtain through /rezepte'
+  pathfinder_shovel:
+    material: DIAMOND_SHOVEL
+    name: '&bPfadfinderschaufel'
+    name-en: '&bPathfinder Shovel'
+    rarity: rare
+    gear: true
+    utility: true
+    item-model: mobarmy:pathfinder_shovel
+    enchantments:
+      efficiency: 5
+      silk_touch: 1
+      unbreaking: 3
+      mending: 1
+    lore:
+    - '&8Alltagswerkzeug · Selten'
+    - ''
+    - '&7Erde, Sand und Graswege.'
+    - ''
+    - '&8Normale Minecraft-Funktionen.'
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Erhalten: /rezepte'
+    lore-en:
+    - '&8Everyday equipment · Rare'
+    - ''
+    - '&7Dig dirt and sand; make paths.'
+    - ''
+    - '&8Standard Minecraft mechanics.'
+    - '&8Repair with XP or a ritual.'
+    - '&8Obtain through /rezepte'
+  cultivator_hoe:
+    material: DIAMOND_HOE
+    name: '&bFeldhacke'
+    name-en: '&bCultivator Hoe'
+    rarity: rare
+    gear: true
+    utility: true
+    item-model: mobarmy:cultivator_hoe
+    enchantments:
+      efficiency: 5
+      fortune: 3
+      unbreaking: 3
+      mending: 1
+    lore:
+    - '&8Alltagswerkzeug · Selten'
+    - ''
+    - '&7Felder bestellen und ernten.'
+    - ''
+    - '&8Normale Minecraft-Funktionen.'
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Erhalten: /rezepte'
+    lore-en:
+    - '&8Everyday equipment · Rare'
+    - ''
+    - '&7Till fields and harvest crops.'
+    - ''
+    - '&8Standard Minecraft mechanics.'
+    - '&8Repair with XP or a ritual.'
+    - '&8Obtain through /rezepte'
+  harvest_shears:
+    material: SHEARS
+    name: '&bGartenschere'
+    name-en: '&bGarden Shears'
+    rarity: rare
+    gear: true
+    utility: true
+    item-model: mobarmy:harvest_shears
+    enchantments:
+      efficiency: 5
+      unbreaking: 3
+      mending: 1
+    lore:
+    - '&8Alltagswerkzeug · Selten'
+    - ''
+    - '&7Für Blätter, Wolle und Ranken.'
+    - ''
+    - '&8Normale Minecraft-Funktionen.'
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Erhalten: /rezepte'
+    lore-en:
+    - '&8Everyday equipment · Rare'
+    - ''
+    - '&7For leaves, wool and vines.'
+    - ''
+    - '&8Standard Minecraft mechanics.'
+    - '&8Repair with XP or a ritual.'
+    - '&8Obtain through /rezepte'
+  angler_rod:
+    material: FISHING_ROD
+    name: '&bAnglerglück'
+    name-en: '&bAngler’s Fortune'
+    rarity: rare
+    gear: true
+    utility: true
+    item-model: mobarmy:angler_rod
+    enchantments:
+      luck_of_the_sea: 3
+      lure: 3
+      unbreaking: 3
+      mending: 1
+    lore:
+    - '&8Alltagswerkzeug · Selten'
+    - ''
+    - '&7Normales Angeln mit besseren Chancen.'
+    - ''
+    - '&8Normale Minecraft-Funktionen.'
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Erhalten: /rezepte'
+    lore-en:
+    - '&8Everyday equipment · Rare'
+    - ''
+    - '&7Regular fishing with better odds.'
+    - ''
+    - '&8Standard Minecraft mechanics.'
+    - '&8Repair with XP or a ritual.'
+    - '&8Obtain through /rezepte'
+  ranger_crossbow:
+    material: CROSSBOW
+    name: '&bWaldläuferarmbrust'
+    name-en: '&bRanger Crossbow'
+    rarity: rare
+    gear: true
+    utility: true
+    item-model: mobarmy:ranger_crossbow
+    enchantments:
+      quick_charge: 3
+      multishot: 1
+      unbreaking: 3
+      mending: 1
+    lore:
+    - '&8Alltagswerkzeug · Selten'
+    - ''
+    - '&7Schnell laden, drei Pfeile schießen.'
+    - ''
+    - '&8Normale Minecraft-Funktionen.'
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Erhalten: /rezepte'
+    lore-en:
+    - '&8Everyday equipment · Rare'
+    - ''
+    - '&7Quick loading and three-shot volleys.'
+    - ''
+    - '&8Standard Minecraft mechanics.'
+    - '&8Repair with XP or a ritual.'
+    - '&8Obtain through /rezepte'
+  returning_trident:
+    material: TRIDENT
+    name: '&bHeimkehrdreizack'
+    name-en: '&bReturning Trident'
+    rarity: rare
+    gear: true
+    utility: true
+    item-model: mobarmy:returning_trident
+    enchantments:
+      loyalty: 3
+      impaling: 5
+      unbreaking: 3
+      mending: 1
+    lore:
+    - '&8Alltagswerkzeug · Selten'
+    - ''
+    - '&7Kehrt nach dem Wurf zurück.'
+    - ''
+    - '&8Normale Minecraft-Funktionen.'
+    - '&8Reparatur: XP oder Ritual.'
+    - '&8Erhalten: /rezepte'
+    lore-en:
+    - '&8Everyday equipment · Rare'
+    - ''
+    - '&7Returns after being thrown.'
+    - ''
+    - '&8Standard Minecraft mechanics.'
+    - '&8Repair with XP or a ritual.'
+    - '&8Obtain through /rezepte'
 weeks:
   w1:
     world: raid_w1
@@ -2798,7 +3093,7 @@ resource-pack:
   sha1: ''
 equipment-sets:
   warden:
-    name: '&eWächtersatz'
+    name: Wächter
     bonuses:
       '2':
       - type: RESISTANCE
@@ -2806,8 +3101,9 @@ equipment-sets:
       '4':
       - type: REGENERATION
         amplifier: 0
+    name-en: Warden
   gale:
-    name: '&bSturmsatz'
+    name: Sturm
     bonuses:
       '2':
       - type: SPEED
@@ -2815,8 +3111,9 @@ equipment-sets:
       '4':
       - type: SLOW_FALLING
         amplifier: 0
+    name-en: Gale
   abyss:
-    name: '&dAbgrundsatz'
+    name: Abgrund
     bonuses:
       '2':
       - type: FIRE_RESISTANCE
@@ -2826,6 +3123,7 @@ equipment-sets:
         amplifier: 0
       - type: STRENGTH
         amplifier: 0
+    name-en: Abyss
 loot-pools:
   warden:
     name: Wächterrüstung
@@ -2905,6 +3203,27 @@ loot-pools:
       weight: 1
     - item: harvest_hoe
       weight: 1
+  utility:
+    source: miniboss
+    minimum-stage: 2
+    chance: 0.04
+    entries:
+    - item: silk_pickaxe
+      weight: 1
+    - item: forester_axe
+      weight: 1
+    - item: pathfinder_shovel
+      weight: 1
+    - item: cultivator_hoe
+      weight: 1
+    - item: harvest_shears
+      weight: 1
+    - item: angler_rod
+      weight: 1
+    - item: ranger_crossbow
+      weight: 1
+    - item: returning_trident
+      weight: 1
 rituals:
   awakening:
     name: '&dErwachen'
@@ -2923,6 +3242,13 @@ rituals:
     - 86
     - 255
     display-item: ritual_core
+    name-en: '&dAwakening'
+    description:
+    - '&7Beschwört einen Ritualwächter.'
+    - '&7Ein Sieg bringt einen Ritualkern.'
+    description-en:
+    - '&7Summons a ritual guardian.'
+    - '&7Victory grants a Ritual Core.'
   warden_forge:
     name: '&eWächterschmiede'
     mode: FORGE
@@ -2942,6 +3268,11 @@ rituals:
     - 205
     - 85
     display-item: warden_chestplate
+    name-en: '&eWarden’s Forge'
+    description:
+    - '&7Schmiedet ein zufälliges Wächterteil.'
+    description-en:
+    - '&7Forges one random Warden armor piece.'
   gale_forge:
     name: '&bSturmschmiede'
     mode: FORGE
@@ -2961,6 +3292,11 @@ rituals:
     - 220
     - 245
     display-item: gale_chestplate
+    name-en: '&bGale Forge'
+    description:
+    - '&7Schmiedet ein zufälliges Sturmteil.'
+    description-en:
+    - '&7Forges one random Gale armor piece.'
   echo_workshop:
     name: '&5Echowerkstatt'
     mode: FORGE
@@ -2980,8 +3316,13 @@ rituals:
     - 100
     - 225
     display-item: echo_pickaxe
+    name-en: '&5Echo Workshop'
+    description:
+    - '&7Schmiedet ein zufälliges Werkzeug.'
+    description-en:
+    - '&7Forges one random mining tool.'
   abyss_trial:
-    name: '&5Prüfung des Abgrunds'
+    name: '&5Abgrundprüfung'
     mode: SUMMON
     catalyst: chaos_fragment
     duration-seconds: 8
@@ -3003,6 +3344,13 @@ rituals:
     - 60
     - 210
     display-item: abyss_mace
+    name-en: '&5Abyss Trial'
+    description:
+    - '&7Beschwört einen starken Wächter.'
+    - '&7Sieg: Werkzeug; 10 % legendäre Waffe.'
+    description-en:
+    - '&7Summons a powerful guardian.'
+    - '&7Victory: tool; 10% legendary weapon.'
   restoration:
     name: '&aWiederherstellung'
     mode: REPAIR
@@ -3019,8 +3367,15 @@ rituals:
     - 235
     - 145
     display-item: healing_bloom
+    name-en: '&aRestoration'
+    description:
+    - '&7Repariert getragene Ausrüstung'
+    - '&7sowie Hotbar und Nebenhand.'
+    description-en:
+    - '&7Repairs custom armor and equipment'
+    - '&7in your hotbar and offhand.'
   blessing:
-    name: '&6Segen der Vorhut'
+    name: '&6Segen'
     mode: BUFF
     catalyst: chaos_fragment
     duration-seconds: 8
@@ -3043,6 +3398,37 @@ rituals:
     - 215
     - 90
     display-item: chaos_crown
+    name-en: '&6Blessing'
+    description:
+    - '&7Segnet nahe Spieler für 30 Sekunden.'
+    description-en:
+    - '&7Blesses nearby players for 30 seconds.'
+  wanderer_forge:
+    name: '&bWandererschmiede'
+    name-en: '&bWanderer’s Forge'
+    mode: FORGE
+    catalyst: chaos_fragment
+    display-item: silk_pickaxe
+    duration-seconds: 8
+    cooldown-seconds: 60
+    color:
+    - 80
+    - 196
+    - 192
+    pool: utility
+    ingredients:
+    - item: raid_shard
+      amount: 32
+    - material: DIAMOND
+      amount: 6
+    - material: IRON_INGOT
+      amount: 8
+    description:
+    - '&7Schmiedet ein Alltagswerkzeug.'
+    - '&7Eines von acht Werkzeugen, zufällig.'
+    description-en:
+    - '&7Forges one everyday tool.'
+    - '&7One of eight tools, chosen at random.'
 default-language: de
 boss-types:
   iron_warden:
@@ -3097,7 +3483,7 @@ boss-types:
     armor: 3
     ability: reveal
   abyss_guardian:
-    type: HUSK
+    type: IRON_GOLEM
     name: '&5Abgrundwächter'
     health: 340
     damage: 10
@@ -3105,8 +3491,9 @@ boss-types:
     armor: 8
     ability: reveal
     model-item: boss_model
+    model-variant: abyss
   frost_guardian:
-    type: HUSK
+    type: IRON_GOLEM
     name: '&bFrostkoloss'
     health: 300
     damage: 9
@@ -3114,8 +3501,9 @@ boss-types:
     armor: 8
     ability: frost
     model-item: boss_model_frost
+    model-variant: frost
   ember_guardian:
-    type: HUSK
+    type: IRON_GOLEM
     name: '&6Glutkoloss'
     health: 320
     damage: 10
@@ -3123,6 +3511,7 @@ boss-types:
     armor: 7
     ability: rally
     model-item: boss_model_ember
+    model-variant: ember
   storm_lord:
     type: BOGGED
     name: '&3Sturmherrscher'
