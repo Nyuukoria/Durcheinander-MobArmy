@@ -13,7 +13,7 @@ public final class MobArmy extends JavaPlugin {
     final Map<String,Portal> portals=new LinkedHashMap<>();
     final Map<UUID,Location> returns=new HashMap<>();
     YamlConfiguration state;
-    Items items; Engine engine; Menus menus; RaidCommand commands; Presentation presentation; Motion motion;
+    Items items; Engine engine; Menus menus; RaidCommand commands; Presentation presentation; Motion motion; ResourcePacks packs;
     NamespacedKey entityKey, itemKey;
     ZoneId zone;
     @Override public void onEnable() {
@@ -36,20 +36,23 @@ public final class MobArmy extends JavaPlugin {
             if(ps!=null)for(String id:ps.getKeys(false)){Portal p=Portal.load(this,id,ps.getConfigurationSection(id));if(arenas.containsKey(p.week))portals.put(id,p);}
             var rs=state.getConfigurationSection("returns");
             if(rs!=null)for(String id:rs.getKeys(false)){Location l=rs.getLocation(id);if(l!=null)returns.put(UUID.fromString(id),l);}
-            items=new Items(this);Recovery.restore(this);engine=new Engine(this);menus=new Menus(this);commands=new RaidCommand(this);presentation=new Presentation(this);motion=new Motion(this);
-            for(Arena a:arenas.values())if(a.config.getBoolean("generate-demo")&&state.getInt("demo-layout."+a.id)<2){a.demo();state.set("demo."+a.id,true);state.set("demo-layout."+a.id,2);}
+            // Clear labels from old builds before creating exactly one display per portal.
+            for(World w:Bukkit.getWorlds())for(Entity e:w.getEntities())if(e instanceof TextDisplay){String tag=e.getPersistentDataContainer().get(entityKey,org.bukkit.persistence.PersistentDataType.STRING);if(tag!=null&&tag.startsWith("portal"))e.remove();}
+            items=new Items(this);Recovery.restore(this);engine=new Engine(this);menus=new Menus(this);commands=new RaidCommand(this);presentation=new Presentation(this);motion=new Motion(this);packs=new ResourcePacks(this);
+            for(Arena a:arenas.values())if(a.config.getBoolean("generate-demo")&&state.getInt("demo-layout."+a.id)<Arena.DEMO_LAYOUT){a.demo();state.set("demo."+a.id,true);state.set("demo-layout."+a.id,Arena.DEMO_LAYOUT);}
             Objects.requireNonNull(getCommand("raid")).setExecutor(commands);getCommand("raid").setTabCompleter(commands);
             getServer().getPluginManager().registerEvents(new Protection(this),this);
             getServer().getPluginManager().registerEvents(menus,this);
             getServer().getPluginManager().registerEvents(motion,this);
+            getServer().getPluginManager().registerEvents(packs,this);
             applyDemoPvp();
             getServer().getScheduler().runTaskTimer(this,engine::tick,20,20);
             getServer().getScheduler().runTaskTimer(this,()->{presentation.animate();motion.tick();},1,1);
-            for(Player player:Bukkit.getOnlinePlayers()){items.refresh(player);recover(player);}
+            for(Player player:Bukkit.getOnlinePlayers()){items.refresh(player);recover(player);packs.offer(player);}
             saveState();getLogger().info("Loaded "+arenas.size()+" raid arenas for Spigot 26.3.");
         }catch(Exception ex){getLogger().log(java.util.logging.Level.SEVERE,"Invalid raid setup; plugin disabled",ex);getServer().getPluginManager().disablePlugin(this);}
     }
-    @Override public void onDisable(){if(items!=null)items.shutdown();if(engine!=null)engine.shutdown();if(presentation!=null)presentation.shutdown();for(Portal p:portals.values())p.removeLabel();if(state!=null)saveState();}
+    @Override public void onDisable(){if(packs!=null)packs.close();if(items!=null)items.shutdown();if(engine!=null)engine.shutdown();if(presentation!=null)presentation.shutdown();for(Portal p:portals.values())p.removeLabel();if(state!=null)saveState();}
     public String getCustomItemId(org.bukkit.inventory.ItemStack item){return items==null?null:items.id(item);}
     public org.bukkit.inventory.ItemStack createCustomItem(String id,int amount){return items.make(id,amount);}
     public int countCustomItems(Player player,String id){return items.count(player,id);}

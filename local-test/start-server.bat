@@ -10,8 +10,8 @@ if not exist "%~dp0server\server.jar" (
   pause
   exit /b 1
 )
-set "MOBARMY_PLUGIN=%~dp0..\plugin\DurcheinanderMobArmy-1.1.0.jar"
-if not exist "%MOBARMY_PLUGIN%" set "MOBARMY_PLUGIN=%~dp0..\target\DurcheinanderMobArmy-1.1.0.jar"
+set "MOBARMY_PLUGIN=%~dp0..\plugin\DurcheinanderMobArmy-1.2.0.jar"
+if not exist "%MOBARMY_PLUGIN%" set "MOBARMY_PLUGIN=%~dp0..\target\DurcheinanderMobArmy-1.2.0.jar"
 if not exist "%MOBARMY_PLUGIN%" (
   echo Plugin JAR missing. Extract the complete updated ZIP.
   pause

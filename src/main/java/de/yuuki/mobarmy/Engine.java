@@ -21,8 +21,7 @@ final class Engine {
         if(!player.hasPermission("mobarmy.play")||now-entryTimes.getOrDefault(id,0L)<2000)return false;
         entryTimes.put(id,now);
         if(p.session(id)!=null)return false;
-        if(!portal.open){p.tell(player,"Portal geschlossen.");return false;}
-        if(portal.session!=null&&portal.session.phase!=Session.Phase.LOBBY){p.tell(player,"Während einer Stage ist kein Beitritt möglich.");return false;}
+        if(portal.lockReason()!=null){p.tell(player,portal.lockReason()+" &7Bitte außerhalb des Portals warten.");return false;}
         if(portal.session!=null&&portal.session.dead.contains(id)){p.tell(player,"Du bist in diesem Durchlauf ausgeschieden.");return false;}
         if(!p.getConfig().getBoolean("testing.disable-wipe-cooldown")&&portal.day.equals(p.today())&&p.state.getLong("cooldowns."+p.today()+"."+id)>now){p.tell(player,"Wipe-Sperre aktiv. /raid status zeigt die Portalinfos.");return false;}
         // One physical arena can serve only one portal at a time.

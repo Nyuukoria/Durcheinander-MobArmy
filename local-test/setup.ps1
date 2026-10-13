@@ -2,9 +2,9 @@ param([switch]$DependenciesOnly)
 $ErrorActionPreference = 'Stop'
 Set-Location $PSScriptRoot
 . (Join-Path $PSScriptRoot 'bootstrap-runtime.ps1')
-$Plugin = Join-Path $PSScriptRoot '..\plugin\DurcheinanderMobArmy-1.1.0.jar'
-if (-not (Test-Path $Plugin)) { $Plugin = Join-Path $PSScriptRoot '..\target\DurcheinanderMobArmy-1.1.0.jar' }
-if (-not $DependenciesOnly -and -not (Test-Path $Plugin)) { throw 'Plugin JAR missing. Download the full test ZIP, or build the repository with: mvn clean package' }
+$Plugin = Join-Path $PSScriptRoot '..\plugin\DurcheinanderMobArmy-1.2.0.jar'
+if (-not (Test-Path $Plugin)) { $Plugin = Join-Path $PSScriptRoot '..\target\DurcheinanderMobArmy-1.2.0.jar' }
+if (-not $DependenciesOnly -and -not (Test-Path $Plugin)) { throw 'Plugin JAR missing. Download the full test ZIP, or build the repository with: python3 tools/build_pack.py then mvn clean package' }
 $Server = Join-Path $PSScriptRoot 'server'
 New-Item -ItemType Directory -Force $Server | Out-Null
 $Jar = Join-Path $Server 'server.jar'

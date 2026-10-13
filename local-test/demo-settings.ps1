@@ -37,7 +37,16 @@ $Text = [IO.File]::ReadAllText($Config)
 $Text = Set-MobArmyDemoFlag -Text $Text -Name 'solo'
 $Text = Set-MobArmyDemoFlag -Text $Text -Name 'disable-pvp'
 $Text = Set-MobArmyDemoFlag -Text $Text -Name 'disable-wipe-cooldown'
+$Text = Set-MobArmyDemoFlag -Text $Text -Name 'local-resource-pack'
 [IO.File]::WriteAllText($Config, $Text, [Text.UTF8Encoding]::new($false))
+
+# Older setup versions used a versioned JAR name. Keep backups outside plugin discovery.
+$Plugins = Join-Path $ServerDirectory 'plugins'
+foreach ($OldJar in (Get-ChildItem $Plugins -File | Where-Object { $_.Name -match '^DurcheinanderMobArmy-\d+\.\d+\.\d+\.jar$' })) {
+    $Backup = Join-Path $ConfigDirectory 'old-jars'
+    New-Item -ItemType Directory -Force $Backup | Out-Null
+    Move-Item $OldJar.FullName (Join-Path $Backup $OldJar.Name) -Force
+}
 
 $Properties = Join-Path $ServerDirectory 'server.properties'
 $Text = if (Test-Path $Properties) { [IO.File]::ReadAllText($Properties) } else { '' }

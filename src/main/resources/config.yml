@@ -1,6 +1,5 @@
-# Generated demo layout v2: separate lobby and roofed dungeon.
-# Production minimums stay 2/3/5; the localhost launcher enables solo mode.
-configuration-version: 2
+# Demo v3: compact separate preparation room and roofed 100x100 landscape.
+configuration-version: 3
 timezone: Europe/Berlin
 entry-timeout-seconds: 120
 loot-timeout-seconds: 120
@@ -13,6 +12,7 @@ testing:
   solo: false
   disable-pvp: false
   disable-wipe-cooldown: false
+  local-resource-pack: false
 balance:
   hit-cap: 0.2
   mace-cap: 0.05
@@ -32,17 +32,16 @@ balance:
 messages:
   join: '&dEine Gruppe hat das Portal betreten'
   stage: '&dStage {stage} ist abgeschlossen'
-  private-join: '&dWillkommen im Vorraum! &fMach &e/raid &fum den Leader zu wählen.
-    Nur der Leader startet die Stage mit Ready.'
+  private-join: '&dWillkommen im Vorraum! &fMach &e/raid &fum den Leader zu wählen. Nur der Leader startet die Stage mit Ready.'
 items:
   chaos_fragment:
     material: AMETHYST_SHARD
     name: '&dChaosfragment'
     lore:
-    - '&8Ritual-Zutat'
+    - '&8Wiederverwendbarer Ritual-Katalysator'
     - '&7Rechtsklick auf einen Kessel in der Default-Welt.'
-    - '&dErweckt einen Ritualwächter nach 6 Sekunden.'
-    - '&7Seine Beute: ein nutzbarer Ritualkern.'
+    - '&dErweckt einen Wächter nach 6 Sekunden.'
+    - '&7Bleibt erhalten · Abklingzeit: 120 Sekunden.'
     item-model: mobarmy:chaos_fragment
     drops:
     - source: miniboss
@@ -55,17 +54,19 @@ items:
       damage: 6
       name: '&5Fragmentwächter'
       result: ritual_core
+      consume: 0
+      cooldown-seconds: 120
   ritual_core:
     material: HEART_OF_THE_SEA
     name: '&bRitualkern'
     lore:
-    - '&8Verbrauchbares Schutzrelikt'
+    - '&8Wiederverwendbares Schutzrelikt'
     - '&7Rechtsklick: Resistenz I + Regeneration I (8s).'
     - '&bAbklingzeit: 60 Sekunden.'
-    - '&7Wird bei Benutzung verbraucht.'
+    - '&7Bleibt bei jeder Benutzung erhalten.'
     item-model: mobarmy:ritual_core
     use:
-      consume: 1
+      consume: 0
       radius: 0
       cooldown-seconds: 60
       message: '&bDer Ritualkern schützt und heilt dich.'
@@ -122,6 +123,76 @@ items:
     material: PAPER
     name: '&dChaoswächter-Modell'
     item-model: mobarmy:chaos_guardian
+  frost_talisman:
+    material: AMETHYST_SHARD
+    name: '&bFrosttalisman'
+    lore:
+    - '&8Wiederverwendbares Kontrollrelikt'
+    - '&7Rechtsklick: Gegner im Umkreis von 8 Blöcken'
+    - '&7erhalten Langsamkeit II (6s); Bosse I (3s).'
+    - '&bAbklingzeit: 40 Sekunden · bleibt erhalten.'
+    item-model: mobarmy:frost_talisman
+    drops:
+    - source: miniboss
+      stage: 2
+      amount: 1
+      chance: 1.0
+    use:
+      consume: 0
+      cooldown-seconds: 40
+      enemy-radius: 8
+      enemy-slow-seconds: 6
+      message: '&bDer Frosttalisman bremst nahe Raid-Gegner.'
+      effects: []
+  healing_bloom:
+    material: AMETHYST_SHARD
+    name: '&aLebensblüte'
+    lore:
+    - '&8Wiederverwendbares Heilrelikt'
+    - '&7Rechtsklick: Regeneration II (6s).'
+    - '&aWirkt auf deine Gruppe im Umkreis von 8 Blöcken.'
+    - '&7Abklingzeit: 90 Sekunden · bleibt erhalten.'
+    item-model: mobarmy:healing_bloom
+    drops:
+    - source: miniboss
+      stage: 3
+      amount: 1
+      chance: 1.0
+    use:
+      consume: 0
+      radius: 8
+      cooldown-seconds: 90
+      message: '&aDie Lebensblüte heilt deine Gruppe.'
+      effects:
+      - type: REGENERATION
+        seconds: 6
+        amplifier: 1
+  gale_sigil:
+    material: AMETHYST_SHARD
+    name: '&3Windrune'
+    lore:
+    - '&8Wiederverwendbares Bewegungsrelikt'
+    - '&7Rechtsklick: Tempo II + langsamer Fall (8s).'
+    - '&3Zum Ausweichen und für sichere Windcharge-Sprünge.'
+    - '&7Abklingzeit: 35 Sekunden · bleibt erhalten.'
+    item-model: mobarmy:gale_sigil
+    drops:
+    - source: miniboss
+      stage: 4
+      amount: 1
+      chance: 1.0
+    use:
+      consume: 0
+      radius: 0
+      cooldown-seconds: 35
+      message: '&3Die Windrune verleiht dir Leichtigkeit.'
+      effects:
+      - type: SPEED
+        seconds: 8
+        amplifier: 1
+      - type: SLOW_FALLING
+        seconds: 8
+        amplifier: 0
 weeks:
   w1:
     world: raid_w1
@@ -132,47 +203,47 @@ weeks:
     demo-floor: DEEPSLATE_TILES
     arena:
       min:
-      - -23
+      - -50
       - 64
-      - -23
+      - -50
       max:
-      - 23
-      - 75
-      - 23
+      - 49
+      - 85
+      - 49
     lobby:
       min:
       - 80
       - 64
-      - -8
+      - -4
       max:
-      - 96
-      - 70
-      - 8
+      - 88
+      - 68
+      - 4
     door:
       min:
       - -2
       - 64
-      - -24
+      - -51
       max:
       - 2
       - 68
-      - -24
+      - -51
     lobby-spawn:
-    - 88.5
+    - 84.5
     - 64.0
     - 0.5
     - 90.0
     arena-spawn:
     - 0.5
     - 64.0
-    - -20.5
+    - -35.5
     - 0.0
     spawn-points:
-    - -20.5,64.0,-20.5
-    - 20.5,64.0,-20.5
-    - -20.5,64.0,20.5
-    - 20.5,64.0,20.5
-    - 0.5,64.0,20.5
+    - -31.5,64.0,-31.5
+    - 32.5,64.0,-31.5
+    - -31.5,64.0,32.5
+    - 32.5,64.0,32.5
+    - 0.5,64.0,36.5
     stages:
       '1':
         name: Woche 1 – Stage 1
@@ -511,47 +582,47 @@ weeks:
     demo-floor: NETHER_BRICKS
     arena:
       min:
-      - -23
+      - -50
       - 64
-      - -23
+      - -50
       max:
-      - 23
-      - 75
-      - 23
+      - 49
+      - 85
+      - 49
     lobby:
       min:
       - 80
       - 64
-      - -8
+      - -4
       max:
-      - 96
-      - 70
-      - 8
+      - 88
+      - 68
+      - 4
     door:
       min:
       - -2
       - 64
-      - -24
+      - -51
       max:
       - 2
       - 68
-      - -24
+      - -51
     lobby-spawn:
-    - 88.5
+    - 84.5
     - 64.0
     - 0.5
     - 90.0
     arena-spawn:
     - 0.5
     - 64.0
-    - -20.5
+    - -35.5
     - 0.0
     spawn-points:
-    - -20.5,64.0,-20.5
-    - 20.5,64.0,-20.5
-    - -20.5,64.0,20.5
-    - 20.5,64.0,20.5
-    - 0.5,64.0,20.5
+    - -31.5,64.0,-31.5
+    - 32.5,64.0,-31.5
+    - -31.5,64.0,32.5
+    - 32.5,64.0,32.5
+    - 0.5,64.0,36.5
     stages:
       '1':
         name: Woche 2 – Stage 1
@@ -890,47 +961,47 @@ weeks:
     demo-floor: END_STONE_BRICKS
     arena:
       min:
-      - -23
+      - -50
       - 64
-      - -23
+      - -50
       max:
-      - 23
-      - 75
-      - 23
+      - 49
+      - 85
+      - 49
     lobby:
       min:
       - 80
       - 64
-      - -8
+      - -4
       max:
-      - 96
-      - 70
-      - 8
+      - 88
+      - 68
+      - 4
     door:
       min:
       - -2
       - 64
-      - -24
+      - -51
       max:
       - 2
       - 68
-      - -24
+      - -51
     lobby-spawn:
-    - 88.5
+    - 84.5
     - 64.0
     - 0.5
     - 90.0
     arena-spawn:
     - 0.5
     - 64.0
-    - -20.5
+    - -35.5
     - 0.0
     spawn-points:
-    - -20.5,64.0,-20.5
-    - 20.5,64.0,-20.5
-    - -20.5,64.0,20.5
-    - 20.5,64.0,20.5
-    - 0.5,64.0,20.5
+    - -31.5,64.0,-31.5
+    - 32.5,64.0,-31.5
+    - -31.5,64.0,32.5
+    - 32.5,64.0,32.5
+    - 0.5,64.0,36.5
     stages:
       '1':
         name: Woche 3 – Stage 1
@@ -1265,3 +1336,7 @@ presentation:
   portal-particle-range: 28
 ritual-animation:
   duration-seconds: 6
+resource-pack:
+  port: 8765
+  url: ''
+  sha1: ''

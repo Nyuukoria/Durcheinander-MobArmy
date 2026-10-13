@@ -16,11 +16,19 @@ final class Protection implements Listener {
     Protection(MobArmy p){this.p=p;}
     Entity source(Entity e){if(e instanceof Projectile pr&&pr.getShooter() instanceof Entity owner)return owner;if(e instanceof AreaEffectCloud cloud&&cloud.getSource() instanceof Entity owner)return owner;if(e instanceof TNTPrimed tnt&&tnt.getSource()!=null)return tnt.getSource();return e;}
     @EventHandler public void worldLoaded(org.bukkit.event.world.WorldLoadEvent e){if(p.getConfig().getBoolean("testing.disable-pvp"))e.getWorld().setPVP(false);}
+    @EventHandler public void loadedEntities(org.bukkit.event.world.EntitiesLoadEvent event){
+        for(Entity e:event.getEntities())if(e instanceof TextDisplay){String tag=e.getPersistentDataContainer().get(p.entityKey,org.bukkit.persistence.PersistentDataType.STRING);
+            if(tag!=null&&tag.startsWith("portal")&&p.portals.values().stream().noneMatch(q->q.label!=null&&q.label.getUniqueId().equals(e.getUniqueId())))e.remove();
+        }
+    }
     boolean raid(World w){return p.arena(w)!=null;}
     @EventHandler(ignoreCancelled=true) public void move(PlayerMoveEvent e){
         if(e.getTo()==null)return;Player player=e.getPlayer();Session s=p.session(player.getUniqueId());
         if(s!=null&&s.phase==Session.Phase.FIGHT&&!s.arena.bounds.contains(e.getTo())){e.setTo(e.getFrom());return;}
-        if(s==null&&!raid(player.getWorld())){Portal portal=p.portalAt(e.getTo());if(portal!=null)p.engine.join(player,portal);}
+        if(s==null&&!raid(player.getWorld())){Portal portal=p.portalAt(e.getTo());if(portal!=null){
+            if(portal.lockReason()!=null){e.setTo(portal.region.contains(e.getFrom())?portal.exit.clone():e.getFrom());p.engine.join(player,portal);}
+            else p.engine.join(player,portal);
+        }}
     }
     @EventHandler(priority=EventPriority.HIGHEST,ignoreCancelled=true) public void teleport(PlayerTeleportEvent e){
         if(e.getTo()==null)return;Player player=e.getPlayer();Session s=p.session(player.getUniqueId());Arena destination=p.arena(e.getTo().getWorld());
@@ -39,7 +47,7 @@ final class Protection implements Listener {
     }
     @EventHandler(ignoreCancelled=true) public void vanillaPortal(PlayerPortalEvent e){if(p.portalAt(e.getFrom())!=null||raid(e.getFrom().getWorld()))e.setCancelled(true);}
     @EventHandler(ignoreCancelled=true) public void pearlHit(ProjectileHitEvent e){if(e.getEntity() instanceof EnderPearl&&p.portalAt(e.getEntity().getLocation())!=null){e.setCancelled(true);e.getEntity().remove();}}
-    @EventHandler public void login(PlayerJoinEvent e){Bukkit.getScheduler().runTask(p,()->{p.items.refresh(e.getPlayer());p.recover(e.getPlayer());if(raid(e.getPlayer().getWorld())&&p.session(e.getPlayer().getUniqueId())==null)e.getPlayer().teleport(Bukkit.getWorlds().getFirst().getSpawnLocation());});}
+    @EventHandler public void login(PlayerJoinEvent e){Bukkit.getScheduler().runTaskLater(p,()->{if(!e.getPlayer().isOnline())return;p.items.refresh(e.getPlayer());p.recover(e.getPlayer());if(p.packs!=null)p.packs.offer(e.getPlayer());if(raid(e.getPlayer().getWorld())&&p.session(e.getPlayer().getUniqueId())==null)e.getPlayer().teleport(Bukkit.getWorlds().getFirst().getSpawnLocation());},20);}
     @EventHandler public void quit(PlayerQuitEvent e){p.commands.builders.remove(e.getPlayer().getUniqueId());Session s=p.session(e.getPlayer().getUniqueId());if(s!=null){Location exit=s.portal.exit.clone();p.engine.leave(e.getPlayer(),false);p.returns.put(e.getPlayer().getUniqueId(),exit);p.saveState();}}
     @EventHandler(priority=EventPriority.HIGHEST) public void death(PlayerDeathEvent e){
         if(!raid(e.getEntity().getWorld()))return;e.setKeepInventory(true);e.setKeepLevel(true);e.setDroppedExp(0);e.getDrops().clear();e.setDeathMessage(null);
@@ -95,7 +103,7 @@ final class Protection implements Listener {
     boolean builder(Player player){return p.commands.builders.contains(player.getUniqueId())&&p.session(player.getUniqueId())==null;}
     @EventHandler(priority=EventPriority.HIGHEST,ignoreCancelled=true) public void place(BlockPlaceEvent e){
         Arena a=p.arena(e.getBlock().getWorld());if(a==null||builder(e.getPlayer()))return;Session s=p.session(e.getPlayer().getUniqueId());
-        int height=e.getBlock().getY()-a.bounds.y1()+1;
+        int height=e.getBlock().getY()-a.groundY(e.getBlock().getX(),e.getBlock().getZ());
         if(s==null||!a.bounds.contains(e.getBlock().getLocation())||a.door.contains(e.getBlock().getLocation())||height<1||height>p.getConfig().getInt("balance.maximum-build-height",2)||EnumSet.of(Material.TNT,Material.RESPAWN_ANCHOR,Material.FIRE,Material.LAVA,Material.WATER).contains(e.getBlock().getType())){e.setCancelled(true);return;}
     }
     @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true) public void placed(BlockPlaceEvent e){

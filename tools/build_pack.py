@@ -17,9 +17,11 @@ def box(a, b, texture):
 
 def build():
     write('pack.mcmeta', {'pack': {'description': 'Yuuki • MobArmy 26.3 • Chaos Guardian', 'min_format': [97, 1], 'max_format': [97, 1]}})
-    for item, model in {'chaos_fragment': 'mobarmy:item/chaos_fragment', 'ritual_core': 'mobarmy:item/ritual_core', 'chaos_crown': 'mobarmy:item/chaos_crown', 'raid_shard': 'mobarmy:item/raid_shard', 'chaos_guardian': 'mobarmy:item/chaos_guardian'}.items():
+    items=['chaos_fragment','ritual_core','chaos_crown','raid_shard','frost_talisman','healing_bloom','gale_sigil']
+    for item in items+['chaos_guardian']:
+        model=f'mobarmy:item/{item}'
         write(f'assets/mobarmy/items/{item}.json', {'model': {'type': 'minecraft:model', 'model': model}})
-    for item in ['chaos_fragment', 'ritual_core', 'chaos_crown', 'raid_shard']:
+    for item in items:
         texture = PACK / f'assets/mobarmy/textures/item/{item}.png'
         if not texture.is_file(): raise SystemExit(f'Missing item texture: {texture}')
         write(f'assets/mobarmy/models/item/{item}.json', {'parent': 'minecraft:item/generated', 'textures': {'layer0': f'mobarmy:item/{item}'}})
@@ -36,10 +38,12 @@ def build():
         'textures': {'stone': 'minecraft:block/obsidian', 'armor': 'minecraft:block/purple_concrete', 'crystal': 'minecraft:block/amethyst_block', 'eyes': 'minecraft:block/sea_lantern', 'particle': 'minecraft:block/amethyst_block'},
         'elements': elements, 'display': {'fixed': {'rotation': [0, 0, 0], 'translation': [0, -8, 0], 'scale': [1, 1, 1]}}
     })
+    paths=[path for path in sorted(PACK.rglob('*')) if path.is_file() and path.name!='index.txt']
+    (PACK/'index.txt').write_text(''.join(str(path.relative_to(PACK))+'\n' for path in paths),encoding='utf-8')
     output = ROOT / 'target/MobArmy-resource-pack-26.3.zip'
     output.parent.mkdir(parents=True, exist_ok=True)
     with ZipFile(output, 'w', ZIP_DEFLATED) as archive:
-        for path in sorted(PACK.rglob('*')):
+        for path in paths:
             if path.is_file():
                 if path.suffix == '.json' or path.name == 'pack.mcmeta': json.loads(path.read_text(encoding='utf-8'))
                 archive.write(path, path.relative_to(PACK))

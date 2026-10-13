@@ -14,6 +14,7 @@ public final class Arena {
     final Location lobbySpawn, arenaSpawn;
     final List<Location> spawns = new ArrayList<>();
     final Map<Location, BlockData> doorOriginal = new HashMap<>();
+    static final int DEMO_LAYOUT=3;
     public Arena(String id, ConfigurationSection config) {
         this.id=id; this.config=config;
         String name=config.getString("world", "raid_"+id);
@@ -46,25 +47,44 @@ public final class Arena {
         if(closed)door.each(b->{doorOriginal.putIfAbsent(b.getLocation(),b.getBlockData().clone());b.setType(Material.BARRIER,false);});
         else { doorOriginal.forEach((l,d)->l.getBlock().setBlockData(d,false));doorOriginal.clear(); }
     }
+    int groundY(int x,int z){
+        if(!config.getBoolean("generate-demo"))return bounds.y1()-1;
+        return 63+DemoTerrain.height(x,z);
+    }
     void demo() {
-        Material floor=Material.matchMaterial(config.getString("demo-floor","DEEPSLATE_TILES"));
-        // Replace the old connected waiting strip in generated demo worlds.
-        for(int x=-24;x<=24;x++)for(int z=-31;z<=24;z++) {
-            world.getBlockAt(x,63,z).setType(z < -24?Material.AIR:floor,false);
-            for(int y=64;y<=76;y++) {
-                boolean wall=z>=-24&&(x==-24||x==24||z==-24||z==24||y==76);
-                Material block=wall?Material.POLISHED_DEEPSLATE:Material.AIR;
-                if(wall&&y==67&&(Math.abs(x)==24||Math.abs(z)==24))block=Material.PURPLE_CONCRETE;
-                if(y==76&&x%8==0&&z%8==0&&z>=-24)block=Material.SEA_LANTERN;
+        Material surface=switch(id){case "w2"->Material.WARPED_NYLIUM;case "w3"->Material.END_STONE;default->Material.GRASS_BLOCK;};
+        Material rock=switch(id){case "w2"->Material.BASALT;case "w3"->Material.PURPUR_BLOCK;default->Material.MOSSY_COBBLESTONE;};
+        // Remove the entire previous lobby so no old benches/walls survive an upgrade.
+        for(int x=79;x<=97;x++)for(int z=-9;z<=9;z++)for(int y=63;y<=71;y++)world.getBlockAt(x,y,z).setType(Material.AIR,false);
+        for(int x=-51;x<=50;x++)for(int z=-51;z<=50;z++){
+            int ground=groundY(x,z);boolean edge=x==-51||x==50||z==-51||z==50;
+            for(int y=62;y<=86;y++){
+                Material block=Material.AIR;
+                if(y<ground)block=Material.STONE;
+                else if(y==ground)block=Math.abs(x)<=3||Math.abs(z)<=3?Material.STONE_BRICKS:surface;
+                if(y==ground&&x%12==0&&z%12==0)block=Material.SEA_LANTERN;
+                if(edge&&y>=63||y==86)block=Material.POLISHED_DEEPSLATE;
+                if(edge&&y==70)block=Material.PURPLE_CONCRETE;
+                if(y==86&&x%10==0&&z%10==0)block=Material.SEA_LANTERN;
                 world.getBlockAt(x,y,z).setType(block,false);
             }
         }
-        for(int x:new int[]{-16,16})for(int z:new int[]{-16,16}) {
-            for(int y=64;y<=66;y++)world.getBlockAt(x,y,z).setType(Material.POLISHED_DEEPSLATE,false);
-            world.getBlockAt(x,67,z).setType(Material.SEA_LANTERN,false);
+        // Broken low ruins and small trees frame the open paths; spawn pads stay clear.
+        for(int x:new int[]{-22,22})for(int z:new int[]{-17,17}){
+            int base=groundY(x,z)+1;
+            for(int dx=-3;dx<=3;dx++)for(int dy=0;dy<2;dy++)world.getBlockAt(x+dx,groundY(x+dx,z)+1+dy,z).setType(rock,false);
+            for(int y=base;y<base+4;y++)world.getBlockAt(x-3,y,z).setType(rock,false);
+            world.getBlockAt(x-3,base+4,z).setType(Material.SEA_LANTERN,false);
         }
-        // Low cover gives a moment to heal but remains reachable by mobs.
-        for(int x:new int[]{-10,10})for(int z=-4;z<=4;z++)world.getBlockAt(x,64,z).setType(Material.DEEPSLATE_BRICK_SLAB,false);
+        for(int x:new int[]{-40,40})for(int z:new int[]{-14,14}){
+            int base=groundY(x,z)+1;
+            for(int y=base;y<base+4;y++)world.getBlockAt(x,y,z).setType(id.equals("w1")?Material.OAK_LOG:rock,false);
+            for(int dx=-2;dx<=2;dx++)for(int dz=-2;dz<=2;dz++)if(Math.abs(dx)+Math.abs(dz)<=3){
+                var b=world.getBlockAt(x+dx,base+4,z+dz);
+                b.setType(id.equals("w1")?Material.OAK_LEAVES:Material.AMETHYST_BLOCK,false);
+                if(b.getBlockData() instanceof org.bukkit.block.data.type.Leaves leaves){leaves.setPersistent(true);b.setBlockData(leaves,false);}
+            }
+        }
         // A separate enclosed preparation room across a void gap, never walkable into the fight.
         int lx1=lobby.x1()-1,lx2=lobby.x2()+1,lz1=lobby.z1()-1,lz2=lobby.z2()+1,roof=lobby.y2()+1;
         for(int x=lx1;x<=lx2;x++)for(int z=lz1;z<=lz2;z++)for(int y=lobby.y1()-1;y<=roof;y++){
@@ -76,11 +96,7 @@ public final class Arena {
             world.getBlockAt(x,y,z).setType(block,false);
         }
         // Raised decorative pillars, benches and storage for equipping between stages.
-        for(int x:new int[]{lx1+2,lx2-2})for(int z:new int[]{lz1+2,lz2-2}){
-            for(int y=lobby.y1();y<roof;y++)world.getBlockAt(x,y,z).setType(Material.CHISELED_QUARTZ_BLOCK,false);
-            world.getBlockAt(x,roof-1,z).setType(Material.SEA_LANTERN,false);
-        }
-        for(int z=lz1+4;z<=lz2-4;z++)world.getBlockAt(lx1+2,lobby.y1(),z).setType(Material.SMOOTH_QUARTZ_SLAB,false);
+        for(int z=-2;z<=2;z++)world.getBlockAt(lx1+1,lobby.y1(),z).setType(Material.SMOOTH_QUARTZ_SLAB,false);
         world.getBlockAt(lx2-2,lobby.y1(),0).setType(Material.CRAFTING_TABLE,false);
         world.getBlockAt(lx2-2,lobby.y1(),2).setType(Material.ENDER_CHEST,false);
         world.getBlockAt(lx2-2,lobby.y1(),-2).setType(Material.ANVIL,false);

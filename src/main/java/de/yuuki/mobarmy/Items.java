@@ -68,6 +68,16 @@ final class Items {
         if(until>now){p.tell(player,"Noch "+Rules.clock((until-now+999)/1000)+" Abklingzeit für dieses Item.");return true;}
         int consumed=cfg.getInt("consume",0);if(held.getAmount()<consumed)return true;
         List<Player> targets=new ArrayList<>();targets.add(player);double radius=cfg.getDouble("radius",0);Session session=p.session(player.getUniqueId());
+        double enemyRadius=cfg.getDouble("enemy-radius",0);
+        if(enemyRadius>0){
+            if(session==null||session.phase!=Session.Phase.FIGHT){p.tell(player,"Dieses Relikt wirkt auf Gegner während einer Raid-Stage.");return true;}
+            int affected=0;
+            for(UUID uuid:session.mobs){Entity e=Bukkit.getEntity(uuid);if(e instanceof LivingEntity mob&&mob.getWorld().equals(player.getWorld())&&mob.getLocation().distanceSquared(player.getLocation())<=enemyRadius*enemyRadius){
+                boolean boss=session.contribution.containsKey(uuid);mob.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS,(boss?3:cfg.getInt("enemy-slow-seconds",6))*20,boss?0:1,true,true,true));affected++;
+                mob.getWorld().spawnParticle(Particle.SNOWFLAKE,mob.getLocation().add(0,1,0),18,.4,.6,.4,.02);
+            }}
+            if(affected==0){p.tell(player,"Keine Raid-Gegner in Reichweite. Das Relikt bleibt bereit.");return true;}
+        }
         if(radius>0&&session!=null)for(Player other:p.engine.players(session))if(other!=player&&other.getWorld().equals(player.getWorld())&&other.getLocation().distanceSquared(player.getLocation())<=radius*radius)targets.add(other);
         for(var effect:cfg.getMapList("effects")){
             PotionEffectType type=PotionEffectType.getByName(String.valueOf(effect.get("type")));if(type==null)continue;
@@ -85,9 +95,13 @@ final class Items {
         p.engine.rituals.keySet().removeIf(key->Bukkit.getEntity(key)==null);
         if(p.engine.rituals.size()+casts.size()>=p.getConfig().getInt("maximum-ritual-mobs",20)){p.tell(player,"Zu viele aktive Rituale.");return true;}
         if(casts.values().stream().anyMatch(c->c.cauldron.equals(cauldron.getLocation()))){p.tell(player,"An diesem Kessel läuft schon ein Ritual.");return true;}
-        ItemStack payment=held.clone();payment.setAmount(1);held.setAmount(held.getAmount()-1);
-        RitualCast cast;try{cast=new RitualCast(player.getUniqueId(),cauldron.getLocation(),payment,cfg);}catch(RuntimeException ex){held.setAmount(held.getAmount()+1);p.getLogger().warning("Ritual could not start: "+ex.getMessage());p.tell(player,"Das Ritual konnte nicht starten. Fragment zurückgegeben.");return true;}casts.put(cast.key,cast);
-        p.state.set("pending-rituals."+cast.key+".owner",player.getUniqueId().toString());p.state.set("pending-rituals."+cast.key+".item",payment);p.saveState();
+        long now=System.currentTimeMillis();String cooldown="item-cooldowns."+player.getUniqueId()+"."+id;
+        long until=p.state.getLong(cooldown);if(until>now){p.tell(player,"Ritual bereit in "+Rules.clock((until-now+999)/1000)+".");return true;}
+        int consumed=Math.max(0,cfg.getInt("consume",0));if(held.getAmount()<consumed){p.tell(player,"Zu wenige Ritual-Items.");return true;}
+        ItemStack payment=consumed>0?held.clone():null;if(payment!=null){payment.setAmount(consumed);held.setAmount(held.getAmount()-consumed);}
+        RitualCast cast;try{cast=new RitualCast(player.getUniqueId(),cauldron.getLocation(),payment,cfg);}catch(RuntimeException ex){if(payment!=null)held.setAmount(held.getAmount()+consumed);p.getLogger().warning("Ritual could not start: "+ex.getMessage());p.tell(player,"Das Ritual konnte nicht starten. Dein Item bleibt erhalten.");return true;}casts.put(cast.key,cast);
+        if(payment!=null){p.state.set("pending-rituals."+cast.key+".owner",player.getUniqueId().toString());p.state.set("pending-rituals."+cast.key+".item",payment);}
+        p.state.set(cooldown,now+cfg.getLong("cooldown-seconds",120)*1000);p.saveState();
         cast.runTaskTimer(p,0,2);
         return true;
     }
@@ -129,7 +143,7 @@ final class Items {
             }catch(RuntimeException ex){p.getLogger().warning("Ritual failed: "+ex.getMessage());abort();}
         }
         void cleanup(){if(done)return;done=true;cancel();orb.remove();label.remove();casts.remove(key);p.state.set("pending-rituals."+key,null);p.saveState();}
-        void abort(){if(done)return;cleanup();store(owner,payment);Player player=Bukkit.getPlayer(owner);if(player!=null)p.tell(player,"Ritual abgebrochen – das Fragment liegt im /raid loot Postfach.");}
+        void abort(){if(done)return;cleanup();if(payment!=null)store(owner,payment);Player player=Bukkit.getPlayer(owner);if(player!=null)p.tell(player,payment!=null?"Ritual abgebrochen – verbrauchte Items liegen im /raid loot Postfach.":"Ritual abgebrochen – dein Katalysator bleibt erhalten. Die Abklingzeit läuft weiter.");}
     }
     void shutdown(){for(RitualCast cast:new ArrayList<>(casts.values()))cast.abort();}
 }

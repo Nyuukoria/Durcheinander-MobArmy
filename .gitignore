@@ -5,3 +5,4 @@ local-test/server/
 local-test/buildtools/
 local-test/runtime/
 *.log
+__pycache__/

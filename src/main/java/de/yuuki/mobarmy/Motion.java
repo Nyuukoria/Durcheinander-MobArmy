@@ -58,7 +58,8 @@ final class Motion implements Listener {
         int minX=(int)Math.floor(box.getMinX()-0.08),maxX=(int)Math.floor(box.getMaxX()+0.08),minZ=(int)Math.floor(box.getMinZ()-0.08),maxZ=(int)Math.floor(box.getMaxZ()+0.08);
         for(int y=(int)Math.floor(box.getMinY()+0.05);y<=(int)Math.floor(box.getMaxY());y++)for(int x=minX;x<=maxX;x++)for(int z=minZ;z<=maxZ;z++){
             if(x>minX&&x<maxX&&z>minZ&&z<maxZ)continue;Block b=w.getBlockAt(x,y,z);if(!b.getType().isSolid())continue;
-            if(s.blocks.containsKey(b.getLocation()))owned=true;else original=true;
+            if(s.blocks.containsKey(b.getLocation()))owned=true;
+            else if(!(s.arena.config.getBoolean("generate-demo")&&x>=s.arena.bounds.x1()&&x<=s.arena.bounds.x2()&&z>=s.arena.bounds.z1()&&z<=s.arena.bounds.z2()&&y<=s.arena.groundY(x,z)))original=true;
         }
         return (owned?1:0)|(original?2:0);
     }

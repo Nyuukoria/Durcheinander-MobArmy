@@ -29,13 +29,13 @@ jobs:
           distribution: temurin
           java-version: '25'
           cache: maven
-      - run: mvn --batch-mode clean verify
       - run: python3 tools/build_pack.py
+      - run: mvn --batch-mode clean verify
       - run: python3 tools/build_release.py
       - uses: actions/upload-artifact@v4
         with:
           name: DurcheinanderMobArmy-26.3
           path: |
-            target/DurcheinanderMobArmy-1.1.0.jar
+            target/DurcheinanderMobArmy-1.2.0.jar
             target/MobArmy-resource-pack-26.3.zip
-            target/DurcheinanderMobArmy-1.1.0-local-test.zip
+            target/DurcheinanderMobArmy-1.2.0-local-test.zip

@@ -14,8 +14,8 @@ final class Presentation {
     long ticks;
     Presentation(MobArmy p){this.p=p;for(Arena a:p.arenas.values())lobbySign(a);}
     void lobbySign(Arena a){
-        TextDisplay text=a.world.spawn(a.lobbySpawn.clone().add(0,2.8,-4),TextDisplay.class);
-        style(text);text.setText(MobArmy.color("&d&lVORBEREITUNG\n&f/raid &7→ Leader wählen & Öffnen\n&7Der Leader startet mit &aReady\n&7Nach jeder Stage kommt ihr hierher zurück."));
+        TextDisplay text=a.world.spawn(a.lobbySpawn.clone().add(-3.5,2.6,0),TextDisplay.class);
+        style(text);text.setText(MobArmy.color("&d&lVORBEREITUNG\n&f/raid &7→ Leader wählen\n&7Der Leader startet mit &aReady\n&f/raid leave &7→ zurück"));
         text.getPersistentDataContainer().set(p.entityKey,PersistentDataType.STRING,"lobby:"+a.id);signs.add(text);
     }
     static void style(TextDisplay text){
@@ -25,17 +25,18 @@ final class Presentation {
     }
     void animate(){if(++ticks%2!=0)return;for(Portal portal:p.portals.values())portalParticles(portal);}
     void portalParticles(Portal portal){
-        World w=Bukkit.getWorld(portal.region.world());if(w==null||!portal.open)return;
+        World w=Bukkit.getWorld(portal.region.world());if(w==null)return;
         Location center=new Location(w,(portal.region.x1()+portal.region.x2()+1)/2.0,(portal.region.y1()+portal.region.y2()+1)/2.0,(portal.region.z1()+portal.region.z2()+1)/2.0);
         double distance=p.getConfig().getDouble("presentation.portal-particle-range",28);
         if(w.getPlayers().stream().noneMatch(pl->pl.getLocation().distanceSquared(center)<distance*distance))return;
         boolean xy=portal.region.x2()-portal.region.x1()>=portal.region.z2()-portal.region.z1();
         double width=(xy?portal.region.x2()-portal.region.x1()+1:portal.region.z2()-portal.region.z1()+1)/2.0,height=Math.max(1.2,(portal.region.y2()-portal.region.y1()+1)/2.0);
-        Color primary=portal.session!=null&&portal.session.phase!=Session.Phase.LOBBY?Color.fromRGB(230,76,92):Color.fromRGB(213,103,255);
+        boolean locked=portal.lockReason()!=null;Color primary=locked?Color.fromRGB(230,76,92):Color.fromRGB(213,103,255);
         for(int i=0;i<12;i++){
             double angle=i*Math.PI/6+ticks*0.028,u=Math.cos(angle)*width,v=Math.sin(angle)*height;
-            Location at=center.clone().add(xy?u:0,v,xy?0:u);w.spawnParticle(Particle.DUST,at,1,0,0,0,0,new Particle.DustOptions(i%3==0?Color.fromRGB(97,235,235):primary,1.0f));
+            Location at=center.clone().add(xy?u:0,v,xy?0:u);w.spawnParticle(Particle.DUST,at,1,0,0,0,0,new Particle.DustOptions(!locked&&i%3==0?Color.fromRGB(97,235,235):primary,1.0f));
         }
+        if(locked){if(ticks%10==0)for(int i=-5;i<=5;i++)for(int sign:new int[]{-1,1}){double u=width*.75*i/5.0,v=sign*height*.75*i/5.0;w.spawnParticle(Particle.DUST,center.clone().add(xy?u:0,v,xy?0:u),1,0,0,0,0,new Particle.DustOptions(primary,1.2f));}return;}
         double spin=ticks*0.055;Location core=center.clone().add(xy?Math.cos(spin)*width*0.45:0,Math.sin(spin*1.3)*height*0.65,xy?0:Math.cos(spin)*width*0.45);
         w.spawnParticle(Particle.REVERSE_PORTAL,core,3,0.12,0.18,0.12,0.03);
         if(ticks%20==0)w.spawnParticle(Particle.ENCHANT,center,6,width*0.3,height*0.3,0.15,0.3);

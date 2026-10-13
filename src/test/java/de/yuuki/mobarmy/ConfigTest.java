@@ -26,9 +26,15 @@ class ConfigTest {
         assertFalse(cfg.getBoolean("testing.disable-wipe-cooldown"));
         for(String week:cfg.getConfigurationSection("weeks").getKeys(false)){
             var a=cfg.getConfigurationSection("weeks."+week);assertTrue(a.getIntegerList("lobby.min").getFirst()>a.getIntegerList("arena.max").getFirst());
-            assertEquals(75,a.getIntegerList("arena.max").get(1));
+            assertEquals(85,a.getIntegerList("arena.max").get(1));
         }
         assertEquals("mobarmy:raid_shard",cfg.getString("items.raid_shard.item-model"));assertTrue(cfg.getBoolean("items.raid_shard.shop-token"));
-        assertFalse(cfg.getMapList("items.ritual_core.use.effects").isEmpty());assertEquals(1,cfg.getInt("items.ritual_core.use.consume"));
+        assertFalse(cfg.getMapList("items.ritual_core.use.effects").isEmpty());assertEquals(0,cfg.getInt("items.ritual_core.use.consume"));
+        for(String id:cfg.getConfigurationSection("items").getKeys(false)){
+            assertEquals(0,cfg.getInt("items."+id+".use.consume"),id);assertEquals(0,cfg.getInt("items."+id+".ritual.consume"),id);
+        }
+        assertFalse(cfg.getBoolean("testing.local-resource-pack"));
+        assertEquals(100,cfg.getIntegerList("weeks.w1.arena.max").getFirst()-cfg.getIntegerList("weeks.w1.arena.min").getFirst()+1);
+        assertEquals(9,cfg.getIntegerList("weeks.w1.lobby.max").getFirst()-cfg.getIntegerList("weeks.w1.lobby.min").getFirst()+1);
     }
 }

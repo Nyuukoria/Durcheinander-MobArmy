@@ -18,6 +18,7 @@ final class Completion {
             case "item"->{if(args.length==2)out.addAll(List.of("give","take","count"));else if(args.length==3)out.addAll(items);else if(args.length==4)out.addAll(players);else if(args.length==5&&!args[1].equalsIgnoreCase("count"))out.addAll(List.of("1","8","16","32","64"));}
             case "cooldown"->{if(args.length==2)out.add("clear");else if(args.length==3&&args[1].equalsIgnoreCase("clear")){out.addAll(players);out.add("all");}}
             case "demo"->{if(args.length==2){out.addAll(weeks);out.addAll(List.of("reset","rebuild"));}else if(args.length==3&&args[1].equalsIgnoreCase("reset")){out.addAll(portals);out.add("all");}else if(args.length==3&&args[1].equalsIgnoreCase("rebuild"))out.addAll(weeks);}
+            case "pack"->{if(args.length==2)out.addAll(List.of("status","reload"));}
             case "test"->{if(args.length==2)out.addAll(List.of("on","off"));}
             case "visit"->{if(args.length==2)out.addAll(weeks);}
             case "join","open","close","stop","reset"->{if(args.length==2)out.addAll(portals);}
