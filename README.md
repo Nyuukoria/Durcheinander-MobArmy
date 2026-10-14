@@ -1,4 +1,11 @@
-# Durcheinander MobArmy 1.7.0
+# Durcheinander MobArmy 1.8.0
+
+## Neu in 1.8
+
+- `/raid arena edit <arena>`: eigener Creative-Baumodus mit separatem Inventar, Backup, Entwurf, Prüfung und Welt-ZIP-Export. `/raid arena create <id> [vorlage]` kopiert eine bestehende Karte. Anleitung: [ARENA-BUILDING.md](ARENA-BUILDING.md).
+- 17 Waffen-/Werkzeugfähigkeiten: Wächterhaltung, Sturmhieb, Abgrundstoß, Streitkolben-Stoßwelle, Wind-/Sternenpfeile, Eile, Fortbewegung, Nachsaat, Angeln und mehr. Schleichen + Rechtsklick aktiviert; normale Nutzung bleibt möglich. Fundorte und Ritualwege stehen in `/rezepte`, Details in [EQUIPMENT.md](EQUIPMENT.md).
+- Neun Raid-Bossprofile mit zehn Angriffstypen, zwei Sekunden Vorwarnung und Bodenpartikeln. Ringstoß hat eine sichere Mitte; Ansturm lässt seitlich Platz. Unter halbem Leben verkürzen sich die Pausen. Beschworene Verstärkung gibt weder XP noch Beute.
+
 
 Spigot **Minecraft Java 26.3 / Java 25**. Konfigurierbare Raids mit drei Wochen, fünf Stages, Gruppen, Leader-Voting, Bossen, eigenen Items und Kesselritualen. Verwendet nur Bukkit/Spigot-APIs.
 
@@ -174,7 +181,7 @@ mvn clean verify
 python3 tools/build_release.py
 ```
 
-JAR: `target/DurcheinanderMobArmy-1.7.0.jar`. Resource Pack: `target/MobArmy-resource-pack-26.3.zip`. Das Pack verwendet Format 97.1. GitHub Actions baut JAR, Pack und ZIP und prüft die Windows-Setup-Skripte.
+JAR: `target/DurcheinanderMobArmy-1.8.0.jar`. Resource Pack: `target/MobArmy-resource-pack-26.3.zip`. Das Pack verwendet Format 97.1. GitHub Actions baut JAR, Pack und ZIP und prüft die Windows-Setup-Skripte.
 
 Automatische Tests prüfen Timer/Mitternacht/Boss-Abschluss, Schaden und Mindestspieler-Anteile, Waves/Reiter, komplette Tab-Grammatik, Spinnen-Regelausnahme, GUI-freien Eintritt und den Gruppen-Teleport. Sichtbarkeit, native Wind-Charge-Physik, Spinnen-Bewegung und Multiplayer-Balance bitte mit `TESTING.md` im Spiel prüfen.
 

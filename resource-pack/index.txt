@@ -129,8 +129,14 @@ assets/mobarmy/models/item/ritual_core.json
 assets/mobarmy/models/item/runic_shovel.json
 assets/mobarmy/models/item/silk_pickaxe.json
 assets/mobarmy/models/item/star_bow.json
+assets/mobarmy/models/item/star_bow_pulling_0.json
+assets/mobarmy/models/item/star_bow_pulling_1.json
+assets/mobarmy/models/item/star_bow_pulling_2.json
 assets/mobarmy/models/item/storm_essence.json
 assets/mobarmy/models/item/tempest_bow.json
+assets/mobarmy/models/item/tempest_bow_pulling_0.json
+assets/mobarmy/models/item/tempest_bow_pulling_1.json
+assets/mobarmy/models/item/tempest_bow_pulling_2.json
 assets/mobarmy/models/item/void_essence.json
 assets/mobarmy/models/item/warden_blade.json
 assets/mobarmy/models/item/warden_boots.json

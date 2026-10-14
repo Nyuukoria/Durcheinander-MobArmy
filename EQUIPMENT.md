@@ -84,12 +84,36 @@ Alle acht Alltagswerkzeuge sparen zusätzlich mit 10 % Wahrscheinlichkeit einen 
 | Werkzeug | Schleichen + Rechtsklick | Cooldown |
 |---|---|---:|
 | Seidenspitzhacke | Eile II für 8 s, Nachtsicht für 20 s | 75 s |
-| Forstaxt | Eile I und Tempo I für 10 s | 60 s |
+| Forstaxt | Eile II und Tempo I für 10 s | 60 s |
 | Pfadfinderschaufel | Tempo I für 12 s, langsamer Fall für 4 s | 60 s |
 | Feldhacke | Bodenfeuchte und Pflanzenwachstum ablesen; Eile I für 8 s | 15 s |
-| Gartenschere | Verschleißschutz steigt für 8 s auf 35 % | 45 s |
+| Gartenschere | Verschleißschutz steigt für 8 s auf 50 % | 45 s |
 | Anglerglück | Nächster manueller Wurf innerhalb 15 s: Basiswartezeit vor Köder-Verzauberung −20 % | 60 s |
 | Waldläuferarmbrust | Nächster normaler Pfeil innerhalb 15 s markiert ein Monster für 6 s; keine Markierung von Spielern | 45 s |
 | Heimkehrdreizack | Wasseratmung für 15 s, Delfins Gunst für 4 s | 60 s |
 
 Relikte zeigen den nativen Minecraft-Cooldown direkt auf ihrem Icon. Die acht Werkzeuge zeigen mit dem Ressourcenpaket einen eigenen Balken in Hotbar und Inventar; die verbleibende Zeit steht zusätzlich in der Lore. Die Spezialfähigkeit bleibt gesperrt, aber normale Nutzung läuft weiter. Während Aufladen oder längerem Abbauen pausiert nur die Bild-/Lore-Aktualisierung des gehaltenen Werkzeugs und holt danach auf; der Timer läuft weiter. Doppelte Exemplare teilen pro Spieler und Item-ID denselben Timer. Relog und Neustart setzen ihn nicht zurück; Demo-Clear entfernt auch die Anzeige. Schleifstein/Netherit-Upgrade entfernen die speziellen Fähigkeiten zusammen mit der Custom-ID.
+
+## Waffenaktionen und stärkere Skills ab 1.8
+
+Aktivierung: **Schleichen + Rechtsklick**. Jede Item-ID hat einen eigenen spielergebundenen Cooldown; ein zweites Exemplar umgeht ihn nicht. Die neun bisherigen Raid-Waffen/Werkzeuge bekommen jetzt ebenfalls einen GUI-Balken und eine kurze Restzeit in der Lore. Native Nutzung bleibt während der Abklingzeit möglich. Zusätzlicher Angriffsschaden läuft durch normale Schadenereignisse und die bestehenden Boss-Anteil-/Treffergrenzen. Effekte betreffen feindliche Mobs und zugehörige Raid-/Ritualgegner; Spieler, Haustiere und Dorfbewohner sind ausgeschlossen.
+
+| Item | Aktivierte Fähigkeit | Cooldown |
+|---|---|---|
+| Wächterklinge `warden_blade` | 6 s Resistenz I; direkte Monsterangriffe lösen Zurückstoß und 3 s Schwäche I aus | 45 s |
+| Sturmaxt `gale_axe` | Nächster vollständig aufgeladener Treffer: +20 % Grundschaden; bis zu 3 weitere sichtbare Feinde erleiden 2 Schadenspunkte und Zurückstoß | 45 s |
+| Abgrundklinge `abyss_sword` | Nächster aufgeladener Treffer: +20 % Grundschaden, 4 s Schwäche I und 5 s Leuchten | 50 s |
+| Abgrundstreitkolben `abyss_mace` | Nächster aufgeladener Treffer: +20 % Grundschaden, Stoßwelle gegen bis zu 5 weitere sichtbare Feinde in 4 Blöcken Entfernung | 60 s |
+| Sturmbogen `tempest_bow` | Nächster normaler Pfeil: zusätzlicher Zurückstoß und 3 s Verlangsamung I | 45 s |
+| Sternenbogen `star_bow` | Nächster Pfeil: 6 s Leuchten, 4 s Schwäche I; bis zu 2 weitere sichtbare Feinde in 3 Blöcken erhalten 2 Schadenspunkte | 60 s |
+| Echospitzhacke `echo_pickaxe` | Eile II 10 s und Nachtsicht 30 s | 60 s |
+| Runenschaufel `runic_shovel` | Tempo II 6 s, zusätzlich ein Falltreffer in den nächsten 12 s um 50 % reduziert | 60 s |
+| Erntehacke `harvest_hoe` | Innerhalb 30 s bis zu 6 manuell geerntete reife Feldpflanzen nachsäen | 45 s |
+
+Die sechs vorbereiteten Angriffs-/Pfeilaktionen verfallen nach 15 Sekunden, wenn sie nicht verbraucht wurden. Die Wächterhaltung läuft sechs Sekunden.
+
+Die acht Alltagswerkzeuge behalten ihre normale Haltbarkeit, Fundorte und Vanilla-Verzauberungen. Verbesserungen: Forstaxt nun Eile II/Tempo I 10 s; Pfadfinderschaufel zusätzlich ein halber Falltreffer innerhalb 15 s (Tempo I 12 s, langsamer Fall 4 s bleiben); Feldhacke kann nach einer Bodenprobe drei manuell geerntete Pflanzen innerhalb 15 s nachsäen; Gartenschere 50 % Verschleißschutz statt 35 % im Skillfenster und Eile II 8 s; Angel reduziert die Basiswartezeit eines Wurfs um 35 %; Waldläuferarmbrust markiert und schwächt ein Monster; Rückkehrdreizack gibt Wasseratmung 30 s, Delfingunst 8 s und einen kurzen Schub nur im Wasser. Seidenspitzhacke behält Eile II 8 s und Nachtsicht 20 s.
+
+Nachsaat unterstützt Weizen, Rote Bete, Karotten und Kartoffeln. Du erntest jede Pflanze selbst, brauchst passende normale Samen/Karotten/Kartoffeln im Inventar und bleibst in sechs Blöcken Nähe. Es wird genau ein Saatitem verbraucht und auf Alter 0 gepflanzt; normale Schutzplugins können das Platzieren verhindern. Keine zusätzliche Ernte, Vervielfältigung oder kostenlose Saat.
+
+Die bisherigen Drop-Pools und Ritualwege bleiben erhalten; `/rezepte` zeigt sie pro Item. Die OP-Demo stellt alles über `/raid kit gear` bereit.

@@ -236,8 +236,68 @@ de:
     soil-target: Ziele auf Ackerboden oder eine Pflanze.
     no-crop: keine Pflanze
     soil: 'Bodenfeuchte: {moisture}/{maximum} · Wachstum: {growth}'
+    harvest-empty: Du brauchst passende normale Samen für die Nachsaat.
+    replanted: Nachgesät. Noch {count} Ernten verfügbar.
   combat:
     warning: '&eBoss-Fähigkeit! Verlasse die Bodenmarkierung.'
+    enrage: '&cDer Boss wechselt in Phase 2!'
+    skill: '&e{name}: Bodenmarkierung beachten!'
+    names:
+      SLAM: Schmetterschlag
+      CHARGE: Ansturm
+      SHOCKWAVE: Ringstoß
+      FROST: Frostfalle
+      NOVA: Frostnova
+      RAIN: Splitterregen
+      MARK: Chaossiegel
+      PULL: Abgrundsog
+      METEOR: Glutmeteor
+      SUMMON: Verstärkung
+  editor:
+    help: /raid arena edit <arena> | create <id> [Vorlage] | save | done | export | validate | seal | pos1 | pos2 | region <arena> arena|lobby|door | set <arena> arena-spawn|lobby-spawn|recipes|start | spawn <arena> add|clear|list|remove
+    list: 'Arenen: {ids}'
+    edit-first: Zuerst /raid arena edit {id} benutzen.
+    no-edit: Du bearbeitest gerade keine Arena.
+    same-world: Die Auswahl muss in deiner Arena-Welt liegen.
+    position: Arena-Auswahl {number} gesetzt.
+    raid-active: Erst die laufende Gruppe dieser Arena mit /raid stop beenden.
+    leave-raid: Verlasse deinen Raid vor dem Bearbeiten.
+    finish-first: Beende zuerst den Baumodus mit /raid arena done.
+    busy: Diese Arena wird gerade gesichert.
+    new-id: 'Neue Arena-ID: Kleinbuchstaben, Zahlen, _ oder -, maximal 32 Zeichen. ID darf noch nicht existieren.'
+    world-exists: Dieser Weltordner existiert bereits und wird nicht überschrieben.
+    select: Erst zwei Ecken mit dem Auswahlstab oder pos1/pos2 markieren.
+    region: Bereich {region} im Entwurf gesetzt.
+    point: Punkt {point} im Entwurf gesetzt.
+    spawns: '{count} Gegner-Spawnpunkte gespeichert.'
+    spawn-limit: Maximal 64 Gegner-Spawnpunkte.
+    spawn-number: Diese Spawnpunkt-Nummer gibt es nicht.
+    wand: '&dArena-Auswahl'
+    wand-lore: '&7Linksklick: Ecke 1 · Rechtsklick: Ecke 2'
+    started: 'Baumodus für {id}. Backup: {backup}. Speichern: /raid arena save · Fertig: /raid arena done'
+    done: Baumodus beendet. Inventar und Spielmodus wiederhergestellt.
+    saved: 'Arena {id} gespeichert. Zum Freigeben: /raid arena done'
+    saved-draft: Arena {id} als Entwurf gespeichert. Offene Punkte verhindern Raid-Einstieg.
+    valid: 'Prüfung bestanden: Bereiche, Hülle und Spawnpunkte sind sicher.'
+    exported: 'Arena-ZIP fertig: {file} · Diese Datei kannst du mir schicken.'
+    main-world: Die Hauptwelt kann nicht als Arena exportiert werden. Nutze eine eigene Arena-Welt.
+    teleport-failed: Spieler konnte nicht vorübergehend aus der Arena teleportiert werden.
+    unload-failed: Die Arena-Welt konnte nicht für eine sichere Kopie entladen werden.
+    wall: Schau eine feste Vorraumwand mit zwei freien Blöcken davor an.
+    sealed: Offene Löcher in Boden, Wänden und Decke geschlossen.
+    locked: Diese Arena ist im Baumodus oder ein ungeprüfter Entwurf. Erst /raid arena done abschließen.
+    issue:
+      size: Arena maximal 100×100×128, Vorraum maximal 100000 Blöcke, Tür maximal 10000.
+      overlap: Vorraum und Arena müssen getrennt sein.
+      point: Mindestens ein Spawnpunkt liegt außerhalb seines Bereichs.
+      spawns: Mindestens vier verschiedene Gegner-Spawnpunkte setzen.
+      regions: Bereiche oder Koordinaten fehlen oder sind ungültig.
+      height: Bereiche müssen innerhalb der erlaubten Welthöhe liegen.
+      clear: Spawnpunkte brauchen festen Boden und drei freie Blöcke.
+      shell: 'Boden, Wände oder Decke haben Löcher. Hilfe: /raid arena seal'
+      controls: Wandsteuerungen müssen vollständig im Vorraum liegen.
+    portal: '&eIm Aufbau'
+    portal-hint: '&7Diese Arena ist noch gesperrt.'
 en:
   gui:
     back: '&fBack'
@@ -476,5 +536,65 @@ en:
     soil-target: Aim at farmland or a crop.
     no-crop: no crop
     soil: 'Moisture: {moisture}/{maximum} · Growth: {growth}'
+    harvest-empty: You need matching ordinary seeds for replanting.
+    replanted: Replanted. {count} harvests remaining.
   combat:
     warning: '&eBoss ability! Move out of the ground marker.'
+    enrage: '&cThe boss enters phase 2!'
+    skill: '&e{name}: watch the ground marker!'
+    names:
+      SLAM: Slam
+      CHARGE: Charge
+      SHOCKWAVE: Ring shockwave
+      FROST: Frost trap
+      NOVA: Frost nova
+      RAIN: Shard rain
+      MARK: Chaos mark
+      PULL: Abyss pull
+      METEOR: Ember meteor
+      SUMMON: Reinforcements
+  editor:
+    help: /raid arena edit <arena> | create <id> [template] | save | done | export | validate | seal | pos1 | pos2 | region <arena> arena|lobby|door | set <arena> arena-spawn|lobby-spawn|recipes|start | spawn <arena> add|clear|list|remove
+    list: 'Arenas: {ids}'
+    edit-first: Use /raid arena edit {id} first.
+    no-edit: You are not editing an arena.
+    same-world: Your selection must be in the arena world.
+    position: Arena selection {number} set.
+    raid-active: Stop the active group in this arena with /raid stop first.
+    leave-raid: Leave your raid before editing.
+    finish-first: Finish editing with /raid arena done first.
+    busy: This arena is being backed up.
+    new-id: 'New arena ID: lowercase letters, digits, _ or -, up to 32 characters. ID must be unused.'
+    world-exists: This world folder already exists and will not be overwritten.
+    select: Select two corners using the wand or pos1/pos2 first.
+    region: Region {region} updated in the draft.
+    point: Point {point} updated in the draft.
+    spawns: Saved {count} enemy spawn points.
+    spawn-limit: At most 64 enemy spawn points.
+    spawn-number: That spawn point number does not exist.
+    wand: '&dArena selection'
+    wand-lore: '&7Left click: corner 1 · right click: corner 2'
+    started: 'Editing {id}. Backup: {backup}. Save: /raid arena save · Finish: /raid arena done'
+    done: Editing finished. Inventory and game mode restored.
+    saved: Arena {id} saved. Finish with /raid arena done to enable raids.
+    saved-draft: Arena {id} saved as a draft. Outstanding issues prevent raid entry.
+    valid: 'Validation passed: regions, enclosure and spawn points are safe.'
+    exported: 'Arena ZIP ready: {file} · You can send this file back to me.'
+    main-world: The primary world cannot be exported as an arena. Use a dedicated arena world.
+    teleport-failed: Could not temporarily move a player out of the arena.
+    unload-failed: Could not unload the arena world for a consistent copy.
+    wall: Look at a solid lobby wall with two clear blocks in front.
+    sealed: Open holes in floor, walls and ceiling sealed.
+    locked: This arena is being edited or is an unvalidated draft. Finish /raid arena done first.
+    issue:
+      size: Arena at most 100×100×128, lobby at most 100000 blocks, door at most 10000.
+      overlap: Lobby and arena must be separate.
+      point: At least one spawn point lies outside its region.
+      spawns: Set at least four distinct enemy spawn points.
+      regions: Regions or coordinates are missing or invalid.
+      height: Regions must lie within the world height limits.
+      clear: Spawn points need solid footing and three clear blocks.
+      shell: Floor, walls or ceiling have holes. Try /raid arena seal
+      controls: Wall controls must be fully inside the lobby.
+    portal: '&eUnder construction'
+    portal-hint: '&7This arena is currently locked.'

@@ -22,6 +22,7 @@ final class Engine {
         if(!player.hasPermission("mobarmy.play")||now-entryTimes.getOrDefault(id,0L)<2000)return false;
         entryTimes.put(id,now);
         if(p.session(id)!=null)return false;
+        if(p.editor!=null&&(p.editor.blocked(portal.week)||p.editor.edits.values().stream().anyMatch(e->e.owner().equals(id)))){p.say(player,"editor.locked");return false;}
         if(portal.lockReason()!=null){String reason=p.tr(player,!portal.open?"portal.reason.closed":portal.session!=null?"portal.reason.stage":"portal.reason.busy","stage",portal.session==null?1:portal.session.stage);p.say(player,"raid.blocked","reason",reason);return false;}
         if(portal.session!=null&&portal.session.dead.contains(id)){p.say(player,"raid.eliminated");return false;}
         if(!p.getConfig().getBoolean("testing.disable-wipe-cooldown")&&portal.day.equals(p.today())&&p.state.getLong("cooldowns."+p.today()+"."+id)>now){p.say(player,"raid.wipe");return false;}
@@ -164,10 +165,10 @@ final class Engine {
         if(p.bossDamage!=null)p.bossDamage.discard(entity.getUniqueId());if(p.bosses!=null)p.bosses.unmodel(entity.getUniqueId());
         if(p.ritualSystem!=null&&p.ritualSystem.killed(entity,drops))return;
         if(rituals.containsKey(entity.getUniqueId())){String result=rituals.remove(entity.getUniqueId());drops.clear();if(!result.isEmpty())drops.add(p.items.make(result,1));return;}
-        Session s=find(entity.getUniqueId());if(s==null)return;
+        Session s=find(entity.getUniqueId());if(s==null)return;boolean summoned=p.bossSkills!=null&&p.bossSkills.adds.remove(entity.getUniqueId());
         for(Entity passenger:entity.getPassengers())if(passenger instanceof ItemDisplay)passenger.remove();
         drops.clear();boolean rewards=s.portal.rewards();
-        if(rewards) {
+        if(rewards&&!summoned) {
             String source=s.contribution.containsKey(entity.getUniqueId())?(s.stage==5?"boss":"miniboss"):"mob";
             List<ItemStack> custom=p.items.drops(source,s.stage,s.portal.week);
             if(source.equals("boss")){for(ItemStack item:custom)p.items.deliver(s.leader,item);}

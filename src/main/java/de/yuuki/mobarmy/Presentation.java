@@ -12,7 +12,8 @@ final class Presentation {
     final MobArmy p;
     final List<TextDisplay> signs=new ArrayList<>();
     long ticks;
-    Presentation(MobArmy p){this.p=p;for(Arena a:p.arenas.values())lobbySign(a);}
+    Presentation(MobArmy p){this.p=p;for(Arena a:p.arenas.values())if(a.config.getBoolean("lobby-sign",a.config.getBoolean("generate-demo")))lobbySign(a);}
+    void reloadArena(Arena a){signs.removeIf(sign->{if(sign.getWorld().getName().equals(a.world.getName())){sign.remove();return true;}return false;});if(a.config.getBoolean("lobby-sign",a.config.getBoolean("generate-demo")))lobbySign(a);}
     void lobbySign(Arena a){
         TextDisplay text=a.world.spawn(a.lobbySpawn.clone().add(0,2.8,-3.5),TextDisplay.class);
         style(text);text.setText(MobArmy.color("&d&lVORBEREITUNG / PREPARATION\n&f/raid &7→ Leader vote\n&f/rezepte &7→ Rezepte / Recipes\n&7Start: nur Leader / leader only"));

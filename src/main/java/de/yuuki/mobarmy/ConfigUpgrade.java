@@ -10,7 +10,7 @@ final class ConfigUpgrade {
     private ConfigUpgrade() {}
     static void run(MobArmy p){
         int version=p.getConfig().getInt("configuration-version",1);
-        if(version>=8)return;
+        if(version>=9)return;
         var defaults=YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(p.getResource("config.yml")),StandardCharsets.UTF_8));
         if(version<2)for(String section:List.of("presentation","ritual-animation"))copy(defaults.getConfigurationSection(section),p.getConfig().createSection(section));
         for(String key:List.of("balance.wind-charge-multiplier","balance.wind-charge-max-horizontal","balance.wind-charge-max-upward","messages.private-join","testing.disable-wipe-cooldown","stage-loot-timeout-seconds"))if(!p.getConfig().contains(key,true))p.getConfig().set(key,defaults.get(key));
@@ -59,7 +59,25 @@ final class ConfigUpgrade {
             copy(defaults.getConfigurationSection("rituals."+id+".trial"),p.getConfig().createSection("rituals."+id+".trial"));
             for(String field:List.of("type","health","damage"))if(p.getConfig().contains("rituals."+id+"."+field,true))p.getConfig().set("rituals."+id+".trial."+field,p.getConfig().get("rituals."+id+"."+field));
         }
-        p.getConfig().set("configuration-version",8);p.saveConfig();
+        for(String id:defaults.getConfigurationSection("boss-types").getKeys(false))if(!p.getConfig().contains("boss-types."+id+".skills",true))p.getConfig().set("boss-types."+id+".skills",defaults.getStringList("boss-types."+id+".skills"));
+        // Upgrade known 1.7 defaults without changing server-specific cooldowns/effects.
+        for(String id:List.of("pathfinder_shovel","returning_trident")){
+            String path="items."+id+".skill.type";
+            if("BUFF".equals(p.getConfig().getString(path)))p.getConfig().set(path,defaults.getString(path));
+        }
+        String charges="items.cultivator_hoe.skill.charges";
+        if(!p.getConfig().contains(charges,true))p.getConfig().set(charges,3);
+        for(String id:List.of("forester_axe","returning_trident","harvest_shears")){
+            String path="items."+id+".skill.effects";var old=p.getConfig().getMapList(path);var updated=new ArrayList<Map<String,Object>>();
+            for(var row:old){Map<String,Object> next=new LinkedHashMap<>();row.forEach((k,v)->next.put(k.toString(),v));
+                if(id.equals("forester_axe")&&"HASTE".equals(row.get("type"))&&Objects.equals(row.get("amplifier"),0))next.put("amplifier",1);
+                if(id.equals("returning_trident")){if("WATER_BREATHING".equals(row.get("type"))&&Objects.equals(row.get("seconds"),15))next.put("seconds",30);if("DOLPHINS_GRACE".equals(row.get("type"))&&Objects.equals(row.get("seconds"),4))next.put("seconds",8);}
+                updated.add(next);
+            }
+            if(id.equals("harvest_shears")&&old.isEmpty())updated.addAll(defaults.getMapList(path).stream().map(row->{Map<String,Object> out=new LinkedHashMap<>();row.forEach((k,v)->out.put(k.toString(),v));return out;}).toList());
+            p.getConfig().set(path,updated);
+        }
+        p.getConfig().set("configuration-version",9);p.saveConfig();
     }
     static void copy(ConfigurationSection from,ConfigurationSection to){if(from==null)return;for(String key:from.getKeys(false)){if(from.isConfigurationSection(key))copy(from.getConfigurationSection(key),to.createSection(key));else to.set(key,from.get(key));}}
 }

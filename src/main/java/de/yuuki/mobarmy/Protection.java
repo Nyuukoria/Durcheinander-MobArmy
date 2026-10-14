@@ -39,7 +39,7 @@ final class Protection implements Listener {
                 if(target==null){e.setCancelled(true);p.say(player,"pearl.no-target");return;}e.setTo(target);
             }
         }
-        if(destination!=null&&s==null&&!p.commands.builders.contains(player.getUniqueId())){e.setCancelled(true);return;}
+        if(destination!=null&&s==null&&!p.commands.builders.contains(player.getUniqueId())&&(p.editor==null||!p.editor.transfers.contains(player.getUniqueId()))){e.setCancelled(true);return;}
         if(s!=null&&s.phase==Session.Phase.FIGHT&&destination!=null&&!s.arena.bounds.contains(e.getTo()))e.setCancelled(true);
     }
     @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true) public void teleported(PlayerTeleportEvent e){
@@ -47,7 +47,7 @@ final class Protection implements Listener {
     }
     @EventHandler(ignoreCancelled=true) public void vanillaPortal(PlayerPortalEvent e){if(p.portalAt(e.getFrom())!=null||raid(e.getFrom().getWorld()))e.setCancelled(true);}
     @EventHandler(ignoreCancelled=true) public void pearlHit(ProjectileHitEvent e){if(e.getEntity() instanceof EnderPearl&&p.portalAt(e.getEntity().getLocation())!=null){e.setCancelled(true);e.getEntity().remove();}}
-    @EventHandler public void login(PlayerJoinEvent e){Bukkit.getScheduler().runTaskLater(p,()->{if(!e.getPlayer().isOnline())return;p.items.refresh(e.getPlayer());p.recover(e.getPlayer());if(p.packs!=null)p.packs.offer(e.getPlayer());if(raid(e.getPlayer().getWorld())&&p.session(e.getPlayer().getUniqueId())==null)e.getPlayer().teleport(Bukkit.getWorlds().getFirst().getSpawnLocation());},20);}
+    @EventHandler public void login(PlayerJoinEvent e){Bukkit.getScheduler().runTaskLater(p,()->{if(!e.getPlayer().isOnline())return;if(p.editor!=null)p.editor.recover(e.getPlayer());p.items.refresh(e.getPlayer());p.recover(e.getPlayer());if(p.packs!=null)p.packs.offer(e.getPlayer());if(raid(e.getPlayer().getWorld())&&p.session(e.getPlayer().getUniqueId())==null)e.getPlayer().teleport(Bukkit.getWorlds().getFirst().getSpawnLocation());},20);}
     @EventHandler public void quit(PlayerQuitEvent e){p.commands.builders.remove(e.getPlayer().getUniqueId());for(Portal portal:p.portals.values())portal.shown.remove(e.getPlayer().getUniqueId());if(p.bosses!=null)p.bosses.clear(e.getPlayer(),false);Session s=p.session(e.getPlayer().getUniqueId());if(s!=null){Location exit=s.portal.exit.clone();p.engine.leave(e.getPlayer(),false);p.returns.put(e.getPlayer().getUniqueId(),exit);p.saveState();}}
     @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true) public void pickup(EntityPickupItemEvent e){if(e.getEntity() instanceof Player player&&p.items.id(e.getItem().getItemStack())!=null)Bukkit.getScheduler().runTask(p,()->p.items.refresh(player));}
     @EventHandler public void inventoryClosed(org.bukkit.event.inventory.InventoryCloseEvent e){if(e.getPlayer() instanceof Player player)Bukkit.getScheduler().runTask(p,()->p.items.refresh(player));}
@@ -57,6 +57,9 @@ final class Protection implements Listener {
     }
     @EventHandler public void respawn(PlayerRespawnEvent e){Location l=deathReturns.remove(e.getPlayer().getUniqueId());if(l==null)l=p.returns.get(e.getPlayer().getUniqueId());if(l!=null){e.setRespawnLocation(l);p.returns.remove(e.getPlayer().getUniqueId());p.saveState();}}
     @EventHandler(priority=EventPriority.HIGHEST,ignoreCancelled=true) public void damage(EntityDamageEvent e){
+        if(raid(e.getEntity().getWorld())&&(e.getEntity() instanceof Hanging||e.getEntity() instanceof ArmorStand||e.getEntity() instanceof Display)){
+            if(!(e instanceof EntityDamageByEntityEvent hit)||!(source(hit.getDamager()) instanceof Player pl)||!builder(pl)){e.setCancelled(true);return;}
+        }
         Session victim=p.engine.find(e.getEntity().getUniqueId());
         if(raid(e.getEntity().getWorld())&&(e.getCause()==EntityDamageEvent.DamageCause.BLOCK_EXPLOSION||e.getCause()==EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)){e.setCancelled(true);return;}
         if(victim!=null&&!(e instanceof EntityDamageByEntityEvent)){e.setCancelled(true);return;}
@@ -90,8 +93,8 @@ final class Protection implements Listener {
     @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true) public void pearlLaunched(ProjectileLaunchEvent e){if(e.getEntity() instanceof EnderPearl pearl&&pearl.getShooter() instanceof Player player){Session s=p.session(player.getUniqueId());if(s!=null){s.pearlTimes.put(player.getUniqueId(),System.currentTimeMillis());player.setCooldown(Material.ENDER_PEARL,p.getConfig().getInt("balance.pearl-cooldown-seconds",3)*20);}}}
     @EventHandler(priority=EventPriority.HIGHEST) public void interact(PlayerInteractEvent e){
         Player player=e.getPlayer();ItemStack item=e.getItem();
-        if(e.getHand()==EquipmentSlot.HAND&&e.getAction()==Action.RIGHT_CLICK_BLOCK&&e.getClickedBlock()!=null){Arena arena=p.arena(player.getWorld());if(arena!=null&&arena.config.getBoolean("generate-demo")){
-            Location at=e.getClickedBlock().getLocation();boolean recipes=at.equals(arena.recipesButton())||at.equals(arena.recipesButton().add(0,1,0)),ready=at.equals(arena.startButton())||at.equals(arena.startButton().add(0,1,0));
+        if(e.getHand()==EquipmentSlot.HAND&&e.getAction()==Action.RIGHT_CLICK_BLOCK&&e.getClickedBlock()!=null){Arena arena=p.arena(player.getWorld());if(arena!=null&&(arena.config.getBoolean("generate-demo")||arena.config.contains("controls"))&&!builder(player)){
+            Location at=e.getClickedBlock().getLocation(),recipesAt=arena.recipesButton(),startAt=arena.startButton();boolean recipes=recipesAt!=null&&(at.equals(recipesAt)||at.equals(recipesAt.clone().add(0,1,0))),ready=startAt!=null&&(at.equals(startAt)||at.equals(startAt.clone().add(0,1,0)));
             if(recipes||ready){e.setCancelled(true);if(recipes)p.catalogue.open(player,"items",0);else p.engine.ready(player);return;}
         }}
         if(e.useItemInHand()==Event.Result.DENY)return;
@@ -105,6 +108,7 @@ final class Protection implements Listener {
         if(!raid(player.getWorld()))return;
         if(item!=null&&(item.getType()==Material.FIREWORK_ROCKET||item.getType()==Material.END_CRYSTAL||item.getType()==Material.TNT||item.getType()==Material.TNT_MINECART))e.setCancelled(true);
         if(e.getClickedBlock()!=null&&e.getClickedBlock().getType()==Material.RESPAWN_ANCHOR)e.setCancelled(true);
+        if(!builder(player)&&e.getClickedBlock()!=null&&e.getClickedBlock().getState() instanceof org.bukkit.block.Container)e.setUseInteractedBlock(Event.Result.DENY);
     }
     @EventHandler(ignoreCancelled=true) public void glide(EntityToggleGlideEvent e){if(e.isGliding()&&raid(e.getEntity().getWorld()))e.setCancelled(true);}
     boolean use(Player player,String kind,int limit){Session s=p.session(player.getUniqueId());if(s==null||!s.active())return true;Map<String,Integer> uses=s.uses.computeIfAbsent(player.getUniqueId(),id->new HashMap<>());if(uses.getOrDefault(kind,0)>=limit){p.tell(player,"Limit pro Stage erreicht: "+kind);return false;}uses.merge(kind,1,Integer::sum);return true;}
@@ -139,5 +143,12 @@ final class Protection implements Listener {
     @EventHandler(ignoreCancelled=true) public void piston(BlockPistonExtendEvent e){if(raid(e.getBlock().getWorld()))e.setCancelled(true);}
     @EventHandler(ignoreCancelled=true) public void piston(BlockPistonRetractEvent e){if(raid(e.getBlock().getWorld()))e.setCancelled(true);}
     @EventHandler(ignoreCancelled=true) public void change(EntityChangeBlockEvent e){if(raid(e.getBlock().getWorld()))e.setCancelled(true);}
+    @EventHandler(ignoreCancelled=true) public void frame(org.bukkit.event.hanging.HangingBreakEvent e){if(raid(e.getEntity().getWorld())&&(!(e instanceof org.bukkit.event.hanging.HangingBreakByEntityEvent by)||!(by.getRemover() instanceof Player pl)||!builder(pl)))e.setCancelled(true);}
+    @EventHandler(ignoreCancelled=true) public void armorStand(PlayerArmorStandManipulateEvent e){if(raid(e.getPlayer().getWorld())&&!builder(e.getPlayer()))e.setCancelled(true);}
+    @EventHandler(ignoreCancelled=true) public void leaves(LeavesDecayEvent e){if(raid(e.getBlock().getWorld()))e.setCancelled(true);}
+    @EventHandler(ignoreCancelled=true) public void fade(BlockFadeEvent e){if(raid(e.getBlock().getWorld()))e.setCancelled(true);}
+    @EventHandler(ignoreCancelled=true) public void form(BlockFormEvent e){if(raid(e.getBlock().getWorld()))e.setCancelled(true);}
+    @EventHandler(ignoreCancelled=true) public void spread(BlockSpreadEvent e){if(raid(e.getBlock().getWorld()))e.setCancelled(true);}
+    @EventHandler(ignoreCancelled=true) public void grow(BlockGrowEvent e){if(raid(e.getBlock().getWorld()))e.setCancelled(true);}
     @EventHandler(ignoreCancelled=true) public void spawn(CreatureSpawnEvent e){if(raid(e.getLocation().getWorld())&&e.getSpawnReason()!=CreatureSpawnEvent.SpawnReason.CUSTOM)e.setCancelled(true);}
 }

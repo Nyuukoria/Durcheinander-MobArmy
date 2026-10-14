@@ -29,7 +29,7 @@ class ItemCooldownsTest {
         p.state.set("item-cooldowns."+owner+".rod",0);new ItemCooldowns(p).sync(player);verify(model).setFlags(List.of(false));verify(model).setFloats(List.of(1f));
     }
     @Test void normalVanillaItemsAreNeverDecoratedOrPutOnSkillCooldown(){
-        ItemMeta meta=mock(ItemMeta.class);ItemCooldowns.decorate("plain",new YamlConfiguration(),meta);verifyNoInteractions(meta);assertEquals(.1,UtilitySkills.durabilityChance(false));assertEquals(.35,UtilitySkills.durabilityChance(true));
+        ItemMeta meta=mock(ItemMeta.class);ItemCooldowns.decorate("plain",new YamlConfiguration(),meta);verifyNoInteractions(meta);assertEquals(.1,UtilitySkills.durabilityChance(false));assertEquals(.5,UtilitySkills.durabilityChance(true));
     }
     @Test void meterUpdatesNeverInterruptAnActiveVanillaCharge(){
         MobArmy p=mock(MobArmy.class);p.state=new YamlConfiguration();var cfg=new YamlConfiguration();cfg.set("items.bow.utility",true);cfg.set("items.bow.skill.cooldown-seconds",45);when(p.getConfig()).thenReturn(cfg);p.items=mock(Items.class);

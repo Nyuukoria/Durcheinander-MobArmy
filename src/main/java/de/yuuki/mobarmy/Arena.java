@@ -13,6 +13,7 @@ public final class Arena {
     final Region bounds, lobby, door;
     final Location lobbySpawn, arenaSpawn;
     final List<Location> spawns = new ArrayList<>();
+    final Map<Long,Integer> terrain=new HashMap<>();
     final Map<Location, BlockData> doorOriginal = new HashMap<>();
     static final int DEMO_LAYOUT=4;
     public Arena(String id, ConfigurationSection config) {
@@ -32,6 +33,7 @@ public final class Arena {
         for(int x=bounds.x1()>>4;x<=bounds.x2()>>4;x++)for(int z=bounds.z1()>>4;z<=bounds.z2()>>4;z++)world.addPluginChunkTicket(x,z,org.bukkit.plugin.java.JavaPlugin.getPlugin(MobArmy.class));
         for(int x=lobby.x1()>>4;x<=lobby.x2()>>4;x++)for(int z=lobby.z1()>>4;z<=lobby.z2()>>4;z++)world.addPluginChunkTicket(x,z,org.bukkit.plugin.java.JavaPlugin.getPlugin(MobArmy.class));
         world.setTime(18000);
+        if(!config.getBoolean("generate-demo"))for(int x=bounds.x1();x<=bounds.x2();x++)for(int z=bounds.z1();z<=bounds.z2();z++)terrain.put(((long)x<<32)^(z&0xffffffffL),surface(x,z));
     }
     Location point(List<Double> v) { if(v.size()<3)throw new IllegalArgumentException("Spawn needs [x,y,z]");return new Location(world,v.get(0),v.get(1),v.get(2),v.size()>3?v.get(3).floatValue():0,0); }
     int minimum() { return org.bukkit.plugin.java.JavaPlugin.getPlugin(MobArmy.class).getConfig().getBoolean("testing.solo")?1:config.getInt("minimum-players",2); }
@@ -49,9 +51,10 @@ public final class Arena {
         else { doorOriginal.forEach((l,d)->l.getBlock().setBlockData(d,false));doorOriginal.clear(); }
     }
     int groundY(int x,int z){
-        if(!config.getBoolean("generate-demo"))return bounds.y1()-1;
+        if(!config.getBoolean("generate-demo"))return terrain.getOrDefault(((long)x<<32)^(z&0xffffffffL),bounds.y1()-1);
         return 63+DemoTerrain.height(x,z);
     }
+    int surface(int x,int z){for(int y=bounds.y2()-3;y>=bounds.y1()-1;y--)if(world.getBlockAt(x,y,z).getType().isSolid()&&world.getBlockAt(x,y+1,z).isPassable()&&world.getBlockAt(x,y+2,z).isPassable()&&world.getBlockAt(x,y+3,z).isPassable())return y;return bounds.y1()-1;}
     void demo() {
         Material surface=switch(id){case "w2"->Material.WARPED_NYLIUM;case "w3"->Material.END_STONE;default->Material.GRASS_BLOCK;};
         Material rock=switch(id){case "w2"->Material.BASALT;case "w3"->Material.PURPUR_BLOCK;default->Material.MOSSY_COBBLESTONE;};
@@ -107,11 +110,12 @@ public final class Arena {
     List<Location> spawnCandidates(){
         List<Location> candidates=new ArrayList<>();
         if(config.getBoolean("generate-demo"))for(int x=-42;x<=42;x+=12)for(int z=-42;z<=42;z+=12)candidates.add(new Location(world,x+.5,groundY(x,z)+1,z+.5));
-        for(Location spawn:spawns)for(int dx=-4;dx<=4;dx+=2)for(int dz=-4;dz<=4;dz+=2){Location at=spawn.clone().add(dx,0,dz);if(config.getBoolean("generate-demo"))at.setY(groundY(at.getBlockX(),at.getBlockZ())+1);candidates.add(at);}
+        for(Location spawn:spawns)for(int dx=-4;dx<=4;dx+=2)for(int dz=-4;dz<=4;dz+=2){Location at=spawn.clone().add(dx,0,dz);at.setY(groundY(at.getBlockX(),at.getBlockZ())+1);candidates.add(at);}
         return candidates.stream().filter(bounds::contains).filter(at->at.getBlock().isPassable()&&at.clone().add(0,1,0).getBlock().isPassable()&&at.clone().add(0,2,0).getBlock().isPassable()&&at.clone().subtract(0,1,0).getBlock().getType().isSolid()).toList();
     }
-    Location recipesButton(){return new Location(world,lobby.x1(),lobby.y1()+1,-2);}
-    Location startButton(){return new Location(world,lobby.x1(),lobby.y1()+1,2);}
+    Location recipesButton(){return control("recipes",-2);}
+    Location startButton(){return control("start",2);}
+    Location control(String key,int z){var xyz=config.getIntegerList("controls."+key+".location");if(xyz.size()==3)return new Location(world,xyz.get(0),xyz.get(1),xyz.get(2));return config.getBoolean("generate-demo")?new Location(world,lobby.x1(),lobby.y1()+1,z):null;}
     void repairDemo(){
         if(!config.getBoolean("generate-demo"))return;
         // The separate lobby uses teleportation: the arena boundary never needs an opening.
@@ -123,9 +127,10 @@ public final class Arena {
         var chest=world.getBlockAt(lobby.x2()-1,lobby.y1(),2);chest.setType(Material.ENDER_CHEST,false);var facing=(org.bukkit.block.data.Directional)chest.getBlockData();facing.setFacing(org.bukkit.block.BlockFace.WEST);chest.setBlockData(facing,false);
         wallControl(recipesButton(),"§dREZEPTE","§fRECIPES");wallControl(startButton(),"§aSTART","§fREADY");
     }
-    void wallControl(Location at,String first,String second){
-        var button=at.getBlock();button.setType(Material.STONE_BUTTON,false);var data=(org.bukkit.block.data.type.Switch)button.getBlockData();data.setAttachedFace(org.bukkit.block.data.FaceAttachable.AttachedFace.WALL);data.setFacing(org.bukkit.block.BlockFace.EAST);button.setBlockData(data,false);
-        var block=at.clone().add(0,1,0).getBlock();block.setType(Material.OAK_WALL_SIGN,false);var wall=(org.bukkit.block.data.Directional)block.getBlockData();wall.setFacing(org.bukkit.block.BlockFace.EAST);block.setBlockData(wall,false);var sign=(org.bukkit.block.Sign)block.getState();sign.setLine(0,first);sign.setLine(1,second);sign.setLine(2,"§7Rechtsklick");sign.setLine(3,"§7Right click");sign.setWaxed(true);sign.update(true,false);
+    void wallControl(Location at,String first,String second){wallControl(at,first,second,org.bukkit.block.BlockFace.EAST);}
+    void wallControl(Location at,String first,String second,org.bukkit.block.BlockFace face){
+        var button=at.getBlock();button.setType(Material.STONE_BUTTON,false);var data=(org.bukkit.block.data.type.Switch)button.getBlockData();data.setAttachedFace(org.bukkit.block.data.FaceAttachable.AttachedFace.WALL);data.setFacing(face);button.setBlockData(data,false);
+        var block=at.clone().add(0,1,0).getBlock();block.setType(Material.OAK_WALL_SIGN,false);var wall=(org.bukkit.block.data.Directional)block.getBlockData();wall.setFacing(face);block.setBlockData(wall,false);var sign=(org.bukkit.block.Sign)block.getState();sign.setLine(0,first);sign.setLine(1,second);sign.setLine(2,"§7Rechtsklick");sign.setLine(3,"§7Right click");sign.setWaxed(true);sign.update(true,false);
     }
     static final class VoidGenerator extends ChunkGenerator {
         @Override public ChunkData generateChunkData(World world, Random random, int x, int z, BiomeGrid biome) { return createChunkData(world); }

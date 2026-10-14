@@ -14,6 +14,7 @@ final class Completion {
         if(args.length==0)return List.of();List<String> out=new ArrayList<>();String root=args[0].toLowerCase(Locale.ROOT);
         if(args.length==1)out.addAll(allowed);
         else if(allowed.contains(root))switch(root){
+            case "arena"->{if(args.length==2)out.addAll(List.of("edit","create","save","done","export","validate","seal","pos1","pos2","region","set","spawn","list","help"));else if(args.length==3&&!Set.of("pos1","pos2","list","help").contains(args[1])){if(args[1].equals("create"))out.add("my_arena");else out.addAll(weeks);}else if(args.length==4){switch(args[1]){case "create"->out.addAll(weeks);case "region"->out.addAll(List.of("arena","lobby","door"));case "set"->out.addAll(List.of("arena-spawn","lobby-spawn","recipes","start"));case "spawn"->out.addAll(List.of("add","clear","list","remove"));default->{}}}else if(args.length==5&&args[1].equals("spawn")&&args[3].equals("remove"))out.addAll(List.of("1","2","3","4","5"));}
             case "portal"->{
                 if(args.length==2)out.addAll(List.of("pos1","pos2","create","remove","delete","info"));
                 else if(args.length==3&&args[1].equalsIgnoreCase("create"))out.addAll(weeks);

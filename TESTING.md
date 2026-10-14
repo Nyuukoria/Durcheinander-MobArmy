@@ -1,8 +1,8 @@
-# In-game checks for 1.7.0
+# In-game checks for 1.8.0
 
 Automated tests verify rules, command grammar and a mocked party-entry/teleport flow. The following checks exercise Minecraft's native movement, rendering and multiplayer behavior.
 
-1. Update over an existing stopped demo. Start and confirm plugin version 1.7.0, new separate lobby and full arena ceiling. Old generated layouts migrate once; custom worlds with generate-demo false should remain hand-built.
+1. Update over an existing stopped demo. Start and confirm plugin version 1.8.0, new separate lobby and full arena ceiling. Old generated layouts migrate once; custom worlds with generate-demo false should remain hand-built.
 2. Join a portal. A private `/raid` hint appears; no inventory GUI opens automatically. The waiting room has no walkable connection to the combat space. `/raid` opens voting. Leader Ready teleports everyone after the countdown; combat begins only after all successful arrivals.
 3. Complete a stage. Collect miniboss loot before return. After up to 12 seconds, leftover custom loot is stored for the leader and everyone is teleported back to the lobby. Invite a new player between stages, elect a different leader, and start again.
 4. With test mode OFF and week 1 minimum 2, each of two people can deal 50% boss/miniboss HP. With week 2 minimum 3 each can deal 33⅓%; with week 3 minimum 5 each can deal 20%. Extra members do not change the cap. Test mode ON uses 100%.
@@ -91,3 +91,14 @@ Automatische Regressionen prüfen echten Lebensverlust gegenüber gemeldetem Sch
 - Drei neue Segnungen über /rezepte: Effekte, Dauer, Radius und Kosten stimmen.
 
 Automatische Tests ergänzen Cooldown-Gruppen/Spielerbindung, native Nutzung während Tool-Timern, Skill-Einmalboni, GUI-Meter-Assets, Ritual-Fragmentbindung/Slotwechsel/Refund/Sieg und sichere Markierungsbereiche. Native Clientdarstellung und echter Kampf bleiben In-game-Prüfungen.
+
+## Zusätzliche Prüfung für 1.8
+
+- `/raid arena edit w1`: Backupdatei, getrennter Creative-Inhalt, Auswahlstab, Portal gesperrt. Blöcke/Rahmen/Schilder/Container bauen. `save`, `export`, `done`: Originalinventar, Rüstung, Nebenhand, Cursor, Slot und Spielmodus zurück; Weltänderungen bleiben. Exportpfad öffnen, native Regiondateien und vollständige `arena.yml` prüfen.
+- Ungültige Regionen/Spawnpunkte/fehlende Decke: `save` speichert einen Entwurf, `done` verlässt ihn ohne Freigabe. Logout/Neustart/Tod im Editor: ursprüngliche Items einmal zurück, Karte bleibt gesperrt; erneut editieren und gültig abschließen. Auto-Save nach 60 s. Server hart beenden separat testen, da echte Persistenz/Client-Inventare nicht durch Mocktests abgedeckt sind.
+- `/raid arena create forest w1`: eigene kopierte Welt mit gleichem Gelände, vorhandene IDs/Welten werden abgelehnt. Auswahlecken, Innenregionen, Spawnpunkte und Wandknöpfe neu setzen. `seal` nur beim gewünschten Abdichten; Vorraum bleibt von der Arena getrennt. Neues Portal in der normalen Welt erstellen, Gruppe starten. Endertruhe, Start nur durch Leader, Rezepteknopf und eigene Hügel prüfen.
+- Alle 17 Skills mit und ohne Schleichen; normale Bow-/Crossbow-/Trident-Aktionen während Cooldown; zwei Exemplare, Relog und Sprachwechsel. Textur/GUI-Meter bei gezogenen Bögen prüfen. Sturmaxt und Abgrundwaffen benötigen einen aufgeladenen Treffer, keine Boni gegen Spieler/Pets/Dorfbewohner. Zusätzlicher Schaden bleibt unter den Bossgrenzen.
+- Feldhacke/Erntehacke: vier unterstützte reife Pflanzen einzeln ernten. Normale Samen werden verbraucht, frisch gesäte Pflanze hat Alter 0; ohne Saat kein Gratispflanzen. Test mit Schutzplugin, abgebrochener Ernte und verlassener Entfernung; keine unerlaubte Weltänderung.
+- Echte Bosswellen: drei wechselnde Angriffe je Profil, 2 s sichtbare Vorwarnung, sicherer Ringkern, seitliches Ausweichen beim Ansturm, Deckung, Frost-/Markierungsdauer. Unter 50 % Leben schnellere Pausen und etwas mehr Schaden/Bewegung; kein Heilungsreset. Verstärkung spawnt weit entfernt, maximal drei gleichzeitig, keine XP/Beute. Skip/Stop/Wipe entfernt Gegner und Warnanzeigen. `/raid boss summon` bleibt eine passive Modellvorschau, kein Kampftest.
+
+Automatische Tests prüfen zusätzlich Weltarchiv-Roundtrip/Prüfsummen/Dateiausschlüsse, Symlink- und Traversal-Abweisung, sichere Regionen und Knopfpositionen, Inventarwiederherstellung/fehlgeschlagenen Rückteleport, Samenarten, geladene Relikttreffer, sichere Angriffszonen, Bossrotationen, Verstärkungsbeute und Migration von 1.7-Skills. Der Minecraft-Client, echtes Speichern/Entladen von Welten und Mehrspielerphysik müssen in-game geprüft werden.

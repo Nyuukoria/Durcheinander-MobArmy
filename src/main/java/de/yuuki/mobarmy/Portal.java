@@ -19,7 +19,7 @@ final class Portal {
     Session session;
     Portal(MobArmy plugin,String id,String week,Region region,Location exit){this.plugin=plugin;this.id=id;this.week=week;this.region=region;this.exit=exit;this.day=plugin.today();}
     boolean rewards(){return Rules.rewards(bossKilled,deadline,day,System.currentTimeMillis(),plugin.zone);}
-    String lockReason(){
+    String lockReason(){if(plugin.editor!=null&&plugin.editor.blocked(week))return "building";
         if(!open)return "&cPortal geschlossen.";
         if(session!=null&&session.phase!=Session.Phase.LOBBY)return "&cStufe "+session.stage+" läuft – Beitritt gesperrt.";
         if(plugin.portals.values().stream().anyMatch(q->q!=this&&q.week.equals(week)&&q.session!=null))return "&cArena belegt – Beitritt gesperrt.";
@@ -52,8 +52,8 @@ final class Portal {
         String reason=lockReason();String displayId=id.length()>20?id.substring(0,19)+"…":id;
         labels.forEach((lang,text)->{
             String timer=plugin.language==null?"Training":plugin.language.trCode(lang,rewards()?"portal.rewards":bossKilled?"portal.finished":"portal.training","time",Rules.clock((deadline-System.currentTimeMillis())/1000));
-            String status=plugin.language==null?(open?"OPEN":"CLOSED"):plugin.language.trCode(lang,reason==null?"portal.open":!open?"portal.closed":session!=null?"portal.stage":"portal.busy","stage",session==null?1:session.stage);
-            String hint=plugin.language==null?"":plugin.language.trCode(lang,reason==null?"portal.enter":"portal.wait");
+            String status=plugin.language==null?(open?"OPEN":"CLOSED"):plugin.language.trCode(lang,plugin.editor!=null&&plugin.editor.blocked(week)?"editor.portal":reason==null?"portal.open":!open?"portal.closed":session!=null?"portal.stage":"portal.busy","stage",session==null?1:session.stage);
+            String hint=plugin.language==null?"":plugin.language.trCode(lang,plugin.editor!=null&&plugin.editor.blocked(week)?"editor.portal-hint":reason==null?"portal.enter":"portal.wait");
             text.setText(MobArmy.color("&d&l◆ MOB ARMY ◆\n&f"+displayId+" &8· &b"+week+"\n"+status+"\n"+timer+"\n"+hint));
         });
         shown.keySet().removeIf(uuid->Bukkit.getPlayer(uuid)==null);for(Player player:w.getPlayers())visibility(player);

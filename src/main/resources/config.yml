@@ -1,4 +1,4 @@
-configuration-version: 8
+configuration-version: 9
 timezone: Europe/Berlin
 entry-timeout-seconds: 120
 loot-timeout-seconds: 120
@@ -32,8 +32,7 @@ balance:
 messages:
   join: '&dEine Gruppe hat das Portal betreten'
   stage: '&dStage {stage} ist abgeschlossen'
-  private-join: '&dWillkommen im Vorraum! &fMach &e/raid &fum den Leader zu wählen. Nur der Leader startet
-    die Stage mit Ready.'
+  private-join: '&dWillkommen im Vorraum! &fMach &e/raid &fum den Leader zu wählen. Nur der Leader startet die Stage mit Ready.'
 items:
   chaos_fragment:
     material: AMETHYST_SHARD
@@ -847,23 +846,34 @@ items:
       unbreaking: 4
       mending: 1
     lore:
-    - '&8Wächter · Selten'
+    - '&8Raid-Ausrüstung'
     - ''
-    - '&7Schwert für den Nahkampf.'
-    - '&7Zählt in der Hand zum Wächterset.'
+    - '&bWächterhaltung'
+    - '&76 s Schutz · Gegner zurückdrängen'
+    - '&8Schleichen + Rechtsklick · 45 s'
     - ''
-    - '&8Reparatur: XP oder Ritual.'
-    - '&8Drops und Rezepte: /rezepte'
+    - '&8Erhalten: /rezepte'
     set: warden
     name-en: '&eWarden Blade'
     lore-en:
-    - '&8Warden · Rare'
+    - '&8Raid equipment'
     - ''
-    - '&7Sword for close combat.'
-    - '&7Counts toward the Warden set when held.'
+    - '&bWarden Stance'
+    - '&76s defense · repel attackers'
+    - '&8Sneak + right-click · 45s'
     - ''
-    - '&8Repair with XP or a ritual.'
-    - '&8Drops and recipes: /rezepte'
+    - '&8Obtain through /rezepte'
+    skill:
+      name: Wächterhaltung
+      name-en: Warden Stance
+      type: GUARD
+      cooldown-seconds: 45
+      duration-seconds: 6
+      charges: 1
+      effects:
+      - type: RESISTANCE
+        seconds: 6
+        amplifier: 0
   gale_axe:
     material: DIAMOND_AXE
     name: '&bSturmaxt'
@@ -876,23 +886,31 @@ items:
       unbreaking: 4
       mending: 1
     lore:
-    - '&8Sturm · Episch'
+    - '&8Raid-Ausrüstung'
     - ''
-    - '&7Zum Kämpfen und Holzfällen.'
-    - '&7Zählt in der Hand zum Sturmset.'
+    - '&bSturmhieb'
+    - '&7Nächster Hieb trifft bis zu 3 Gegner'
+    - '&8Schleichen + Rechtsklick · 45 s'
     - ''
-    - '&8Reparatur: XP oder Ritual.'
-    - '&8Drops und Rezepte: /rezepte'
+    - '&8Erhalten: /rezepte'
     set: gale
     name-en: '&bGale Axe'
     lore-en:
-    - '&8Gale · Epic'
+    - '&8Raid equipment'
     - ''
-    - '&7For combat and woodcutting.'
-    - '&7Counts toward the Gale set when held.'
+    - '&bGale Sweep'
+    - '&7Next strike sweeps up to 3 foes'
+    - '&8Sneak + right-click · 45s'
     - ''
-    - '&8Repair with XP or a ritual.'
-    - '&8Drops and recipes: /rezepte'
+    - '&8Obtain through /rezepte'
+    skill:
+      name: Sturmhieb
+      name-en: Gale Sweep
+      type: SWEEP
+      cooldown-seconds: 45
+      duration-seconds: 15
+      charges: 1
+      effects: []
   tempest_bow:
     material: BOW
     name: '&bSturmbogen'
@@ -905,23 +923,31 @@ items:
       unbreaking: 4
       mending: 1
     lore:
-    - '&8Sturm · Episch'
+    - '&8Raid-Ausrüstung'
     - ''
-    - '&7Bogen · benötigt normale Pfeile.'
-    - '&7Zählt in der Hand zum Sturmset.'
+    - '&bWindpfeil'
+    - '&7Nächster Pfeil stößt Gegner zurück'
+    - '&8Schleichen + Rechtsklick · 45 s'
     - ''
-    - '&8Reparatur: XP oder Ritual.'
-    - '&8Drops und Rezepte: /rezepte'
+    - '&8Erhalten: /rezepte'
     set: gale
     name-en: '&bTempest Bow'
     lore-en:
-    - '&8Gale · Epic'
+    - '&8Raid equipment'
     - ''
-    - '&7Bow · requires normal arrows.'
-    - '&7Counts toward the Gale set when held.'
+    - '&bWind Arrow'
+    - '&7Next arrow knocks a foe back'
+    - '&8Sneak + right-click · 45s'
     - ''
-    - '&8Repair with XP or a ritual.'
-    - '&8Drops and recipes: /rezepte'
+    - '&8Obtain through /rezepte'
+    skill:
+      name: Windpfeil
+      name-en: Wind Arrow
+      type: WIND
+      cooldown-seconds: 45
+      duration-seconds: 15
+      charges: 1
+      effects: []
   abyss_sword:
     material: NETHERITE_SWORD
     name: '&dAbgrundklinge'
@@ -934,23 +960,31 @@ items:
       unbreaking: 5
       mending: 1
     lore:
-    - '&8Abgrund · Legendär'
+    - '&8Raid-Ausrüstung'
     - ''
-    - '&7Eine besonders scharfe Klinge.'
-    - '&7Zählt in der Hand zum Abgrundset.'
+    - '&bAbgrundstoß'
+    - '&7Nächster Hieb schwächt den Gegner'
+    - '&8Schleichen + Rechtsklick · 50 s'
     - ''
-    - '&8Reparatur: XP oder Ritual.'
-    - '&8Drops und Rezepte: /rezepte'
+    - '&8Erhalten: /rezepte'
     set: abyss
     name-en: '&dAbyss Sword'
     lore-en:
-    - '&8Abyss · Legendary'
+    - '&8Raid equipment'
     - ''
-    - '&7An exceptionally sharp blade.'
-    - '&7Counts toward the Abyss set when held.'
+    - '&bAbyss Strike'
+    - '&7Next strike weakens its target'
+    - '&8Sneak + right-click · 50s'
     - ''
-    - '&8Repair with XP or a ritual.'
-    - '&8Drops and recipes: /rezepte'
+    - '&8Obtain through /rezepte'
+    skill:
+      name: Abgrundstoß
+      name-en: Abyss Strike
+      type: PIERCE
+      cooldown-seconds: 50
+      duration-seconds: 15
+      charges: 1
+      effects: []
   abyss_mace:
     material: MACE
     name: '&dAbgrundstreitkolben'
@@ -963,23 +997,31 @@ items:
       unbreaking: 5
       mending: 1
     lore:
-    - '&8Abgrund · Legendär'
+    - '&8Raid-Ausrüstung'
     - ''
-    - '&7Streitkolben für Fallangriffe.'
-    - '&7Zählt in der Hand zum Abgrundset.'
+    - '&bSternenstoß'
+    - '&7Nächster Hieb löst eine Stoßwelle aus'
+    - '&8Schleichen + Rechtsklick · 60 s'
     - ''
-    - '&8Reparatur: XP oder Ritual.'
-    - '&8Drops und Rezepte: /rezepte'
+    - '&8Erhalten: /rezepte'
     set: abyss
     name-en: '&dAbyss Mace'
     lore-en:
-    - '&8Abyss · Legendary'
+    - '&8Raid equipment'
     - ''
-    - '&7Mace for falling attacks.'
-    - '&7Counts toward the Abyss set when held.'
+    - '&bStar Shockwave'
+    - '&7Next strike releases a shockwave'
+    - '&8Sneak + right-click · 60s'
     - ''
-    - '&8Repair with XP or a ritual.'
-    - '&8Drops and recipes: /rezepte'
+    - '&8Obtain through /rezepte'
+    skill:
+      name: Sternenstoß
+      name-en: Star Shockwave
+      type: SHOCK
+      cooldown-seconds: 60
+      duration-seconds: 15
+      charges: 1
+      effects: []
   star_bow:
     material: BOW
     name: '&6Sternenbogen'
@@ -992,23 +1034,31 @@ items:
       unbreaking: 5
       infinity: 1
     lore:
-    - '&8Abgrund · Legendär'
+    - '&8Raid-Ausrüstung'
     - ''
-    - '&7Bogen · ein normaler Pfeil genügt.'
-    - '&7Zählt in der Hand zum Abgrundset.'
+    - '&bSternenpfeil'
+    - '&7Nächster Pfeil erzeugt Sternensplitter'
+    - '&8Schleichen + Rechtsklick · 60 s'
     - ''
-    - '&8Reparatur: XP oder Ritual.'
-    - '&8Drops und Rezepte: /rezepte'
+    - '&8Erhalten: /rezepte'
     set: abyss
     name-en: '&6Star Bow'
     lore-en:
-    - '&8Abyss · Legendary'
+    - '&8Raid equipment'
     - ''
-    - '&7Bow · one normal arrow is enough.'
-    - '&7Counts toward the Abyss set when held.'
+    - '&bStar Arrow'
+    - '&7Next arrow releases star fragments'
+    - '&8Sneak + right-click · 60s'
     - ''
-    - '&8Repair with XP or a ritual.'
-    - '&8Drops and recipes: /rezepte'
+    - '&8Obtain through /rezepte'
+    skill:
+      name: Sternenpfeil
+      name-en: Star Arrow
+      type: STAR
+      cooldown-seconds: 60
+      duration-seconds: 15
+      charges: 1
+      effects: []
   echo_pickaxe:
     material: DIAMOND_PICKAXE
     name: '&5Echospitzhacke'
@@ -1021,23 +1071,37 @@ items:
       unbreaking: 4
       mending: 1
     lore:
-    - '&8Sturm · Episch'
+    - '&8Raid-Ausrüstung'
     - ''
-    - '&7Spitzhacke für schnelles Abbauen.'
-    - '&7Zählt in der Hand zum Sturmset.'
+    - '&bEchofokus'
+    - '&7Eile II: 10 s · Nachtsicht: 30 s'
+    - '&8Schleichen + Rechtsklick · 60 s'
     - ''
-    - '&8Reparatur: XP oder Ritual.'
-    - '&8Drops und Rezepte: /rezepte'
+    - '&8Erhalten: /rezepte'
     set: gale
     name-en: '&5Echo Pickaxe'
     lore-en:
-    - '&8Gale · Epic'
+    - '&8Raid equipment'
     - ''
-    - '&7Pickaxe for fast mining.'
-    - '&7Counts toward the Gale set when held.'
+    - '&bEcho Focus'
+    - '&7Haste II: 10s · Night vision: 30s'
+    - '&8Sneak + right-click · 60s'
     - ''
-    - '&8Repair with XP or a ritual.'
-    - '&8Drops and recipes: /rezepte'
+    - '&8Obtain through /rezepte'
+    skill:
+      name: Echofokus
+      name-en: Echo Focus
+      type: BUFF
+      cooldown-seconds: 60
+      duration-seconds: 15
+      charges: 1
+      effects:
+      - type: HASTE
+        seconds: 10
+        amplifier: 1
+      - type: NIGHT_VISION
+        seconds: 30
+        amplifier: 0
   runic_shovel:
     material: IRON_SHOVEL
     name: '&eRunenschaufel'
@@ -1049,23 +1113,34 @@ items:
       unbreaking: 4
       mending: 1
     lore:
-    - '&8Wächter · Selten'
+    - '&8Raid-Ausrüstung'
     - ''
-    - '&7Schaufel für Erde und Sand.'
-    - '&7Zählt in der Hand zum Wächterset.'
+    - '&bRunenschritt'
+    - '&7Tempo II: 6 s · Fallschutz'
+    - '&8Schleichen + Rechtsklick · 60 s'
     - ''
-    - '&8Reparatur: XP oder Ritual.'
-    - '&8Drops und Rezepte: /rezepte'
+    - '&8Erhalten: /rezepte'
     set: warden
     name-en: '&eRunic Shovel'
     lore-en:
-    - '&8Warden · Rare'
+    - '&8Raid equipment'
     - ''
-    - '&7Shovel for dirt and sand.'
-    - '&7Counts toward the Warden set when held.'
+    - '&bRunic Stride'
+    - '&7Speed II: 6s · fall protection'
+    - '&8Sneak + right-click · 60s'
     - ''
-    - '&8Repair with XP or a ritual.'
-    - '&8Drops and recipes: /rezepte'
+    - '&8Obtain through /rezepte'
+    skill:
+      name: Runenschritt
+      name-en: Runic Stride
+      type: PATH
+      cooldown-seconds: 60
+      duration-seconds: 15
+      charges: 1
+      effects:
+      - type: SPEED
+        seconds: 6
+        amplifier: 1
   harvest_hoe:
     material: DIAMOND_HOE
     name: '&aErntehacke'
@@ -1078,23 +1153,31 @@ items:
       unbreaking: 4
       mending: 1
     lore:
-    - '&8Sturm · Episch'
+    - '&8Raid-Ausrüstung'
     - ''
-    - '&7Hacke für Felder und Pflanzen.'
-    - '&7Zählt in der Hand zum Sturmset.'
+    - '&bSaatkreislauf'
+    - '&76 manuelle Ernten neu bepflanzen'
+    - '&8Schleichen + Rechtsklick · 45 s'
     - ''
-    - '&8Reparatur: XP oder Ritual.'
-    - '&8Drops und Rezepte: /rezepte'
+    - '&8Erhalten: /rezepte'
     set: gale
     name-en: '&aHarvest Hoe'
     lore-en:
-    - '&8Gale · Epic'
+    - '&8Raid equipment'
     - ''
-    - '&7Hoe for crops and plants.'
-    - '&7Counts toward the Gale set when held.'
+    - '&bSeed Cycle'
+    - '&7Replant 6 manually harvested crops'
+    - '&8Sneak + right-click · 45s'
     - ''
-    - '&8Repair with XP or a ritual.'
-    - '&8Drops and recipes: /rezepte'
+    - '&8Obtain through /rezepte'
+    skill:
+      name: Saatkreislauf
+      name-en: Seed Cycle
+      type: HARVEST
+      cooldown-seconds: 45
+      duration-seconds: 30
+      charges: 6
+      effects: []
   storm_essence:
     material: AMETHYST_SHARD
     name: '&bSturmessenz'
@@ -1213,7 +1296,7 @@ items:
     - '&8Alltagswerkzeug · Selten'
     - ''
     - '&bWaldschritt'
-    - '&7Eile I und Tempo I für 10 s'
+    - '&7Eile II und Tempo I für 10 s'
     - '&8Schleichen + Rechtsklick · 60 s'
     - ''
     - '&7Robust: 10 % Verschleißschutz'
@@ -1222,7 +1305,7 @@ items:
     - '&8Everyday equipment · Rare'
     - ''
     - '&bForest Stride'
-    - '&7Haste I and Speed I for 10s'
+    - '&7Haste II and Speed I for 10s'
     - '&8Sneak + right-click · 60s'
     - ''
     - '&7Sturdy: 10% wear protection'
@@ -1236,7 +1319,7 @@ items:
       effects:
       - type: HASTE
         seconds: 10
-        amplifier: 0
+        amplifier: 1
       - type: SPEED
         seconds: 10
         amplifier: 0
@@ -1257,7 +1340,7 @@ items:
     - '&8Alltagswerkzeug · Selten'
     - ''
     - '&bSicherer Tritt'
-    - '&7Tempo: 12 s · Sanfter Fall: 4 s'
+    - '&7Tempo: 12 s · Einmal Fallschutz'
     - '&8Schleichen + Rechtsklick · 60 s'
     - ''
     - '&7Robust: 10 % Verschleißschutz'
@@ -1266,7 +1349,7 @@ items:
     - '&8Everyday equipment · Rare'
     - ''
     - '&bSure Footing'
-    - '&7Speed: 12s · Slow falling: 4s'
+    - '&7Speed: 12s · one fall shield'
     - '&8Sneak + right-click · 60s'
     - ''
     - '&7Sturdy: 10% wear protection'
@@ -1274,7 +1357,7 @@ items:
     skill:
       name: Sicherer Tritt
       name-en: Sure Footing
-      type: BUFF
+      type: PATH
       cooldown-seconds: 60
       duration-seconds: 15
       effects:
@@ -1301,7 +1384,7 @@ items:
     - '&8Alltagswerkzeug · Selten'
     - ''
     - '&bBodenprobe'
-    - '&7Feuchte und Wachstum ablesen'
+    - '&7Bodenprobe + 3 Ernten neu säen'
     - '&8Schleichen + Rechtsklick · 15 s'
     - ''
     - '&7Robust: 10 % Verschleißschutz'
@@ -1310,7 +1393,7 @@ items:
     - '&8Everyday equipment · Rare'
     - ''
     - '&bSoil Survey'
-    - '&7Read moisture and crop growth'
+    - '&7Soil survey + replant 3 harvests'
     - '&8Sneak + right-click · 15s'
     - ''
     - '&7Sturdy: 10% wear protection'
@@ -1325,6 +1408,7 @@ items:
       - type: HASTE
         seconds: 8
         amplifier: 0
+      charges: 3
   harvest_shears:
     material: SHEARS
     name: '&bGartenschere'
@@ -1341,7 +1425,7 @@ items:
     - '&8Alltagswerkzeug · Selten'
     - ''
     - '&bSanfter Schnitt'
-    - '&735 % Verschleißschutz für 8 s'
+    - '&750 % Verschleißschutz · Eile II'
     - '&8Schleichen + Rechtsklick · 45 s'
     - ''
     - '&7Robust: 10 % Verschleißschutz'
@@ -1350,7 +1434,7 @@ items:
     - '&8Everyday equipment · Rare'
     - ''
     - '&bGentle Cut'
-    - '&735% wear protection for 8s'
+    - '&750% wear protection · Haste II'
     - '&8Sneak + right-click · 45s'
     - ''
     - '&7Sturdy: 10% wear protection'
@@ -1361,7 +1445,10 @@ items:
       type: SHEARS
       cooldown-seconds: 45
       duration-seconds: 8
-      effects: []
+      effects:
+      - type: HASTE
+        seconds: 8
+        amplifier: 1
   angler_rod:
     material: FISHING_ROD
     name: '&bAnglerglück'
@@ -1379,7 +1466,7 @@ items:
     - '&8Alltagswerkzeug · Selten'
     - ''
     - '&bRuhige Hand'
-    - '&7Nächster Wurf: Basiswartezeit -20 %'
+    - '&7Nächster Wurf: Basiswartezeit -35 %'
     - '&8Schleichen + Rechtsklick · 60 s'
     - ''
     - '&7Robust: 10 % Verschleißschutz'
@@ -1388,7 +1475,7 @@ items:
     - '&8Everyday equipment · Rare'
     - ''
     - '&bSteady Hand'
-    - '&7Next cast: base wait -20%'
+    - '&7Next cast: base wait -35%'
     - '&8Sneak + right-click · 60s'
     - ''
     - '&7Sturdy: 10% wear protection'
@@ -1417,7 +1504,7 @@ items:
     - '&8Alltagswerkzeug · Selten'
     - ''
     - '&bJägermarke'
-    - '&7Nächster Pfeil: Monster leuchtet'
+    - '&7Nächster Pfeil: markieren + schwächen'
     - '&8Schleichen + Rechtsklick · 45 s'
     - ''
     - '&7Robust: 10 % Verschleißschutz'
@@ -1426,7 +1513,7 @@ items:
     - '&8Everyday equipment · Rare'
     - ''
     - '&bHunter’s Mark'
-    - '&7Next bolt: marks a hostile mob'
+    - '&7Next bolt: mark and weaken a foe'
     - '&8Sneak + right-click · 45s'
     - ''
     - '&7Sturdy: 10% wear protection'
@@ -1455,7 +1542,7 @@ items:
     - '&8Alltagswerkzeug · Selten'
     - ''
     - '&bMeeresatem'
-    - '&7Wasseratmung: 15 s · Schwimmen: 4 s'
+    - '&7Unterwasserstoß + Wasseratmung'
     - '&8Schleichen + Rechtsklick · 60 s'
     - ''
     - '&7Robust: 10 % Verschleißschutz'
@@ -1464,7 +1551,7 @@ items:
     - '&8Everyday equipment · Rare'
     - ''
     - '&bOcean Breath'
-    - '&7Water breathing: 15s · Swim: 4s'
+    - '&7Underwater dash + water breathing'
     - '&8Sneak + right-click · 60s'
     - ''
     - '&7Sturdy: 10% wear protection'
@@ -1472,15 +1559,15 @@ items:
     skill:
       name: Meeresatem
       name-en: Ocean Breath
-      type: BUFF
+      type: DIVE
       cooldown-seconds: 60
       duration-seconds: 15
       effects:
       - type: WATER_BREATHING
-        seconds: 15
+        seconds: 30
         amplifier: 0
       - type: DOLPHINS_GRACE
-        seconds: 4
+        seconds: 8
         amplifier: 0
 weeks:
   w1:
@@ -3719,6 +3806,10 @@ boss-types:
     equipment:
       hand: IRON_AXE
       chestplate: IRON_CHESTPLATE
+    skills:
+    - SLAM
+    - CHARGE
+    - SHOCKWAVE
   frost_hunter:
     type: STRAY
     name: '&bFrostjäger'
@@ -3730,6 +3821,10 @@ boss-types:
     equipment:
       hand: BOW
       chestplate: DIAMOND_CHESTPLATE
+    skills:
+    - FROST
+    - RAIN
+    - NOVA
   ember_champion:
     type: WITHER_SKELETON
     name: '&6Glutchampion'
@@ -3741,6 +3836,10 @@ boss-types:
     equipment:
       hand: STONE_SWORD
       chestplate: GOLDEN_CHESTPLATE
+    skills:
+    - METEOR
+    - CHARGE
+    - MARK
   storm_brute:
     type: VINDICATOR
     name: '&3Sturmvorhut'
@@ -3751,6 +3850,10 @@ boss-types:
     ability: rally
     equipment:
       hand: IRON_AXE
+    skills:
+    - CHARGE
+    - SHOCKWAVE
+    - SLAM
   slime_matriarch:
     type: SLIME
     name: '&aSchleimmatriarchin'
@@ -3759,6 +3862,10 @@ boss-types:
     speed: 0.23
     armor: 3
     ability: reveal
+    skills:
+    - SUMMON
+    - PULL
+    - SHOCKWAVE
   abyss_guardian:
     type: IRON_GOLEM
     name: '&5Abgrundwächter'
@@ -3769,6 +3876,10 @@ boss-types:
     ability: reveal
     model-item: boss_model
     model-variant: abyss
+    skills:
+    - PULL
+    - METEOR
+    - SHOCKWAVE
   frost_guardian:
     type: IRON_GOLEM
     name: '&bFrostkoloss'
@@ -3779,6 +3890,10 @@ boss-types:
     ability: frost
     model-item: boss_model_frost
     model-variant: frost
+    skills:
+    - FROST
+    - NOVA
+    - RAIN
   ember_guardian:
     type: IRON_GOLEM
     name: '&6Glutkoloss'
@@ -3789,6 +3904,10 @@ boss-types:
     ability: rally
     model-item: boss_model_ember
     model-variant: ember
+    skills:
+    - METEOR
+    - SLAM
+    - CHARGE
   storm_lord:
     type: BOGGED
     name: '&3Sturmherrscher'
@@ -3800,3 +3919,7 @@ boss-types:
     equipment:
       hand: BOW
       chestplate: DIAMOND_CHESTPLATE
+    skills:
+    - RAIN
+    - PULL
+    - SUMMON

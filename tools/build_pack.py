@@ -39,7 +39,12 @@ def build():
     idle={'type':'minecraft:select','property':'minecraft:charge_type','cases':[{'when':state,'model':item_model('ranger_crossbow_'+state)} for state in ['arrow','rocket']],'fallback':item_model('ranger_crossbow')}
     pulling={'type':'minecraft:range_dispatch','property':'minecraft:crossbow/pull','entries':[{'threshold':threshold,'model':item_model('ranger_crossbow_pulling_'+str(i))} for i,threshold in enumerate([0,.58,1])],'fallback':item_model('ranger_crossbow')}
     write('assets/mobarmy/items/ranger_crossbow.json',{'model':{'type':'minecraft:condition','property':'minecraft:using_item','on_true':pulling,'on_false':idle}})
-    utility=['silk_pickaxe','forester_axe','pathfinder_shovel','cultivator_hoe','harvest_shears','angler_rod','ranger_crossbow','returning_trident']
+    for bow in ['tempest_bow','star_bow']:
+        for step in range(3):
+            write(f'assets/mobarmy/models/item/{bow}_pulling_{step}.json',{'parent':f'mobarmy:item/{bow}','display':{'firstperson_righthand':{'rotation':[0,-90,-(5+step*5)],'translation':[1.13,3.2,1.13],'scale':[.68,.68,.68]},'firstperson_lefthand':{'rotation':[0,90,5+step*5],'translation':[1.13,3.2,1.13],'scale':[.68,.68,.68]}}})
+        charge={'type':'minecraft:range_dispatch','property':'minecraft:use_duration','scale':.05,'entries':[{'threshold':threshold,'model':item_model(f'{bow}_pulling_{step}')} for step,threshold in enumerate([0,.65,.9])],'fallback':item_model(bow)}
+        write(f'assets/mobarmy/items/{bow}.json',{'model':{'type':'minecraft:condition','property':'minecraft:using_item','on_true':charge,'on_false':item_model(bow)}})
+    utility=['silk_pickaxe','forester_axe','pathfinder_shovel','cultivator_hoe','harvest_shears','angler_rod','ranger_crossbow','returning_trident','warden_blade','gale_axe','abyss_sword','abyss_mace','tempest_bow','star_bow','echo_pickaxe','runic_shovel','harvest_hoe']
     # A separate GUI meter leaves native fishing/shooting/stripping usable during skill cooldowns.
     # Quads reference vanilla flat block colors; no extra or softened sprite pixels are introduced.
     for step in range(8):
