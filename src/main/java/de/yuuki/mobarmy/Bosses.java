@@ -14,6 +14,8 @@ import java.util.*;
 final class Bosses implements Listener {
     final Map<UUID,GolemRig> rigs=new HashMap<>();long animations;
     final MobArmy p;final Map<UUID,UUID> previews=new HashMap<>();final Map<UUID,Long> pulse=new HashMap<>();final NamespacedKey abilityKey;
+    record Warning(Session session,Mob mob,String ability,Location center,long impact){}
+    final Map<UUID,Warning> warnings=new HashMap<>();
     Bosses(MobArmy p){this.p=p;abilityKey=new NamespacedKey(p,"boss_ability");}
     Set<String> ids(){return p.getConfig().getConfigurationSection("boss-types").getKeys(false);}
     ConfigurationSection definition(String id){var c=p.getConfig().getConfigurationSection("boss-types."+id);if(c==null)throw new IllegalArgumentException("Unbekannter Boss: "+id);return c;}
@@ -47,24 +49,30 @@ final class Bosses implements Listener {
     void tick(){
         long now=System.currentTimeMillis();Set<UUID> alive=new HashSet<>();
         previews.keySet().removeIf(id->Bukkit.getEntity(id)==null);
+        for(var entry:new ArrayList<>(warnings.entrySet())){
+            Warning warning=entry.getValue();if(!warning.mob().isValid()||warning.session().phase!=Session.Phase.FIGHT||!warning.session().mobs.contains(entry.getKey())){warnings.remove(entry.getKey());continue;}
+            if(now<warning.impact())continue;warnings.remove(entry.getKey());
+            Mob mob=warning.mob();mob.getWorld().spawnParticle(warning.ability().equals("frost")?Particle.SNOWFLAKE:Particle.ENCHANT,warning.center(),40,1,.4,1,.05);GolemRig rig=rigs.get(entry.getKey());if(rig!=null)rig.attack();
+            if(warning.ability().equals("rally"))mob.addPotionEffect(new PotionEffect(PotionEffectType.SPEED,60,0,true,true,true));
+            for(Player player:p.engine.players(warning.session()))if(Rituals.inStrike(player.getLocation(),warning.center())&&mob.hasLineOfSight(player)){
+                if(warning.ability().equals("frost"))player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS,40,0,true,true,true));
+                if(warning.ability().equals("reveal"))player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,60,0,true,true,true));
+            }
+        }
         for(Portal portal:p.portals.values()){
             Session s=portal.session;if(s==null||s.phase!=Session.Phase.FIGHT)continue;
             for(UUID id:s.contribution.keySet()){
                 Entity entity=Bukkit.getEntity(id);if(!(entity instanceof Mob mob))continue;alive.add(id);String ability=mob.getPersistentDataContainer().get(abilityKey,PersistentDataType.STRING);
                 if(ability==null||pulse.getOrDefault(id,0L)>now)continue;pulse.put(id,now+8000);
-                mob.getWorld().spawnParticle(ability.equals("frost")?Particle.SNOWFLAKE:Particle.ENCHANT,mob.getLocation().add(0,1,0),45,2,1,2,.08);
-                if(ability.equals("rally"))mob.addPotionEffect(new PotionEffect(PotionEffectType.SPEED,60,0,true,true,true));
-                for(Player player:p.engine.players(s))if(player.getLocation().distanceSquared(mob.getLocation())<=64){
-                    if(ability.equals("frost"))player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS,40,0,true,true,true));
-                    if(ability.equals("reveal"))player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,60,0,true,true,true));
-                }
+                Player target=p.engine.players(s).stream().filter(pl->pl.getWorld().equals(mob.getWorld())&&!pl.isDead()).min(Comparator.comparingDouble(pl->pl.getLocation().distanceSquared(mob.getLocation()))).orElse(null);
+                if(target!=null){warnings.put(id,new Warning(s,mob,ability,target.getLocation().clone(),now+2000));p.say(target,"combat.warning");}
             }
         }
-        pulse.keySet().retainAll(alive);
+        pulse.keySet().retainAll(alive);warnings.keySet().retainAll(alive);
     }
     void unmodel(UUID mob){GolemRig rig=rigs.remove(mob);if(rig!=null)rig.remove();}
     void hurt(UUID mob){GolemRig rig=rigs.get(mob);if(rig!=null)rig.hurt();}
     @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true) public void attack(EntityDamageByEntityEvent e){GolemRig rig=rigs.get(e.getDamager().getUniqueId());if(rig!=null)rig.attack();}
-    void animate(){if(++animations%2!=0)return;for(var entry:new ArrayList<>(rigs.entrySet())){if(!entry.getValue().valid())unmodel(entry.getKey());else entry.getValue().animate();}}
-    void shutdown(){for(UUID id:previews.keySet()){Entity e=Bukkit.getEntity(id);if(e!=null)remove(e);}previews.clear();pulse.clear();for(UUID id:new ArrayList<>(rigs.keySet()))unmodel(id);}
+    void animate(){if(++animations%2!=0)return;for(var entry:new ArrayList<>(rigs.entrySet())){if(!entry.getValue().valid())unmodel(entry.getKey());else entry.getValue().animate();}if(animations%6==0)for(Warning warning:warnings.values())for(int i=0;i<16;i++){double angle=i*Math.PI/8;warning.mob().getWorld().spawnParticle(Particle.DUST,warning.center().clone().add(Math.cos(angle)*2.4,.15,Math.sin(angle)*2.4),1,0,0,0,0,new Particle.DustOptions(warning.ability().equals("frost")?Color.AQUA:Color.ORANGE,1));}}
+    void shutdown(){for(UUID id:previews.keySet()){Entity e=Bukkit.getEntity(id);if(e!=null)remove(e);}previews.clear();pulse.clear();warnings.clear();for(UUID id:new ArrayList<>(rigs.keySet()))unmodel(id);}
 }

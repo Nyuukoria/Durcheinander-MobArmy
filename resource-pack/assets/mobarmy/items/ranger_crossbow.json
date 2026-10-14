@@ -1,60 +1,767 @@
 {
   "model": {
-    "type": "minecraft:condition",
-    "property": "minecraft:using_item",
-    "on_true": {
-      "type": "minecraft:range_dispatch",
-      "property": "minecraft:crossbow/pull",
-      "entries": [
-        {
-          "threshold": 0,
-          "model": {
-            "type": "minecraft:model",
-            "model": "mobarmy:item/ranger_crossbow_pulling_0"
-          }
-        },
-        {
-          "threshold": 0.58,
-          "model": {
-            "type": "minecraft:model",
-            "model": "mobarmy:item/ranger_crossbow_pulling_1"
-          }
-        },
-        {
-          "threshold": 1,
-          "model": {
-            "type": "minecraft:model",
-            "model": "mobarmy:item/ranger_crossbow_pulling_2"
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
+    "cases": [
+      {
+        "when": "gui",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "minecraft:custom_model_data",
+          "index": 0,
+          "on_true": {
+            "type": "minecraft:range_dispatch",
+            "property": "minecraft:custom_model_data",
+            "index": 0,
+            "entries": [
+              {
+                "threshold": 0.0,
+                "model": {
+                  "type": "minecraft:composite",
+                  "models": [
+                    {
+                      "type": "minecraft:condition",
+                      "property": "minecraft:using_item",
+                      "on_true": {
+                        "type": "minecraft:range_dispatch",
+                        "property": "minecraft:crossbow/pull",
+                        "entries": [
+                          {
+                            "threshold": 0,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_0"
+                            }
+                          },
+                          {
+                            "threshold": 0.58,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_1"
+                            }
+                          },
+                          {
+                            "threshold": 1,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_2"
+                            }
+                          }
+                        ],
+                        "fallback": {
+                          "type": "minecraft:model",
+                          "model": "mobarmy:item/ranger_crossbow"
+                        }
+                      },
+                      "on_false": {
+                        "type": "minecraft:select",
+                        "property": "minecraft:charge_type",
+                        "cases": [
+                          {
+                            "when": "arrow",
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_arrow"
+                            }
+                          },
+                          {
+                            "when": "rocket",
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_rocket"
+                            }
+                          }
+                        ],
+                        "fallback": {
+                          "type": "minecraft:model",
+                          "model": "mobarmy:item/ranger_crossbow"
+                        }
+                      }
+                    },
+                    {
+                      "type": "minecraft:model",
+                      "model": "mobarmy:item/cooldown/meter_0"
+                    }
+                  ]
+                }
+              },
+              {
+                "threshold": 0.125,
+                "model": {
+                  "type": "minecraft:composite",
+                  "models": [
+                    {
+                      "type": "minecraft:condition",
+                      "property": "minecraft:using_item",
+                      "on_true": {
+                        "type": "minecraft:range_dispatch",
+                        "property": "minecraft:crossbow/pull",
+                        "entries": [
+                          {
+                            "threshold": 0,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_0"
+                            }
+                          },
+                          {
+                            "threshold": 0.58,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_1"
+                            }
+                          },
+                          {
+                            "threshold": 1,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_2"
+                            }
+                          }
+                        ],
+                        "fallback": {
+                          "type": "minecraft:model",
+                          "model": "mobarmy:item/ranger_crossbow"
+                        }
+                      },
+                      "on_false": {
+                        "type": "minecraft:select",
+                        "property": "minecraft:charge_type",
+                        "cases": [
+                          {
+                            "when": "arrow",
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_arrow"
+                            }
+                          },
+                          {
+                            "when": "rocket",
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_rocket"
+                            }
+                          }
+                        ],
+                        "fallback": {
+                          "type": "minecraft:model",
+                          "model": "mobarmy:item/ranger_crossbow"
+                        }
+                      }
+                    },
+                    {
+                      "type": "minecraft:model",
+                      "model": "mobarmy:item/cooldown/meter_1"
+                    }
+                  ]
+                }
+              },
+              {
+                "threshold": 0.25,
+                "model": {
+                  "type": "minecraft:composite",
+                  "models": [
+                    {
+                      "type": "minecraft:condition",
+                      "property": "minecraft:using_item",
+                      "on_true": {
+                        "type": "minecraft:range_dispatch",
+                        "property": "minecraft:crossbow/pull",
+                        "entries": [
+                          {
+                            "threshold": 0,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_0"
+                            }
+                          },
+                          {
+                            "threshold": 0.58,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_1"
+                            }
+                          },
+                          {
+                            "threshold": 1,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_2"
+                            }
+                          }
+                        ],
+                        "fallback": {
+                          "type": "minecraft:model",
+                          "model": "mobarmy:item/ranger_crossbow"
+                        }
+                      },
+                      "on_false": {
+                        "type": "minecraft:select",
+                        "property": "minecraft:charge_type",
+                        "cases": [
+                          {
+                            "when": "arrow",
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_arrow"
+                            }
+                          },
+                          {
+                            "when": "rocket",
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_rocket"
+                            }
+                          }
+                        ],
+                        "fallback": {
+                          "type": "minecraft:model",
+                          "model": "mobarmy:item/ranger_crossbow"
+                        }
+                      }
+                    },
+                    {
+                      "type": "minecraft:model",
+                      "model": "mobarmy:item/cooldown/meter_2"
+                    }
+                  ]
+                }
+              },
+              {
+                "threshold": 0.375,
+                "model": {
+                  "type": "minecraft:composite",
+                  "models": [
+                    {
+                      "type": "minecraft:condition",
+                      "property": "minecraft:using_item",
+                      "on_true": {
+                        "type": "minecraft:range_dispatch",
+                        "property": "minecraft:crossbow/pull",
+                        "entries": [
+                          {
+                            "threshold": 0,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_0"
+                            }
+                          },
+                          {
+                            "threshold": 0.58,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_1"
+                            }
+                          },
+                          {
+                            "threshold": 1,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_2"
+                            }
+                          }
+                        ],
+                        "fallback": {
+                          "type": "minecraft:model",
+                          "model": "mobarmy:item/ranger_crossbow"
+                        }
+                      },
+                      "on_false": {
+                        "type": "minecraft:select",
+                        "property": "minecraft:charge_type",
+                        "cases": [
+                          {
+                            "when": "arrow",
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_arrow"
+                            }
+                          },
+                          {
+                            "when": "rocket",
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_rocket"
+                            }
+                          }
+                        ],
+                        "fallback": {
+                          "type": "minecraft:model",
+                          "model": "mobarmy:item/ranger_crossbow"
+                        }
+                      }
+                    },
+                    {
+                      "type": "minecraft:model",
+                      "model": "mobarmy:item/cooldown/meter_3"
+                    }
+                  ]
+                }
+              },
+              {
+                "threshold": 0.5,
+                "model": {
+                  "type": "minecraft:composite",
+                  "models": [
+                    {
+                      "type": "minecraft:condition",
+                      "property": "minecraft:using_item",
+                      "on_true": {
+                        "type": "minecraft:range_dispatch",
+                        "property": "minecraft:crossbow/pull",
+                        "entries": [
+                          {
+                            "threshold": 0,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_0"
+                            }
+                          },
+                          {
+                            "threshold": 0.58,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_1"
+                            }
+                          },
+                          {
+                            "threshold": 1,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_2"
+                            }
+                          }
+                        ],
+                        "fallback": {
+                          "type": "minecraft:model",
+                          "model": "mobarmy:item/ranger_crossbow"
+                        }
+                      },
+                      "on_false": {
+                        "type": "minecraft:select",
+                        "property": "minecraft:charge_type",
+                        "cases": [
+                          {
+                            "when": "arrow",
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_arrow"
+                            }
+                          },
+                          {
+                            "when": "rocket",
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_rocket"
+                            }
+                          }
+                        ],
+                        "fallback": {
+                          "type": "minecraft:model",
+                          "model": "mobarmy:item/ranger_crossbow"
+                        }
+                      }
+                    },
+                    {
+                      "type": "minecraft:model",
+                      "model": "mobarmy:item/cooldown/meter_4"
+                    }
+                  ]
+                }
+              },
+              {
+                "threshold": 0.625,
+                "model": {
+                  "type": "minecraft:composite",
+                  "models": [
+                    {
+                      "type": "minecraft:condition",
+                      "property": "minecraft:using_item",
+                      "on_true": {
+                        "type": "minecraft:range_dispatch",
+                        "property": "minecraft:crossbow/pull",
+                        "entries": [
+                          {
+                            "threshold": 0,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_0"
+                            }
+                          },
+                          {
+                            "threshold": 0.58,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_1"
+                            }
+                          },
+                          {
+                            "threshold": 1,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_2"
+                            }
+                          }
+                        ],
+                        "fallback": {
+                          "type": "minecraft:model",
+                          "model": "mobarmy:item/ranger_crossbow"
+                        }
+                      },
+                      "on_false": {
+                        "type": "minecraft:select",
+                        "property": "minecraft:charge_type",
+                        "cases": [
+                          {
+                            "when": "arrow",
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_arrow"
+                            }
+                          },
+                          {
+                            "when": "rocket",
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_rocket"
+                            }
+                          }
+                        ],
+                        "fallback": {
+                          "type": "minecraft:model",
+                          "model": "mobarmy:item/ranger_crossbow"
+                        }
+                      }
+                    },
+                    {
+                      "type": "minecraft:model",
+                      "model": "mobarmy:item/cooldown/meter_5"
+                    }
+                  ]
+                }
+              },
+              {
+                "threshold": 0.75,
+                "model": {
+                  "type": "minecraft:composite",
+                  "models": [
+                    {
+                      "type": "minecraft:condition",
+                      "property": "minecraft:using_item",
+                      "on_true": {
+                        "type": "minecraft:range_dispatch",
+                        "property": "minecraft:crossbow/pull",
+                        "entries": [
+                          {
+                            "threshold": 0,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_0"
+                            }
+                          },
+                          {
+                            "threshold": 0.58,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_1"
+                            }
+                          },
+                          {
+                            "threshold": 1,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_2"
+                            }
+                          }
+                        ],
+                        "fallback": {
+                          "type": "minecraft:model",
+                          "model": "mobarmy:item/ranger_crossbow"
+                        }
+                      },
+                      "on_false": {
+                        "type": "minecraft:select",
+                        "property": "minecraft:charge_type",
+                        "cases": [
+                          {
+                            "when": "arrow",
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_arrow"
+                            }
+                          },
+                          {
+                            "when": "rocket",
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_rocket"
+                            }
+                          }
+                        ],
+                        "fallback": {
+                          "type": "minecraft:model",
+                          "model": "mobarmy:item/ranger_crossbow"
+                        }
+                      }
+                    },
+                    {
+                      "type": "minecraft:model",
+                      "model": "mobarmy:item/cooldown/meter_6"
+                    }
+                  ]
+                }
+              },
+              {
+                "threshold": 0.875,
+                "model": {
+                  "type": "minecraft:composite",
+                  "models": [
+                    {
+                      "type": "minecraft:condition",
+                      "property": "minecraft:using_item",
+                      "on_true": {
+                        "type": "minecraft:range_dispatch",
+                        "property": "minecraft:crossbow/pull",
+                        "entries": [
+                          {
+                            "threshold": 0,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_0"
+                            }
+                          },
+                          {
+                            "threshold": 0.58,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_1"
+                            }
+                          },
+                          {
+                            "threshold": 1,
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_pulling_2"
+                            }
+                          }
+                        ],
+                        "fallback": {
+                          "type": "minecraft:model",
+                          "model": "mobarmy:item/ranger_crossbow"
+                        }
+                      },
+                      "on_false": {
+                        "type": "minecraft:select",
+                        "property": "minecraft:charge_type",
+                        "cases": [
+                          {
+                            "when": "arrow",
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_arrow"
+                            }
+                          },
+                          {
+                            "when": "rocket",
+                            "model": {
+                              "type": "minecraft:model",
+                              "model": "mobarmy:item/ranger_crossbow_rocket"
+                            }
+                          }
+                        ],
+                        "fallback": {
+                          "type": "minecraft:model",
+                          "model": "mobarmy:item/ranger_crossbow"
+                        }
+                      }
+                    },
+                    {
+                      "type": "minecraft:model",
+                      "model": "mobarmy:item/cooldown/meter_7"
+                    }
+                  ]
+                }
+              }
+            ],
+            "fallback": {
+              "type": "minecraft:condition",
+              "property": "minecraft:using_item",
+              "on_true": {
+                "type": "minecraft:range_dispatch",
+                "property": "minecraft:crossbow/pull",
+                "entries": [
+                  {
+                    "threshold": 0,
+                    "model": {
+                      "type": "minecraft:model",
+                      "model": "mobarmy:item/ranger_crossbow_pulling_0"
+                    }
+                  },
+                  {
+                    "threshold": 0.58,
+                    "model": {
+                      "type": "minecraft:model",
+                      "model": "mobarmy:item/ranger_crossbow_pulling_1"
+                    }
+                  },
+                  {
+                    "threshold": 1,
+                    "model": {
+                      "type": "minecraft:model",
+                      "model": "mobarmy:item/ranger_crossbow_pulling_2"
+                    }
+                  }
+                ],
+                "fallback": {
+                  "type": "minecraft:model",
+                  "model": "mobarmy:item/ranger_crossbow"
+                }
+              },
+              "on_false": {
+                "type": "minecraft:select",
+                "property": "minecraft:charge_type",
+                "cases": [
+                  {
+                    "when": "arrow",
+                    "model": {
+                      "type": "minecraft:model",
+                      "model": "mobarmy:item/ranger_crossbow_arrow"
+                    }
+                  },
+                  {
+                    "when": "rocket",
+                    "model": {
+                      "type": "minecraft:model",
+                      "model": "mobarmy:item/ranger_crossbow_rocket"
+                    }
+                  }
+                ],
+                "fallback": {
+                  "type": "minecraft:model",
+                  "model": "mobarmy:item/ranger_crossbow"
+                }
+              }
+            }
+          },
+          "on_false": {
+            "type": "minecraft:condition",
+            "property": "minecraft:using_item",
+            "on_true": {
+              "type": "minecraft:range_dispatch",
+              "property": "minecraft:crossbow/pull",
+              "entries": [
+                {
+                  "threshold": 0,
+                  "model": {
+                    "type": "minecraft:model",
+                    "model": "mobarmy:item/ranger_crossbow_pulling_0"
+                  }
+                },
+                {
+                  "threshold": 0.58,
+                  "model": {
+                    "type": "minecraft:model",
+                    "model": "mobarmy:item/ranger_crossbow_pulling_1"
+                  }
+                },
+                {
+                  "threshold": 1,
+                  "model": {
+                    "type": "minecraft:model",
+                    "model": "mobarmy:item/ranger_crossbow_pulling_2"
+                  }
+                }
+              ],
+              "fallback": {
+                "type": "minecraft:model",
+                "model": "mobarmy:item/ranger_crossbow"
+              }
+            },
+            "on_false": {
+              "type": "minecraft:select",
+              "property": "minecraft:charge_type",
+              "cases": [
+                {
+                  "when": "arrow",
+                  "model": {
+                    "type": "minecraft:model",
+                    "model": "mobarmy:item/ranger_crossbow_arrow"
+                  }
+                },
+                {
+                  "when": "rocket",
+                  "model": {
+                    "type": "minecraft:model",
+                    "model": "mobarmy:item/ranger_crossbow_rocket"
+                  }
+                }
+              ],
+              "fallback": {
+                "type": "minecraft:model",
+                "model": "mobarmy:item/ranger_crossbow"
+              }
+            }
           }
         }
-      ],
-      "fallback": {
-        "type": "minecraft:model",
-        "model": "mobarmy:item/ranger_crossbow"
       }
-    },
-    "on_false": {
-      "type": "minecraft:select",
-      "property": "minecraft:charge_type",
-      "cases": [
-        {
-          "when": "arrow",
-          "model": {
-            "type": "minecraft:model",
-            "model": "mobarmy:item/ranger_crossbow_arrow"
+    ],
+    "fallback": {
+      "type": "minecraft:condition",
+      "property": "minecraft:using_item",
+      "on_true": {
+        "type": "minecraft:range_dispatch",
+        "property": "minecraft:crossbow/pull",
+        "entries": [
+          {
+            "threshold": 0,
+            "model": {
+              "type": "minecraft:model",
+              "model": "mobarmy:item/ranger_crossbow_pulling_0"
+            }
+          },
+          {
+            "threshold": 0.58,
+            "model": {
+              "type": "minecraft:model",
+              "model": "mobarmy:item/ranger_crossbow_pulling_1"
+            }
+          },
+          {
+            "threshold": 1,
+            "model": {
+              "type": "minecraft:model",
+              "model": "mobarmy:item/ranger_crossbow_pulling_2"
+            }
           }
-        },
-        {
-          "when": "rocket",
-          "model": {
-            "type": "minecraft:model",
-            "model": "mobarmy:item/ranger_crossbow_rocket"
-          }
+        ],
+        "fallback": {
+          "type": "minecraft:model",
+          "model": "mobarmy:item/ranger_crossbow"
         }
-      ],
-      "fallback": {
-        "type": "minecraft:model",
-        "model": "mobarmy:item/ranger_crossbow"
+      },
+      "on_false": {
+        "type": "minecraft:select",
+        "property": "minecraft:charge_type",
+        "cases": [
+          {
+            "when": "arrow",
+            "model": {
+              "type": "minecraft:model",
+              "model": "mobarmy:item/ranger_crossbow_arrow"
+            }
+          },
+          {
+            "when": "rocket",
+            "model": {
+              "type": "minecraft:model",
+              "model": "mobarmy:item/ranger_crossbow_rocket"
+            }
+          }
+        ],
+        "fallback": {
+          "type": "minecraft:model",
+          "model": "mobarmy:item/ranger_crossbow"
+        }
       }
     }
   }

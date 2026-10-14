@@ -1,4 +1,4 @@
-# Durcheinander MobArmy 1.6.0
+# Durcheinander MobArmy 1.7.0
 
 Spigot **Minecraft Java 26.3 / Java 25**. Konfigurierbare Raids mit drei Wochen, fünf Stages, Gruppen, Leader-Voting, Bossen, eigenen Items und Kesselritualen. Verwendet nur Bukkit/Spigot-APIs.
 
@@ -24,6 +24,16 @@ Die 34 eigenen Item-Texturen sind echte **16×16-PNGs** mit kleinen Farbpaletten
 Server mit `stop` beenden, neue ZIP über denselben Ordner entpacken, dann `local-test/start-server.bat` starten. Der Launcher ersetzt das Plugin automatisch und setzt die Demo-Flags. Java/Git/Spigot werden dabei wiederverwendet.
 
 Alte Layouts vor Version 1.2 werden vollständig neu gebaut; neuere **generierte Demo-Arenen** erhalten Layout 4 als Reparatur: Wand-/Boden-/Deckenlöcher werden geschlossen, die Endertruhe ausgerichtet und Wandtasten ergänzt. Das Layout enthält einen **9×9-Vorraum** und eine geschlossene **100×100-Landschaftsarena** mit sanften Hügeln, Wegen, Ruinen und kleinen Bäumen/Kristallgebilden. Die drei Welten behalten ihre eigenen Themen. Der erste Start benötigt durch den Umbau länger. Alte versionierte Plugin-JARs sichert der Launcher außerhalb des Plugin-Suchpfads, um doppelte Plugin-Versionen zu vermeiden. Eigene Welten mit `generate-demo: false` werden nicht gebaut. Andere Konfigurationen, Loot-Postfach und Fortschritt bleiben erhalten.
+
+## Neu in 1.7
+
+- Sichtbare Cooldowns: native Icon-Anzeige auf Relikten, eigener Hotbar-/Inventarbalken auf Alltagswerkzeugen sowie Restzeit in der Lore. Pro Spieler und Item-ID gespeichert; normale Werkzeugnutzung bleibt verfügbar.
+- Acht Survival-Fähigkeiten per **Schleichen + Rechtsklick** und 10 % zusätzlicher Verschleißschutz. Bergbau-/Laufboni, Bodenprobe, schonende Schere, schnelleres Anbeißen, Jägermarke und Unterwasserhilfe. Einzelne Blöcke, normale Drops und manuelles Spielen bleiben erhalten; eigene 16×16-Texturen und Beschaffungswege bleiben bestehen. Details: `EQUIPMENT.md`.
+- Alle **elf Rituale** führen durch eine mehrphasige Beschwörung mit Runenringen, kreisenden Fragmenten, Lichtsäule, Sounds und Bossbar in einen Wächterkampf. Belohnungen erfolgen erst nach einem Sieg mit eigener Beteiligung. Unterschiedliche Wächter, angekündigte Bodenangriffe und eine stärkere zweite Kampfphase.
+- Chaosfragment wird bis zum Abschluss gebunden. Während der Beschwörung sind Hotbar-Wechsel und Inventarverschiebungen gesperrt; im Kampf darf die Waffe gewechselt werden. Abbruch, Tod, Logout oder verlorener Wächter erstatten Fragment und Zutaten ins Postfach. Sieg verbraucht die Zutaten und gibt das Fragment zurück.
+- Neue Survival-Rituale: Tauchersegen, Wanderersegen und Bergmannssegen. Raid-Bosse kündigen Fähigkeiten jetzt mit Bodenmarkierungen und zwei Sekunden Ausweichzeit an.
+
+**Update:** Server stoppen, ZIP darüber entpacken und `local-test/start-server.bat` starten. `/raid pack reload` lädt den neuen Werkzeug-Cooldownbalken. `/raid kit gear`, `/raid kit ritual` und `/rezepte rituals` helfen beim Testen. Neue Konfiguration wird ergänzt; eigene Skill-Cooldowns, Ritualwerte und Raid-Fortschritte bleiben erhalten.
 
 ## Neu in 1.6
 
@@ -164,7 +174,7 @@ mvn clean verify
 python3 tools/build_release.py
 ```
 
-JAR: `target/DurcheinanderMobArmy-1.6.0.jar`. Resource Pack: `target/MobArmy-resource-pack-26.3.zip`. Das Pack verwendet Format 97.1. GitHub Actions baut JAR, Pack und ZIP und prüft die Windows-Setup-Skripte.
+JAR: `target/DurcheinanderMobArmy-1.7.0.jar`. Resource Pack: `target/MobArmy-resource-pack-26.3.zip`. Das Pack verwendet Format 97.1. GitHub Actions baut JAR, Pack und ZIP und prüft die Windows-Setup-Skripte.
 
 Automatische Tests prüfen Timer/Mitternacht/Boss-Abschluss, Schaden und Mindestspieler-Anteile, Waves/Reiter, komplette Tab-Grammatik, Spinnen-Regelausnahme, GUI-freien Eintritt und den Gruppen-Teleport. Sichtbarkeit, native Wind-Charge-Physik, Spinnen-Bewegung und Multiplayer-Balance bitte mit `TESTING.md` im Spiel prüfen.
 

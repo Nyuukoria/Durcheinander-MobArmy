@@ -29,5 +29,10 @@ class ResourcePacksTest {
         assertTrue(rod.contains("minecraft:fishing_rod/cast"));assertTrue(files.containsKey("assets/mobarmy/models/item/angler_rod_cast.json"));
         for(String state:List.of("pulling_0","pulling_1","pulling_2","arrow","rocket"))assertTrue(files.containsKey("assets/mobarmy/models/item/ranger_crossbow_"+state+".json"));
         for(String property:List.of("minecraft:using_item","minecraft:crossbow/pull","minecraft:charge_type"))assertTrue(crossbow.contains(property));
+        for(int step=0;step<8;step++)assertTrue(files.containsKey("assets/mobarmy/models/item/cooldown/meter_"+step+".json"));
+        for(String id:cfg.getConfigurationSection("items").getKeys(false))if(cfg.getBoolean("items."+id+".utility")){
+            String definition=new String(files.get("assets/mobarmy/items/"+id+".json"),java.nio.charset.StandardCharsets.UTF_8);
+            for(String property:List.of("minecraft:display_context","minecraft:custom_model_data","minecraft:composite"))assertTrue(definition.contains(property),id);
+        }
     }
 }

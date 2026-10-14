@@ -63,6 +63,7 @@ final class Presentation {
     void remove(Session s,UUID player){BossBar hud=s.privateHud.remove(player),boss=s.privateBoss.remove(player);if(hud!=null)hud.removeAll();if(boss!=null)boss.removeAll();}
     void clear(Session s){s.privateHud.values().forEach(BossBar::removeAll);s.privateBoss.values().forEach(BossBar::removeAll);s.privateHud.clear();s.privateBoss.clear();}
     void burst(Location at){at.getWorld().spawnParticle(Particle.REVERSE_PORTAL,at.clone().add(0,1,0),50,0.45,0.7,0.45,0.1);}
+    void ritualFinale(Location at){at.getWorld().spawnParticle(Particle.EXPLOSION,at,2,.3,.5,.3,0);at.getWorld().spawnParticle(Particle.ENCHANT,at,100,.8,1,.8,.3);at.getWorld().playSound(at,Sound.BLOCK_BEACON_ACTIVATE,1,.7f);}
     void transfer(Player player){burst(player.getLocation());player.playSound(player.getLocation(),Sound.BLOCK_PORTAL_TRAVEL,0.4f,1.2f);}
     void shutdown(){signs.forEach(Entity::remove);signs.clear();}
 }

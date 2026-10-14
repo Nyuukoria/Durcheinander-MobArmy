@@ -10,7 +10,7 @@ final class ConfigUpgrade {
     private ConfigUpgrade() {}
     static void run(MobArmy p){
         int version=p.getConfig().getInt("configuration-version",1);
-        if(version>=7)return;
+        if(version>=8)return;
         var defaults=YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(p.getResource("config.yml")),StandardCharsets.UTF_8));
         if(version<2)for(String section:List.of("presentation","ritual-animation"))copy(defaults.getConfigurationSection(section),p.getConfig().createSection(section));
         for(String key:List.of("balance.wind-charge-multiplier","balance.wind-charge-max-horizontal","balance.wind-charge-max-upward","messages.private-join","testing.disable-wipe-cooldown","stage-loot-timeout-seconds"))if(!p.getConfig().contains(key,true))p.getConfig().set(key,defaults.get(key));
@@ -54,7 +54,12 @@ final class ConfigUpgrade {
         for(String id:defaults.getConfigurationSection("rituals").getKeys(false))for(String field:List.of("name-en","description","description-en"))p.getConfig().set("rituals."+id+"."+field,defaults.get("rituals."+id+"."+field));
         for(String id:defaults.getConfigurationSection("equipment-sets").getKeys(false))for(String field:List.of("name","name-en"))p.getConfig().set("equipment-sets."+id+"."+field,defaults.get("equipment-sets."+id+"."+field));
         for(String id:defaults.getConfigurationSection("items").getKeys(false))if(!defaults.getBoolean("items."+id+".internal"))p.getConfig().set("items."+id+".lore",defaults.getStringList("items."+id+".lore"));
-        p.getConfig().set("configuration-version",7);p.saveConfig();
+        for(String id:defaults.getConfigurationSection("items").getKeys(false))if(defaults.isConfigurationSection("items."+id+".skill")&&!p.getConfig().contains("items."+id+".skill",true))copy(defaults.getConfigurationSection("items."+id+".skill"),p.getConfig().createSection("items."+id+".skill"));
+        for(String id:defaults.getConfigurationSection("rituals").getKeys(false))if(!p.getConfig().contains("rituals."+id+".trial",true)){
+            copy(defaults.getConfigurationSection("rituals."+id+".trial"),p.getConfig().createSection("rituals."+id+".trial"));
+            for(String field:List.of("type","health","damage"))if(p.getConfig().contains("rituals."+id+"."+field,true))p.getConfig().set("rituals."+id+".trial."+field,p.getConfig().get("rituals."+id+"."+field));
+        }
+        p.getConfig().set("configuration-version",8);p.saveConfig();
     }
     static void copy(ConfigurationSection from,ConfigurationSection to){if(from==null)return;for(String key:from.getKeys(false)){if(from.isConfigurationSection(key))copy(from.getConfigurationSection(key),to.createSection(key));else to.set(key,from.get(key));}}
 }

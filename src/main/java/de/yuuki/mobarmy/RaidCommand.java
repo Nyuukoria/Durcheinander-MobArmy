@@ -88,7 +88,7 @@ final class RaidCommand implements CommandExecutor,TabCompleter {
     void clearCooldowns(UUID target){
         if(target==null)p.state.set("cooldowns",null);else{var c=p.state.getConfigurationSection("cooldowns");if(c!=null)for(String day:c.getKeys(false))p.state.set("cooldowns."+day+"."+target,null);}
         if(p.getConfig().getBoolean("testing.solo"))for(String section:List.of("item-cooldowns","ritual-cooldowns"))p.state.set(target==null?section:section+"."+target,null);
-        for(Portal q:p.portals.values())if(q.session!=null){if(target==null)q.session.dead.clear();else q.session.dead.remove(target);}p.saveState();
+        for(Portal q:p.portals.values())if(q.session!=null){if(target==null)q.session.dead.clear();else q.session.dead.remove(target);}p.saveState();if(p.itemCooldowns!=null)p.itemCooldowns.clear(target);
     }
     void resetDemo(Portal q){if(!q.id.startsWith("demo_")&&!p.getConfig().getBoolean("testing.solo"))throw new IllegalArgumentException("Nur Demo-Portale oder Testmodus können so zurückgesetzt werden.");if(q.session!=null)p.engine.finish(q.session);q.bossKilled=false;q.deadline=0;q.day=p.today();p.state.set("progress."+q.id,null);p.saveState();}
     void demoOnly(Portal q){if(!q.id.startsWith("demo_")&&!p.getConfig().getBoolean("testing.solo"))throw new IllegalArgumentException("Demo-Steuerung ist nur in der Demo verfügbar.");}

@@ -15,7 +15,7 @@ class RecipeLayoutTest {
         var c=config("config.yml");int utility=0;
         for(String id:c.getConfigurationSection("items").getKeys(false)){if(c.getBoolean("items."+id+".internal"))continue;
             for(String field:List.of("lore","lore-en")){List<String> lines=TextLayout.wrap(c.getStringList("items."+id+"."+field).stream().map(MobArmy::color).toList(),36);assertTrue(lines.contains(""),id);assertTrue(lines.size()<=10,id+": "+lines.size());for(String line:lines)assertTrue(ChatColor.stripColor(line).length()<=36,id+": "+line);}
-            if(c.getBoolean("items."+id+".utility")){utility++;assertEquals("mobarmy:"+id,c.getString("items."+id+".item-model"));assertFalse(c.contains("items."+id+".use"));}
+            if(c.getBoolean("items."+id+".utility")){utility++;assertEquals("mobarmy:"+id,c.getString("items."+id+".item-model"));assertFalse(c.contains("items."+id+".use"));assertTrue(c.isConfigurationSection("items."+id+".skill"));assertTrue(c.getInt("items."+id+".skill.cooldown-seconds")>=15);}
         }assertEquals(8,utility);
     }
     @Test void recipeRoutesIncludeVanillaToolsAndTheGuardianCoreWithoutRepeatingIngredients(){

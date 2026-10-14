@@ -59,7 +59,7 @@ final class Equipment implements Listener {
             result.setItemMeta(meta);e.setResult(result);return;
         }if(custom(first,second))e.setResult(null);
     }
-    ItemStack ordinary(ItemStack result){if(result==null)return null;var meta=result.getItemMeta();meta.getPersistentDataContainer().remove(p.itemKey);meta.getPersistentDataContainer().remove(new NamespacedKey(p,"utility_name"));meta.setItemModel(null);meta.setDisplayName(null);meta.setLore(null);meta.setRarity(null);result.setItemMeta(meta);return result;}
+    ItemStack ordinary(ItemStack result){if(result==null)return null;var meta=result.getItemMeta();meta.getPersistentDataContainer().remove(p.itemKey);meta.getPersistentDataContainer().remove(new NamespacedKey(p,"utility_name"));meta.setItemModel(null);meta.setUseCooldown(null);meta.setCustomModelDataComponent(null);meta.setDisplayName(null);meta.setLore(null);meta.setRarity(null);result.setItemMeta(meta);return result;}
     @EventHandler public void grind(PrepareGrindstoneEvent e){if(utilityInputs(e.getInventory().getItem(0),e.getInventory().getItem(1))||utilityInputs(e.getInventory().getItem(1),e.getInventory().getItem(0)))e.setResult(ordinary(e.getResult()));else if(custom(e.getInventory().getItem(0),e.getInventory().getItem(1)))e.setResult(null);}
     boolean utilitySmith(org.bukkit.inventory.SmithingInventory inv){return utility(inv.getItem(1))&&!custom(inv.getItem(0),inv.getItem(2));}
     @EventHandler public void smith(PrepareSmithingEvent e){if(utilitySmith(e.getInventory()))e.setResult(ordinary(e.getResult()));else if(custom(e.getInventory().getItem(0),e.getInventory().getItem(1),e.getInventory().getItem(2)))e.setResult(null);}

@@ -21,18 +21,19 @@ de:
     ritual-route: '&7Klicken: Zutaten und Ablauf'
     ritual-result: '&dErgebnis'
     ingredients: '&eZutaten'
-    ingredient-consumed: '&8Wird beim Ritual verbraucht.'
+    ingredient-consumed: 'Bei Sieg verbraucht; Abbruch: Erstattung.'
     recipe-instructions: '&bSo führst du das Ritual aus'
     recipe-step1: '&71. Kessel in {world} aufstellen.'
     recipe-step2: '&72. Chaosfragment in die Haupthand.'
-    recipe-step3: '&73. Kessel rechtsklicken.'
-    recipe-catalyst: '&8Das Chaosfragment bleibt erhalten.'
+    recipe-step3: 3. Bleibe während der Beschwörung am Kessel.
+    recipe-catalyst: 'Chaosfragment: gebunden, danach zurück.'
     duration: '&7Dauer: &f{seconds} s'
     cooldown: '&7Abklingzeit: &f{seconds} s'
     start-ritual: '&eLinksklick: Ritual beginnen'
     read-ritual: '&7Rechtsklick: Rezept ansehen'
     drop-exact: '&7{source} · Stufe {stage}'
     no-ingredients: '&7Keine Zutaten nötig.'
+    recipe-step4: 4. Besiege den Wächter für die Belohnung.
   source:
     mob: Raid-Gegner
     miniboss: Miniboss
@@ -114,7 +115,7 @@ de:
     title: '&5Kesselrituale'
     place: Du brauchst einen Kessel in {world}, höchstens 6 Blöcke entfernt.
     begin: '{name} beginnt. Bleib am Kessel.'
-    refund: Ritual abgebrochen. Zutaten liegen in &e/raid loot&f.
+    refund: Ritual abgebrochen. Zutaten und Chaosfragment liegen in /raid loot.
     phase:
       circle: Runenkreis
       energy: Energie sammeln
@@ -133,7 +134,16 @@ de:
     no-victory: Der Wächter wurde ohne Spieler besiegt. Keine Beute.
     victory: 'Prüfung geschafft! Beute: Inventar oder &e/raid loot&f.'
     repaired: '{count} Ausrüstungsteile repariert.'
-    complete: Ritual abgeschlossen.
+    complete: Ritual abgeschlossen. Dein Chaosfragment ist wieder verfügbar.
+    bound: Das Chaosfragment ist bis zum Ende gebunden.
+    channel-lock: Die Beschwörung läuft. Bleibe auf diesem Hotbarplatz.
+    trial-start: Der Wächter erwacht! Besiege ihn für die Ritualbelohnung.
+    dodge: '&eAusweichen! Der markierte Bereich wird getroffen.'
+    enraged: '&cDer Wächter wird stärker. Achte auf die Markierungen!'
+    trial-bar: '{name} · Wächter: {health}/{maximum}'
+    space: Der Wächter braucht einen freien Platz 5–9 Blöcke vom Kessel entfernt.
+    owner-hit: Du musst am Kampf teilnehmen, um die Belohnung zu erhalten.
+    guardian-name: '&5{name} · Wächter'
   language:
     changed: 'Sprache: Deutsch'
   gear:
@@ -220,6 +230,14 @@ de:
     no-party: Betritt zuerst eine Raid-Gruppe.
     wave-fight: Du kannst nur eine laufende Kampfwelle überspringen.
     offline: 'Spieler ist offline: {name}'
+  skill:
+    remaining: '&eBereit in {time}'
+    activated: '&b{name}&f aktiviert.'
+    soil-target: Ziele auf Ackerboden oder eine Pflanze.
+    no-crop: keine Pflanze
+    soil: 'Bodenfeuchte: {moisture}/{maximum} · Wachstum: {growth}'
+  combat:
+    warning: '&eBoss-Fähigkeit! Verlasse die Bodenmarkierung.'
 en:
   gui:
     back: '&fBack'
@@ -243,18 +261,19 @@ en:
     ritual-route: '&7Click: ingredients and instructions'
     ritual-result: '&dResult'
     ingredients: '&eIngredients'
-    ingredient-consumed: '&8Consumed when the ritual begins.'
+    ingredient-consumed: Consumed on victory; refunded on cancel.
     recipe-instructions: '&bHow to perform the ritual'
     recipe-step1: '&71. Place a cauldron in {world}.'
     recipe-step2: '&72. Hold a Chaos Fragment.'
-    recipe-step3: '&73. Right-click the cauldron.'
-    recipe-catalyst: '&8The Chaos Fragment is kept.'
+    recipe-step3: 3. Stay at the cauldron while channeling.
+    recipe-catalyst: 'Chaos Fragment: bound, then returned.'
     duration: '&7Duration: &f{seconds} s'
     cooldown: '&7Cooldown: &f{seconds} s'
     start-ritual: '&eLeft-click: begin ritual'
     read-ritual: '&7Right-click: view recipe'
     drop-exact: '&7{source} · stage {stage}'
     no-ingredients: '&7No ingredients required.'
+    recipe-step4: 4. Defeat the guardian to earn the reward.
   source:
     mob: Raid enemy
     miniboss: Miniboss
@@ -336,7 +355,7 @@ en:
     title: '&5Cauldron rituals'
     place: You need a cauldron in {world}, within 6 blocks.
     begin: '{name} begins. Stay near the cauldron.'
-    refund: Ritual cancelled. Your ingredients are in &e/raid loot&f.
+    refund: Ritual canceled. Ingredients and Chaos Fragment are in /raid loot.
     phase:
       circle: Rune circle
       energy: Gathering energy
@@ -355,7 +374,16 @@ en:
     no-victory: The guardian was defeated without a player. No loot awarded.
     victory: Trial complete! Your loot is in your inventory or &e/raid loot&f.
     repaired: Repaired {count} equipment items.
-    complete: Ritual complete.
+    complete: Ritual complete. Your Chaos Fragment is available again.
+    bound: Your Chaos Fragment is bound until the ritual ends.
+    channel-lock: Channeling. Keep this hotbar slot selected.
+    trial-start: The guardian awakens! Defeat it to earn the ritual reward.
+    dodge: '&eDodge! The marked area is about to be hit.'
+    enraged: '&cThe guardian grows stronger. Watch the markers!'
+    trial-bar: '{name} · Guardian: {health}/{maximum}'
+    space: The guardian needs a clear spot 5–9 blocks from the cauldron.
+    owner-hit: You must take part in the fight to earn the reward.
+    guardian-name: '&5{name} · Guardian'
   language:
     changed: 'Language: English'
   gear:
@@ -442,3 +470,11 @@ en:
     no-party: Join a raid party first.
     wave-fight: You can only skip an active combat wave.
     offline: 'Player is offline: {name}'
+  skill:
+    remaining: '&eReady in {time}'
+    activated: '&b{name}&f activated.'
+    soil-target: Aim at farmland or a crop.
+    no-crop: no crop
+    soil: 'Moisture: {moisture}/{maximum} · Growth: {growth}'
+  combat:
+    warning: '&eBoss ability! Move out of the ground marker.'

@@ -1,4 +1,4 @@
-configuration-version: 7
+configuration-version: 8
 timezone: Europe/Berlin
 entry-timeout-seconds: 120
 loot-timeout-seconds: 120
@@ -1169,19 +1169,34 @@ items:
     lore:
     - '&8Alltagswerkzeug · Selten'
     - ''
-    - '&7Blöcke unverändert abbauen.'
+    - '&bTunnelfokus'
+    - '&7Eile II: 8 s · Nachtsicht: 20 s'
+    - '&8Schleichen + Rechtsklick · 75 s'
     - ''
-    - '&8Normale Minecraft-Funktionen.'
-    - '&8Reparatur: XP oder Ritual.'
+    - '&7Robust: 10 % Verschleißschutz'
     - '&8Erhalten: /rezepte'
     lore-en:
     - '&8Everyday equipment · Rare'
     - ''
-    - '&7Collect blocks intact.'
+    - '&bTunnel Focus'
+    - '&7Haste II: 8s · Night vision: 20s'
+    - '&8Sneak + right-click · 75s'
     - ''
-    - '&8Standard Minecraft mechanics.'
-    - '&8Repair with XP or a ritual.'
+    - '&7Sturdy: 10% wear protection'
     - '&8Obtain through /rezepte'
+    skill:
+      name: Tunnelfokus
+      name-en: Tunnel Focus
+      type: BUFF
+      cooldown-seconds: 75
+      duration-seconds: 15
+      effects:
+      - type: HASTE
+        seconds: 8
+        amplifier: 1
+      - type: NIGHT_VISION
+        seconds: 20
+        amplifier: 0
   forester_axe:
     material: DIAMOND_AXE
     name: '&bForstaxt'
@@ -1197,19 +1212,34 @@ items:
     lore:
     - '&8Alltagswerkzeug · Selten'
     - ''
-    - '&7Holz abbauen, Stamm für Stamm.'
+    - '&bWaldschritt'
+    - '&7Eile I und Tempo I für 10 s'
+    - '&8Schleichen + Rechtsklick · 60 s'
     - ''
-    - '&8Normale Minecraft-Funktionen.'
-    - '&8Reparatur: XP oder Ritual.'
+    - '&7Robust: 10 % Verschleißschutz'
     - '&8Erhalten: /rezepte'
     lore-en:
     - '&8Everyday equipment · Rare'
     - ''
-    - '&7Chop wood, one block at a time.'
+    - '&bForest Stride'
+    - '&7Haste I and Speed I for 10s'
+    - '&8Sneak + right-click · 60s'
     - ''
-    - '&8Standard Minecraft mechanics.'
-    - '&8Repair with XP or a ritual.'
+    - '&7Sturdy: 10% wear protection'
     - '&8Obtain through /rezepte'
+    skill:
+      name: Waldschritt
+      name-en: Forest Stride
+      type: BUFF
+      cooldown-seconds: 60
+      duration-seconds: 15
+      effects:
+      - type: HASTE
+        seconds: 10
+        amplifier: 0
+      - type: SPEED
+        seconds: 10
+        amplifier: 0
   pathfinder_shovel:
     material: DIAMOND_SHOVEL
     name: '&bPfadfinderschaufel'
@@ -1226,19 +1256,34 @@ items:
     lore:
     - '&8Alltagswerkzeug · Selten'
     - ''
-    - '&7Erde, Sand und Graswege.'
+    - '&bSicherer Tritt'
+    - '&7Tempo: 12 s · Sanfter Fall: 4 s'
+    - '&8Schleichen + Rechtsklick · 60 s'
     - ''
-    - '&8Normale Minecraft-Funktionen.'
-    - '&8Reparatur: XP oder Ritual.'
+    - '&7Robust: 10 % Verschleißschutz'
     - '&8Erhalten: /rezepte'
     lore-en:
     - '&8Everyday equipment · Rare'
     - ''
-    - '&7Dig dirt and sand; make paths.'
+    - '&bSure Footing'
+    - '&7Speed: 12s · Slow falling: 4s'
+    - '&8Sneak + right-click · 60s'
     - ''
-    - '&8Standard Minecraft mechanics.'
-    - '&8Repair with XP or a ritual.'
+    - '&7Sturdy: 10% wear protection'
     - '&8Obtain through /rezepte'
+    skill:
+      name: Sicherer Tritt
+      name-en: Sure Footing
+      type: BUFF
+      cooldown-seconds: 60
+      duration-seconds: 15
+      effects:
+      - type: SPEED
+        seconds: 12
+        amplifier: 0
+      - type: SLOW_FALLING
+        seconds: 4
+        amplifier: 0
   cultivator_hoe:
     material: DIAMOND_HOE
     name: '&bFeldhacke'
@@ -1255,19 +1300,31 @@ items:
     lore:
     - '&8Alltagswerkzeug · Selten'
     - ''
-    - '&7Felder bestellen und ernten.'
+    - '&bBodenprobe'
+    - '&7Feuchte und Wachstum ablesen'
+    - '&8Schleichen + Rechtsklick · 15 s'
     - ''
-    - '&8Normale Minecraft-Funktionen.'
-    - '&8Reparatur: XP oder Ritual.'
+    - '&7Robust: 10 % Verschleißschutz'
     - '&8Erhalten: /rezepte'
     lore-en:
     - '&8Everyday equipment · Rare'
     - ''
-    - '&7Till fields and harvest crops.'
+    - '&bSoil Survey'
+    - '&7Read moisture and crop growth'
+    - '&8Sneak + right-click · 15s'
     - ''
-    - '&8Standard Minecraft mechanics.'
-    - '&8Repair with XP or a ritual.'
+    - '&7Sturdy: 10% wear protection'
     - '&8Obtain through /rezepte'
+    skill:
+      name: Bodenprobe
+      name-en: Soil Survey
+      type: SOIL
+      cooldown-seconds: 15
+      duration-seconds: 15
+      effects:
+      - type: HASTE
+        seconds: 8
+        amplifier: 0
   harvest_shears:
     material: SHEARS
     name: '&bGartenschere'
@@ -1283,19 +1340,28 @@ items:
     lore:
     - '&8Alltagswerkzeug · Selten'
     - ''
-    - '&7Für Blätter, Wolle und Ranken.'
+    - '&bSanfter Schnitt'
+    - '&735 % Verschleißschutz für 8 s'
+    - '&8Schleichen + Rechtsklick · 45 s'
     - ''
-    - '&8Normale Minecraft-Funktionen.'
-    - '&8Reparatur: XP oder Ritual.'
+    - '&7Robust: 10 % Verschleißschutz'
     - '&8Erhalten: /rezepte'
     lore-en:
     - '&8Everyday equipment · Rare'
     - ''
-    - '&7For leaves, wool and vines.'
+    - '&bGentle Cut'
+    - '&735% wear protection for 8s'
+    - '&8Sneak + right-click · 45s'
     - ''
-    - '&8Standard Minecraft mechanics.'
-    - '&8Repair with XP or a ritual.'
+    - '&7Sturdy: 10% wear protection'
     - '&8Obtain through /rezepte'
+    skill:
+      name: Sanfter Schnitt
+      name-en: Gentle Cut
+      type: SHEARS
+      cooldown-seconds: 45
+      duration-seconds: 8
+      effects: []
   angler_rod:
     material: FISHING_ROD
     name: '&bAnglerglück'
@@ -1312,19 +1378,28 @@ items:
     lore:
     - '&8Alltagswerkzeug · Selten'
     - ''
-    - '&7Normales Angeln mit besseren Chancen.'
+    - '&bRuhige Hand'
+    - '&7Nächster Wurf: Basiswartezeit -20 %'
+    - '&8Schleichen + Rechtsklick · 60 s'
     - ''
-    - '&8Normale Minecraft-Funktionen.'
-    - '&8Reparatur: XP oder Ritual.'
+    - '&7Robust: 10 % Verschleißschutz'
     - '&8Erhalten: /rezepte'
     lore-en:
     - '&8Everyday equipment · Rare'
     - ''
-    - '&7Regular fishing with better odds.'
+    - '&bSteady Hand'
+    - '&7Next cast: base wait -20%'
+    - '&8Sneak + right-click · 60s'
     - ''
-    - '&8Standard Minecraft mechanics.'
-    - '&8Repair with XP or a ritual.'
+    - '&7Sturdy: 10% wear protection'
     - '&8Obtain through /rezepte'
+    skill:
+      name: Ruhige Hand
+      name-en: Steady Hand
+      type: FISHING
+      cooldown-seconds: 60
+      duration-seconds: 15
+      effects: []
   ranger_crossbow:
     material: CROSSBOW
     name: '&bWaldläuferarmbrust'
@@ -1341,19 +1416,28 @@ items:
     lore:
     - '&8Alltagswerkzeug · Selten'
     - ''
-    - '&7Schnell laden, drei Pfeile schießen.'
+    - '&bJägermarke'
+    - '&7Nächster Pfeil: Monster leuchtet'
+    - '&8Schleichen + Rechtsklick · 45 s'
     - ''
-    - '&8Normale Minecraft-Funktionen.'
-    - '&8Reparatur: XP oder Ritual.'
+    - '&7Robust: 10 % Verschleißschutz'
     - '&8Erhalten: /rezepte'
     lore-en:
     - '&8Everyday equipment · Rare'
     - ''
-    - '&7Quick loading and three-shot volleys.'
+    - '&bHunter’s Mark'
+    - '&7Next bolt: marks a hostile mob'
+    - '&8Sneak + right-click · 45s'
     - ''
-    - '&8Standard Minecraft mechanics.'
-    - '&8Repair with XP or a ritual.'
+    - '&7Sturdy: 10% wear protection'
     - '&8Obtain through /rezepte'
+    skill:
+      name: Jägermarke
+      name-en: Hunter’s Mark
+      type: MARK
+      cooldown-seconds: 45
+      duration-seconds: 15
+      effects: []
   returning_trident:
     material: TRIDENT
     name: '&bHeimkehrdreizack'
@@ -1370,19 +1454,34 @@ items:
     lore:
     - '&8Alltagswerkzeug · Selten'
     - ''
-    - '&7Kehrt nach dem Wurf zurück.'
+    - '&bMeeresatem'
+    - '&7Wasseratmung: 15 s · Schwimmen: 4 s'
+    - '&8Schleichen + Rechtsklick · 60 s'
     - ''
-    - '&8Normale Minecraft-Funktionen.'
-    - '&8Reparatur: XP oder Ritual.'
+    - '&7Robust: 10 % Verschleißschutz'
     - '&8Erhalten: /rezepte'
     lore-en:
     - '&8Everyday equipment · Rare'
     - ''
-    - '&7Returns after being thrown.'
+    - '&bOcean Breath'
+    - '&7Water breathing: 15s · Swim: 4s'
+    - '&8Sneak + right-click · 60s'
     - ''
-    - '&8Standard Minecraft mechanics.'
-    - '&8Repair with XP or a ritual.'
+    - '&7Sturdy: 10% wear protection'
     - '&8Obtain through /rezepte'
+    skill:
+      name: Meeresatem
+      name-en: Ocean Breath
+      type: BUFF
+      cooldown-seconds: 60
+      duration-seconds: 15
+      effects:
+      - type: WATER_BREATHING
+        seconds: 15
+        amplifier: 0
+      - type: DOLPHINS_GRACE
+        seconds: 4
+        amplifier: 0
 weeks:
   w1:
     world: raid_w1
@@ -3246,9 +3345,16 @@ rituals:
     description:
     - '&7Beschwört einen Ritualwächter.'
     - '&7Ein Sieg bringt einen Ritualkern.'
+    - '&8Belohnung erst nach dem Wächterkampf.'
     description-en:
     - '&7Summons a ritual guardian.'
     - '&7Victory grants a Ritual Core.'
+    - '&8Reward follows the guardian fight.'
+    trial:
+      type: HUSK
+      health: 80
+      damage: 6
+      attack: PULSE
   warden_forge:
     name: '&eWächterschmiede'
     mode: FORGE
@@ -3271,8 +3377,17 @@ rituals:
     name-en: '&eWarden’s Forge'
     description:
     - '&7Schmiedet ein zufälliges Wächterteil.'
+    - '&8Belohnung erst nach dem Wächterkampf.'
     description-en:
     - '&7Forges one random Warden armor piece.'
+    - '&8Reward follows the guardian fight.'
+    trial:
+      type: IRON_GOLEM
+      health: 90
+      damage: 4
+      attack: EMBER
+      model-item: boss_model
+      model-variant: abyss
   gale_forge:
     name: '&bSturmschmiede'
     mode: FORGE
@@ -3295,8 +3410,16 @@ rituals:
     name-en: '&bGale Forge'
     description:
     - '&7Schmiedet ein zufälliges Sturmteil.'
+    - '&8Belohnung erst nach dem Wächterkampf.'
     description-en:
     - '&7Forges one random Gale armor piece.'
+    - '&8Reward follows the guardian fight.'
+    trial:
+      type: STRAY
+      health: 65
+      damage: 4
+      attack: GALE
+      weapon: BOW
   echo_workshop:
     name: '&5Echowerkstatt'
     mode: FORGE
@@ -3319,8 +3442,16 @@ rituals:
     name-en: '&5Echo Workshop'
     description:
     - '&7Schmiedet ein zufälliges Werkzeug.'
+    - '&8Belohnung erst nach dem Wächterkampf.'
     description-en:
     - '&7Forges one random mining tool.'
+    - '&8Reward follows the guardian fight.'
+    trial:
+      type: HUSK
+      health: 65
+      damage: 4
+      attack: PULSE
+      weapon: IRON_AXE
   abyss_trial:
     name: '&5Abgrundprüfung'
     mode: SUMMON
@@ -3348,9 +3479,16 @@ rituals:
     description:
     - '&7Beschwört einen starken Wächter.'
     - '&7Sieg: Werkzeug; 10 % legendäre Waffe.'
+    - '&8Belohnung erst nach dem Wächterkampf.'
     description-en:
     - '&7Summons a powerful guardian.'
     - '&7Victory: tool; 10% legendary weapon.'
+    - '&8Reward follows the guardian fight.'
+    trial:
+      type: HUSK
+      health: 180
+      damage: 9
+      attack: PULSE
   restoration:
     name: '&aWiederherstellung'
     mode: REPAIR
@@ -3371,9 +3509,16 @@ rituals:
     description:
     - '&7Repariert getragene Ausrüstung'
     - '&7sowie Hotbar und Nebenhand.'
+    - '&8Belohnung erst nach dem Wächterkampf.'
     description-en:
     - '&7Repairs custom armor and equipment'
     - '&7in your hotbar and offhand.'
+    - '&8Reward follows the guardian fight.'
+    trial:
+      type: SPIDER
+      health: 65
+      damage: 4
+      attack: FROST
   blessing:
     name: '&6Segen'
     mode: BUFF
@@ -3401,8 +3546,16 @@ rituals:
     name-en: '&6Blessing'
     description:
     - '&7Segnet nahe Spieler für 30 Sekunden.'
+    - '&8Belohnung erst nach dem Wächterkampf.'
     description-en:
     - '&7Blesses nearby players for 30 seconds.'
+    - '&8Reward follows the guardian fight.'
+    trial:
+      type: HUSK
+      health: 65
+      damage: 4
+      attack: PULSE
+      weapon: GOLDEN_SWORD
   wanderer_forge:
     name: '&bWandererschmiede'
     name-en: '&bWanderer’s Forge'
@@ -3426,10 +3579,134 @@ rituals:
     description:
     - '&7Schmiedet ein Alltagswerkzeug.'
     - '&7Eines von acht Werkzeugen, zufällig.'
+    - '&8Belohnung erst nach dem Wächterkampf.'
     description-en:
     - '&7Forges one everyday tool.'
     - '&7One of eight tools, chosen at random.'
-default-language: de
+    - '&8Reward follows the guardian fight.'
+    trial:
+      type: PILLAGER
+      health: 65
+      damage: 4
+      attack: GALE
+      weapon: CROSSBOW
+  diver_blessing:
+    name: '&bTauchersegen'
+    name-en: '&bDiver’s Blessing'
+    mode: BUFF
+    catalyst: chaos_fragment
+    display-item: frost_talisman
+    duration-seconds: 10
+    cooldown-seconds: 180
+    radius: 6
+    ingredients:
+    - item: raid_shard
+      amount: 12
+    - material: LAPIS_LAZULI
+      amount: 4
+    effects:
+    - type: WATER_BREATHING
+      seconds: 180
+      amplifier: 0
+    - type: NIGHT_VISION
+      seconds: 180
+      amplifier: 0
+    color:
+    - 80
+    - 200
+    - 230
+    trial:
+      type: DROWNED
+      health: 70
+      damage: 4
+      attack: FROST
+      weapon: IRON_SWORD
+    description:
+    - '&73 Min. Wasseratmung und Nachtsicht.'
+    - '&7Alle nahen Spieler profitieren.'
+    - '&8Belohnung erst nach dem Wächterkampf.'
+    description-en:
+    - '&73min water breathing and night vision.'
+    - '&7Benefits all nearby players.'
+    - '&8Reward follows the guardian fight.'
+  traveler_blessing:
+    name: '&bWanderersegen'
+    name-en: '&bTraveler’s Blessing'
+    mode: BUFF
+    catalyst: chaos_fragment
+    display-item: gale_sigil
+    duration-seconds: 10
+    cooldown-seconds: 180
+    radius: 6
+    ingredients:
+    - item: raid_shard
+      amount: 12
+    - material: LAPIS_LAZULI
+      amount: 4
+    effects:
+    - type: SPEED
+      seconds: 90
+      amplifier: 0
+    - type: SLOW_FALLING
+      seconds: 20
+      amplifier: 0
+    color:
+    - 80
+    - 200
+    - 230
+    trial:
+      type: STRAY
+      health: 70
+      damage: 4
+      attack: GALE
+      weapon: BOW
+    description:
+    - '&7Tempo I: 90 s · Sanfter Fall: 20 s'
+    - '&7Alle nahen Spieler profitieren.'
+    - '&8Belohnung erst nach dem Wächterkampf.'
+    description-en:
+    - '&7Speed I: 90s · Slow falling: 20s'
+    - '&7Benefits all nearby players.'
+    - '&8Reward follows the guardian fight.'
+  miner_blessing:
+    name: '&bBergmannssegen'
+    name-en: '&bMiner’s Blessing'
+    mode: BUFF
+    catalyst: chaos_fragment
+    display-item: hunter_lens
+    duration-seconds: 10
+    cooldown-seconds: 180
+    radius: 6
+    ingredients:
+    - item: raid_shard
+      amount: 16
+    - material: LAPIS_LAZULI
+      amount: 4
+    effects:
+    - type: HASTE
+      seconds: 90
+      amplifier: 0
+    - type: NIGHT_VISION
+      seconds: 180
+      amplifier: 0
+    color:
+    - 80
+    - 200
+    - 230
+    trial:
+      type: HUSK
+      health: 70
+      damage: 4
+      attack: PULSE
+      weapon: IRON_PICKAXE
+    description:
+    - '&7Eile I: 90 s · Nachtsicht: 3 Min.'
+    - '&7Alle nahen Spieler profitieren.'
+    - '&8Belohnung erst nach dem Wächterkampf.'
+    description-en:
+    - '&7Haste I: 90s · Night vision: 3min'
+    - '&7Benefits all nearby players.'
+    - '&8Reward follows the guardian fight.'
 boss-types:
   iron_warden:
     type: HUSK

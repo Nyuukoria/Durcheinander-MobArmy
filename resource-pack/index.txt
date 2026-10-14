@@ -72,6 +72,14 @@ assets/mobarmy/models/item/angler_rod_cast.json
 assets/mobarmy/models/item/chaos_crown.json
 assets/mobarmy/models/item/chaos_fragment.json
 assets/mobarmy/models/item/chaos_guardian.json
+assets/mobarmy/models/item/cooldown/meter_0.json
+assets/mobarmy/models/item/cooldown/meter_1.json
+assets/mobarmy/models/item/cooldown/meter_2.json
+assets/mobarmy/models/item/cooldown/meter_3.json
+assets/mobarmy/models/item/cooldown/meter_4.json
+assets/mobarmy/models/item/cooldown/meter_5.json
+assets/mobarmy/models/item/cooldown/meter_6.json
+assets/mobarmy/models/item/cooldown/meter_7.json
 assets/mobarmy/models/item/cultivator_hoe.json
 assets/mobarmy/models/item/echo_pickaxe.json
 assets/mobarmy/models/item/ember_charm.json

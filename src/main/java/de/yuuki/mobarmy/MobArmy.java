@@ -13,7 +13,7 @@ public final class MobArmy extends JavaPlugin {
     final Map<String,Portal> portals=new LinkedHashMap<>();
     final Map<UUID,Location> returns=new HashMap<>();
     YamlConfiguration state;
-    Items items; Engine engine; Menus menus; RaidCommand commands; Presentation presentation; Motion motion; ResourcePacks packs; Equipment equipment; Rituals ritualSystem; Catalogue catalogue;
+    ItemCooldowns itemCooldowns; UtilitySkills utilitySkills; Items items; Engine engine; Menus menus; RaidCommand commands; Presentation presentation; Motion motion; ResourcePacks packs; Equipment equipment; Rituals ritualSystem; Catalogue catalogue;
     NamespacedKey entityKey, itemKey; Language language; Bosses bosses; BossDamage bossDamage;
     ZoneId zone;
     @Override public void onEnable() {
@@ -39,7 +39,7 @@ public final class MobArmy extends JavaPlugin {
             if(rs!=null)for(String id:rs.getKeys(false)){Location l=rs.getLocation(id);if(l!=null)returns.put(UUID.fromString(id),l);}
             // Clear labels from old builds before creating exactly one display per portal.
             for(World w:Bukkit.getWorlds())for(Entity e:w.getEntities())if(e instanceof TextDisplay||e instanceof ArmorStand){String tag=e.getPersistentDataContainer().get(entityKey,org.bukkit.persistence.PersistentDataType.STRING);if(tag!=null&&tag.startsWith("portal"))e.remove();}
-            items=new Items(this);Recovery.restore(this);engine=new Engine(this);bossDamage=new BossDamage(this);menus=new Menus(this);commands=new RaidCommand(this);motion=new Motion(this);packs=new ResourcePacks(this);equipment=new Equipment(this);ritualSystem=new Rituals(this);catalogue=new Catalogue(this);bosses=new Bosses(this);
+            items=new Items(this);Recovery.restore(this);engine=new Engine(this);bossDamage=new BossDamage(this);menus=new Menus(this);commands=new RaidCommand(this);motion=new Motion(this);packs=new ResourcePacks(this);equipment=new Equipment(this);ritualSystem=new Rituals(this);catalogue=new Catalogue(this);bosses=new Bosses(this);itemCooldowns=new ItemCooldowns(this);utilitySkills=new UtilitySkills(this);
             for(Arena a:arenas.values())if(a.config.getBoolean("generate-demo")){if(state.getInt("demo-layout."+a.id)<3)a.demo();else a.repairDemo();state.set("demo."+a.id,true);state.set("demo-layout."+a.id,Arena.DEMO_LAYOUT);}
             presentation=new Presentation(this);
             Objects.requireNonNull(getCommand("raid")).setExecutor(commands);getCommand("raid").setTabCompleter(commands);
@@ -52,8 +52,9 @@ public final class MobArmy extends JavaPlugin {
             getServer().getPluginManager().registerEvents(ritualSystem,this);
             getServer().getPluginManager().registerEvents(catalogue,this);
             getServer().getPluginManager().registerEvents(bosses,this);
+            getServer().getPluginManager().registerEvents(utilitySkills,this);
             applyDemoPvp();
-            getServer().getScheduler().runTaskTimer(this,()->{engine.tick();equipment.tick();ritualSystem.tick();bosses.tick();},20,20);
+            getServer().getScheduler().runTaskTimer(this,()->{engine.tick();equipment.tick();ritualSystem.tick();bosses.tick();itemCooldowns.tick();},20,20);
             getServer().getScheduler().runTaskTimer(this,()->{presentation.animate();motion.tick();bosses.animate();},1,1);
             for(Player player:Bukkit.getOnlinePlayers()){items.refresh(player);recover(player);packs.offer(player);}
             saveState();getLogger().info("Loaded "+arenas.size()+" raid arenas for Spigot 26.3.");

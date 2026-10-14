@@ -39,6 +39,20 @@ def build():
     idle={'type':'minecraft:select','property':'minecraft:charge_type','cases':[{'when':state,'model':item_model('ranger_crossbow_'+state)} for state in ['arrow','rocket']],'fallback':item_model('ranger_crossbow')}
     pulling={'type':'minecraft:range_dispatch','property':'minecraft:crossbow/pull','entries':[{'threshold':threshold,'model':item_model('ranger_crossbow_pulling_'+str(i))} for i,threshold in enumerate([0,.58,1])],'fallback':item_model('ranger_crossbow')}
     write('assets/mobarmy/items/ranger_crossbow.json',{'model':{'type':'minecraft:condition','property':'minecraft:using_item','on_true':pulling,'on_false':idle}})
+    utility=['silk_pickaxe','forester_axe','pathfinder_shovel','cultivator_hoe','harvest_shears','angler_rod','ranger_crossbow','returning_trident']
+    # A separate GUI meter leaves native fishing/shooting/stripping usable during skill cooldowns.
+    # Quads reference vanilla flat block colors; no extra or softened sprite pixels are introduced.
+    for step in range(8):
+        def face(x0,x1,y0,y1,z,texture):
+            return {'from':[x0,y0,7.3],'to':[x1,y1,8.7],'faces':{side:{'texture':'#'+texture,'uv':[0,0,16,16]} for side in ['north','south']}}
+        elements=[face(1,15,1,3,9,'dark')]
+        if step:elements.append(face(1,1+int(14*step/8),1,2,9.1,'ready'))
+        write(f'assets/mobarmy/models/item/cooldown/meter_{step}.json',{'gui_light':'front','textures':{'dark':'minecraft:block/black_concrete','ready':'minecraft:block/lime_concrete','particle':'minecraft:block/lime_concrete'},'elements':elements})
+    for item in utility:
+        target=PACK/f'assets/mobarmy/items/{item}.json';native=json.loads(target.read_text())['model']
+        meters={'type':'minecraft:range_dispatch','property':'minecraft:custom_model_data','index':0,'entries':[{'threshold':step/8,'model':{'type':'minecraft:composite','models':[native,item_model(f'cooldown/meter_{step}')]}} for step in range(8)],'fallback':native}
+        active={'type':'minecraft:condition','property':'minecraft:custom_model_data','index':0,'on_true':meters,'on_false':native}
+        write(f'assets/mobarmy/items/{item}.json',{'model':{'type':'minecraft:select','property':'minecraft:display_context','cases':[{'when':'gui','model':active}],'fallback':native}})
     parts = {
         'body': [box([3,0,4],[13,16,12],'stone'),box([4,2,3.5],[12,15,4],'armor'),box([6,6,3.1],[10,10,3.5],'eyes'),box([1,13,3],[5,17,13],'crystal'),box([11,13,3],[15,17,13],'crystal')],
         'head': [box([3.5,3.5,3.5],[12.5,12.5,12.5],'stone'),box([4.7,8.2,3.1],[6.7,9.7,3.5],'eyes'),box([9.3,8.2,3.1],[11.3,9.7,3.5],'eyes'),box([6,4.3,3.2],[10,6,3.5],'armor')],

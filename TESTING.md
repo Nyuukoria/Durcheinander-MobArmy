@@ -1,8 +1,8 @@
-# In-game checks for 1.6.0
+# In-game checks for 1.7.0
 
 Automated tests verify rules, command grammar and a mocked party-entry/teleport flow. The following checks exercise Minecraft's native movement, rendering and multiplayer behavior.
 
-1. Update over an existing stopped demo. Start and confirm plugin version 1.6.0, new separate lobby and full arena ceiling. Old generated layouts migrate once; custom worlds with generate-demo false should remain hand-built.
+1. Update over an existing stopped demo. Start and confirm plugin version 1.7.0, new separate lobby and full arena ceiling. Old generated layouts migrate once; custom worlds with generate-demo false should remain hand-built.
 2. Join a portal. A private `/raid` hint appears; no inventory GUI opens automatically. The waiting room has no walkable connection to the combat space. `/raid` opens voting. Leader Ready teleports everyone after the countdown; combat begins only after all successful arrivals.
 3. Complete a stage. Collect miniboss loot before return. After up to 12 seconds, leftover custom loot is stored for the leader and everyone is teleported back to the lobby. Invite a new player between stages, elect a different leader, and start again.
 4. With test mode OFF and week 1 minimum 2, each of two people can deal 50% boss/miniboss HP. With week 2 minimum 3 each can deal 33⅓%; with week 3 minimum 5 each can deal 20%. Extra members do not change the cap. Test mode ON uses 100%.
@@ -79,3 +79,15 @@ Automatische Tests prüfen Demo-Fortschritt ohne Beute, Spawnabstände, sicheren
 - Deutsch/Englisch umschalten und Gruppe, Rezepte, HUD, Portal, Packhinweise, Perlen-/Relikt-Cooldowns sowie Ritual-Fehler prüfen. Namen/IDs/Commands dürfen nicht übersetzt werden. Lore hat Leerzeilen und kurze Zeilen; Stats stehen in normalen Minecraft-Tooltips.
 
 Automatische Regressionen prüfen echten Lebensverlust gegenüber gemeldetem Schaden, zwei Treffer im gleichen Tick, Float-Restleben, Produktions-Anteile, 18-Blöcke-Abstand, Modellgrenzen/Fuß-/Kopfhöhe und Gelenkposen, kurze Lore, alle Übersetzungs-Schlüssel/Platzhalter, Rezeptwege und Config-Migration. Client-Rendering, Vanilla-Werkstatt-UI und echte Minecraft-Physik bleiben In-game-Prüfungen.
+
+## Zusätzliche Prüfung für 1.7
+
+- Relikte benutzen: native Cooldownfläche auf Hotbar-/Inventar-Icon. Zweite Relikt-ID desselben Materials und Vanilla-Item dürfen nicht blockiert sein. Relog/Neustart während Timer; verbleibende Zeit muss weiterlaufen. Demo-Clear entfernt Anzeige und Sperre.
+- Alle acht Utility-Skills per Schleichen + Rechtsklick. Ohne Schleichen normale Aktionen. Während Skill-Cooldown weiter angeln, Feld bestellen, Holz entrinden, Armbrust laden/schießen und Dreizack werfen. Eigener Balken wächst in Hotbar/Inventar; Lore zählt herunter. Während einer Ladung oder beim länger dauernden Abbau darf die Anzeige keine Aktion abbrechen und holt danach auf. Doppeltes Exemplar darf Skill nicht umgehen.
+- Bodenprobe: tatsächliche Feuchte und Wachstumswerte, keine automatische Ernte. Anglerskill: nur ein manueller Wurf beeinflusst, keine Lootänderung. Jägermarke: nur ein normaler Pfeil, hostile Mobs leuchten, Spieler nicht. Passive Haltbarkeit betrifft keine Vanilla-/alten Raid-Items.
+- Jeden Ritualmodus starten: Fragment wird gebunden, Slotwechsel/Swap/Drop/Inventarbewegung während Channeling blockiert. Im Kampf wieder Waffenwechsel möglich. Vor Sieg keine Schmiede-, Reparatur- oder Buffbelohnung.
+- Kessel in offener Fläche: Wächter 6–9 Blöcke vom Kessel, 5 Blöcke von Spielern entfernt. Bodenringe, Ausweichzeit, Deckung, Hälfte-HP-Phase. Verschiedene native Wächter und der Obsidian-Golem. Keine Geländezerstörung oder Angriffe auf Unbeteiligte.
+- Sieg: Zutaten verbraucht, Fragment einmal zurück, Loot/Buff/Reparatur korrekt. Allein oder mit Helfer; eigener Treffer erforderlich. Abbruch, Tod, Logout, Distanz, Kesselabbau, Wächterverlust und Zeitlimit: kein Siegloot, Zutaten und Fragment einmal im Postfach.
+- Drei neue Segnungen über /rezepte: Effekte, Dauer, Radius und Kosten stimmen.
+
+Automatische Tests ergänzen Cooldown-Gruppen/Spielerbindung, native Nutzung während Tool-Timern, Skill-Einmalboni, GUI-Meter-Assets, Ritual-Fragmentbindung/Slotwechsel/Refund/Sieg und sichere Markierungsbereiche. Native Clientdarstellung und echter Kampf bleiben In-game-Prüfungen.

@@ -60,7 +60,7 @@ Werkbank, Amboss, Schleifstein, Enchanting und Schmiedetisch akzeptieren die Cus
 
 Alle acht besitzen eigene 16×16-Pixeltexturen. Angel- und Armbrustzustände bleiben über eigene Modellzuordnungen erhalten.
 
-Diese Werkzeuge besitzen eigene Pixeltexturen und verwenden normale Minecraft-Mechaniken und Verzauberungsgrenzen. Sie haben keine zusätzlichen Rechtsklick-Zauber, fällen keine kompletten Bäume und bauen keine Erzadern automatisch ab.
+Diese Werkzeuge besitzen eigene Pixeltexturen und verwenden normale Minecraft-Mechaniken und Verzauberungsgrenzen. Die neuen Fähigkeiten werden mit Schleichen + Rechtsklick aktiviert. Normales Holzfällen und Abbauen bleiben einzeln, Angeln und Schießen bleiben manuell.
 
 | ID | Funktion | Verzauberungen |
 |---|---|---|
@@ -76,3 +76,20 @@ Diese Werkzeuge besitzen eigene Pixeltexturen und verwenden normale Minecraft-Me
 Die Raid-Sicherheitsregeln gelten weiter, zum Beispiel keine Feuerwerkskörper in der Arena. Diese acht Werkzeuge gehören keinem Rüstungsset an. Normale XP-Reparatur und Amboss funktionieren. Am Schleifstein bzw. beim Netherit-Upgrade wird das Item zu gewöhnlicher Vanilla-Ausrüstung; die spezielle Item-ID und Lore entfallen, damit spätere Inventar-Aktualisierungen entfernte Enchantments nicht wiederherstellen. Beim Upgrade bleiben normale Enchantments erhalten.
 
 Miniboss ab Stufe 2: 4 % Pool-Chance, genau ein Werkzeug; 0,5 % je einzelner ID. Wandererschmiede: garantiert ein zufälliges Werkzeug, 12,5 % je ID. Zutaten: 32 Raidsplitter, 6 Diamanten, 8 Eisenbarren. Details im Rezeptmenü; `/raid kit gear` zum Testen.
+
+## Survival-Fähigkeiten und Cooldowns (1.7)
+
+Alle acht Alltagswerkzeuge sparen zusätzlich mit 10 % Wahrscheinlichkeit einen Haltbarkeitsverlust. Keine Extra-Drops, keine automatische Weltbearbeitung und keine Veränderung gewöhnlicher Vanilla-Items. Alle Fähigkeiten sind wiederverwendbar.
+
+| Werkzeug | Schleichen + Rechtsklick | Cooldown |
+|---|---|---:|
+| Seidenspitzhacke | Eile II für 8 s, Nachtsicht für 20 s | 75 s |
+| Forstaxt | Eile I und Tempo I für 10 s | 60 s |
+| Pfadfinderschaufel | Tempo I für 12 s, langsamer Fall für 4 s | 60 s |
+| Feldhacke | Bodenfeuchte und Pflanzenwachstum ablesen; Eile I für 8 s | 15 s |
+| Gartenschere | Verschleißschutz steigt für 8 s auf 35 % | 45 s |
+| Anglerglück | Nächster manueller Wurf innerhalb 15 s: Basiswartezeit vor Köder-Verzauberung −20 % | 60 s |
+| Waldläuferarmbrust | Nächster normaler Pfeil innerhalb 15 s markiert ein Monster für 6 s; keine Markierung von Spielern | 45 s |
+| Heimkehrdreizack | Wasseratmung für 15 s, Delfins Gunst für 4 s | 60 s |
+
+Relikte zeigen den nativen Minecraft-Cooldown direkt auf ihrem Icon. Die acht Werkzeuge zeigen mit dem Ressourcenpaket einen eigenen Balken in Hotbar und Inventar; die verbleibende Zeit steht zusätzlich in der Lore. Die Spezialfähigkeit bleibt gesperrt, aber normale Nutzung läuft weiter. Während Aufladen oder längerem Abbauen pausiert nur die Bild-/Lore-Aktualisierung des gehaltenen Werkzeugs und holt danach auf; der Timer läuft weiter. Doppelte Exemplare teilen pro Spieler und Item-ID denselben Timer. Relog und Neustart setzen ihn nicht zurück; Demo-Clear entfernt auch die Anzeige. Schleifstein/Netherit-Upgrade entfernen die speziellen Fähigkeiten zusammen mit der Custom-ID.

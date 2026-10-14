@@ -32,9 +32,11 @@ class ContentConfigTest {
             var pool=pools.getConfigurationSection(id);assertTrue(pool.getDouble("chance")>0&&pool.getDouble("chance")<=.1);
             for(var row:pool.getMapList("entries"))assertTrue(items.contains(row.get("item").toString()),id);assertNotNull(LootTables.choose(pool,0));
         }
-        var rituals=cfg.getConfigurationSection("rituals");assertEquals(8,rituals.getKeys(false).size());
+        var rituals=cfg.getConfigurationSection("rituals");assertEquals(11,rituals.getKeys(false).size());
         for(String id:rituals.getKeys(false)){
             var ritual=rituals.getConfigurationSection(id);assertTrue(items.contains(ritual.getString("catalyst")));assertTrue(items.contains(ritual.getString("display-item")));
+            assertTrue(ritual.isConfigurationSection("trial"),id);assertTrue(Bosses.permitted(ritual.getString("trial.type")));assertTrue(ritual.getDouble("trial.health")>=45);assertTrue(ritual.getDouble("trial.damage")<=9);
+            org.bukkit.entity.EntityType.valueOf(ritual.getString("trial.type"));if(ritual.contains("trial.model-item"))assertTrue(items.getBoolean(ritual.getString("trial.model-item")+".internal"));
             if(ritual.contains("pool"))assertTrue(pools.contains(ritual.getString("pool")));if(ritual.contains("legendary-pool"))assertTrue(pools.contains(ritual.getString("legendary-pool")));
             for(var row:ritual.getMapList("ingredients")){assertTrue(((Number)row.get("amount")).intValue()>0);if(row.containsKey("item"))assertTrue(items.contains(row.get("item").toString()));else Material.valueOf(row.get("material").toString());}
         }

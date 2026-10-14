@@ -27,7 +27,7 @@ final class Items {
         meta.setDisplayName(MobArmy.color(cfg.getString("name",id)));meta.setLore(cfg.getStringList("lore").stream().map(MobArmy::color).toList());
         String model=cfg.getString("item-model");if(model!=null)meta.setItemModel(Objects.requireNonNull(NamespacedKey.fromString(model)));
         if(cfg.contains("custom-model-data"))meta.setCustomModelData(cfg.getInt("custom-model-data"));
-        Equipment.decorate(cfg,meta);
+        Equipment.decorate(cfg,meta);ItemCooldowns.decorate(id,cfg,meta);
         meta.getPersistentDataContainer().set(p.itemKey,PersistentDataType.STRING,id);item.setItemMeta(meta);return item;
     }
     String id(ItemStack item){return item==null||!item.hasItemMeta()?null:item.getItemMeta().getPersistentDataContainer().get(p.itemKey,PersistentDataType.STRING);}
@@ -47,9 +47,10 @@ final class Items {
         String id=id(item);if(id==null||!ids().contains(id))return item.clone();
         ItemStack result=item.clone();var meta=result.getItemMeta();var template=make(id,item.getAmount()).getItemMeta();
         String utilityName=meta.getPersistentDataContainer().get(new NamespacedKey(p,"utility_name"),org.bukkit.persistence.PersistentDataType.STRING);meta.setDisplayName(utilityName==null?template.getDisplayName():utilityName);meta.setLore(template.getLore());meta.setItemModel(template.getItemModel());
+        ItemCooldowns.decorate(id,p.getConfig().getConfigurationSection("items."+id),meta);
         if(template.hasCustomModelData())meta.setCustomModelData(template.getCustomModelData());Equipment.decorate(p.getConfig().getConfigurationSection("items."+id),meta);result.setItemMeta(meta);return result;
     }
-    void refresh(Player player){for(int slot=0;slot<player.getInventory().getSize();slot++){ItemStack item=player.getInventory().getItem(slot);if(item!=null&&id(item)!=null)player.getInventory().setItem(slot,p.language==null?refreshed(item):p.language.localized(player.getUniqueId(),refreshed(item)));}}
+    void refresh(Player player){for(int slot=0;slot<player.getInventory().getSize();slot++){ItemStack item=player.getInventory().getItem(slot);if(item!=null&&id(item)!=null)player.getInventory().setItem(slot,p.language==null?refreshed(item):p.language.localized(player.getUniqueId(),refreshed(item)));}if(p.itemCooldowns!=null)p.itemCooldowns.sync(player);}
     List<ItemStack> mailbox(UUID owner){List<ItemStack> result=new ArrayList<>();for(Object entry:p.state.getList("mail."+owner,List.of()))if(entry instanceof ItemStack item)result.add(p.language==null?refreshed(item):p.language.localized(owner,refreshed(item)));return result;}
     void mailbox(UUID owner,List<ItemStack> items){p.state.set("mail."+owner,items.isEmpty()?null:items);p.saveState();}
     void store(UUID owner,ItemStack item){List<ItemStack> mail=mailbox(owner);mail.add(item.clone());mailbox(owner,mail);}
@@ -94,7 +95,7 @@ final class Items {
             for(Player target:targets)target.addPotionEffect(new PotionEffect(type,duration,amplifier,true,true,true));
         }
         if(consumed>0)held.setAmount(held.getAmount()-consumed);
-        p.state.set("item-cooldowns."+player.getUniqueId()+"."+id,now+cfg.getLong("cooldown-seconds",60)*1000);p.saveState();
+        p.itemCooldowns.start(player,held,id,cfg.getLong("cooldown-seconds",60));
         for(Player target:targets){p.presentation.burst(target.getLocation());target.playSound(target.getLocation(),Sound.BLOCK_AMETHYST_BLOCK_CHIME,0.8f,1.2f);}
         p.say(player,"relic.activated","name",p.language.itemName(player,id));return true;
     }

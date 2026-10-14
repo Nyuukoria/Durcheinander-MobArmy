@@ -1,36 +1,29 @@
-# Kesselrituale
+# Kesselrituale 1.7
 
-Ein wiederverwendbares **Chaosfragment** in die Haupthand nehmen und einen Kessel in der konfigurierten Default-Welt rechtsklicken. Das Menü zeigt Zutaten, Ergebnis und Cooldown. Alternativ den Kessel innerhalb sechs Blöcken anschauen und `/raid ritual <id>` ausführen. `/rezepte rituals` zeigt Rezepte, ohne etwas zu starten.
+Chaosfragment in der Haupthand halten und einen Kessel in der konfigurierten Ritualwelt rechtsklicken. Alternativ den Kessel innerhalb sechs Blöcken anschauen und `/raid ritual <id>` ausführen. `/rezepte rituals` zeigt die Zutaten und den Ablauf. Alle elf Rituale enthalten eine verpflichtende Wächterprüfung.
 
-Während der acht Sekunden langen Zeremonie am Kessel bleiben und den Katalysator halten. Zwei gegenläufige Runenringe, ein schwebendes Ergebnis-Icon, eine Energiespirale, vier Phasen und Sounds zeigen den Fortschritt. Jedes Ritual hat seine eigene Farbe. Der Katalysator wird niemals verbraucht. Angegebene Zutaten werden bezahlt; umbenannte Vanilla-Splitter ersetzen keine echten Raidsplitter.
+Beim Start werden ein Chaosfragment und die Zutaten bis zum Ausgang des Rituals aufbewahrt. Während der 8–10 Sekunden langen Beschwörung am Kessel bleiben; Hotbarwechsel, Tauschen, Wegwerfen und Inventarverschiebungen sind gesperrt. Runenringe, drei kreisende Fragmente, Energieeffekte, eine Lichtsäule, vier Phasen, Sounds und eine Bossbar zeigen den Ablauf. Danach darfst du zur Waffe wechseln. Das Fragment bleibt bis zum Ende gebunden.
 
-| ID / Ritual | Verbrauchte Zutaten | Ergebnis | Cooldown |
+Der Wächter erscheint 6–9 Blöcke vom Kessel und mindestens 5 Blöcke von Spielern entfernt. Der Platz muss frei sein. Nach einer kurzen Aufwachphase greift er an. Gelb/rote Bodenringe kündigen Spezialangriffe 1,5 Sekunden vorher an. Verlasse den Kreis; Wände blockieren den Treffer. Bei halbem Leben wird der Wächter schneller und benutzt Fähigkeiten häufiger. Frost verlangsamt, Glut markiert und Sturm stößt leicht zurück. Es werden keine Blöcke zerstört oder Feuer gelegt. Die Spezialangriffe und KI richten sich an die ausführende Person, nicht an unbeteiligte Spieler.
+
+Die Person muss am Kampf teilnehmen. Freunde dürfen helfen; ein fremder letzter Treffer stiehlt keine Belohnung. Umwelt-/Nichtspieler-Schaden kann den Wächter nicht ersetzen. Im Kampf höchstens 20 Blöcke vom Kessel entfernen. Tod, Logout, entfernter Kessel, verlorener Wächter, Abbruch oder das Drei-Minuten-Limit beenden den Versuch. Fragment und Zutaten landen dann einmal in `/raid loot`; der Ritualcooldown läuft weiter. Auch nach einem Neustart werden offene Zutaten samt Fragment aus dem Journal zurückgegeben. Minecraft-Spielerdaten und Plugin-YAML bleiben getrennte Speicher; harte Prozessabbrüche sind keine gemeinsame Datenbanktransaktion.
+
+Nach dem Sieg werden die Zutaten verbraucht, das Chaosfragment zurückgegeben und die Belohnung ausgeführt. Volle Inventare nutzen `/raid loot`.
+
+| ID | Zutaten | Belohnung nach Sieg | Cooldown |
 |---|---|---|---:|
-| `awakening` · Erwachen | keine | Fragmentwächter: 80 HP, 6 Angriff; Spieler-Sieg gibt einen Ritualkern | 120s |
-| `warden_forge` · Wächterschmiede | 24 Raidsplitter, 8 Eisenbarren, 4 Lapislazuli | ein zufälliges Wächter-Rüstungsteil | 180s |
-| `gale_forge` · Sturmschmiede | 48 Raidsplitter, 2 Sturmessenzen, 6 Diamanten | ein zufälliges Sturm-Rüstungsteil | 240s |
-| `echo_workshop` · Echowerkstatt | 32 Raidsplitter, 1 Sturmessenz, 4 Diamanten | eine Echospitzhacke, Runenschaufel oder Erntehacke | 180s |
-| `abyss_trial` · Prüfung des Abgrunds | 32 Raidsplitter, 1 Leerenessenz | Abgrundwächter: 180 HP, 9 Angriff; bei Spieler-Sieg 90 % ein Werkzeug, 10 % stattdessen eine legendäre Waffe | 300s |
-| `restoration` · Wiederherstellung | 8 Raidsplitter, 2 Goldbarren | vollständige Reparatur von beschädigter Custom-Rüstung und Custom-Ausrüstung in Hotbar/Nebenhand | 60s |
-| `blessing` · Segen der Vorhut | 4 Raidsplitter, 2 Smaragde | Resistenz I und Tempo I, 30s, auf Personen im Umkreis von sechs Blöcken am Kessel | 180s |
+| `awakening` | keine | Ritualkern | 120 s |
+| `warden_forge` | 24 Raidsplitter, 8 Eisenbarren, 4 Lapislazuli | zufällige Wächterausrüstung; Obsidian-Golem als Gegner | 180 s |
+| `gale_forge` | 48 Raidsplitter, 2 Sturmessenzen, 6 Diamanten | zufällige Sturmausrüstung | 240 s |
+| `echo_workshop` | 32 Raidsplitter, 1 Sturmessenz, 4 Diamanten | zufälliges Bergbauwerkzeug | 180 s |
+| `abyss_trial` | 32 Raidsplitter, 1 Leerenessenz | Werkzeug; 10 % Chance auf legendäre Waffe | 300 s |
+| `restoration` | 8 Raidsplitter, 2 Goldbarren | Reparatur getragener Custom-Ausrüstung und Hotbar/Nebenhand | 60 s |
+| `blessing` | 4 Raidsplitter, 2 Smaragde | Resistenz I und Tempo I für 30 s | 180 s |
+| `wanderer_forge` | 32 Raidsplitter, 6 Diamanten, 8 Eisenbarren | eines der acht Alltagswerkzeuge, gleich wahrscheinlich | 60 s |
+| `diver_blessing` | 12 Raidsplitter, 4 Lapislazuli | Wasseratmung und Nachtsicht für 3 Minuten | 180 s |
+| `traveler_blessing` | 12 Raidsplitter, 4 Lapislazuli | Tempo I für 90 s, langsamer Fall für 20 s | 180 s |
+| `miner_blessing` | 16 Raidsplitter, 4 Lapislazuli | Eile I für 90 s, Nachtsicht für 3 Minuten | 180 s |
 
-Schmiede- und Reparatur-Ergebnisse kommen direkt ins Inventar oder ins `/raid loot` Postfach. Prüfung-Loot gehört der ausführenden Person, auch wenn andere beim Kampf helfen. Ein Spieler muss den Wächter besiegen; reine Umwelttode geben keine Belohnung. Der Wächter sucht einen freien Spawn neben dem Kessel und verschwindet nach zehn Minuten ohne Loot. Ein vollendetes Beschwörungsritual erstattet beim späteren Entfernen/Verlieren des Wächters keine Zutaten.
+Segnungen gelten immer für die ausführende Person sowie für nahe Spieler im Sechs-Blöcke-Radius am Kessel. Katalysator und umbenannte Vanilla-Zutaten können keine echten Custom-Zutaten ersetzen.
 
-Fehlende Zutaten verhindern den Start vollständig. Kessel entfernt, ausgeloggt, zu weit weg oder Katalysator weggelegt: die unfertige Zeremonie bricht ab und bezahlte Zutaten landen im Postfach. Auch angefangene Zeremonien aus dem vorherigen Serverprozess werden einmal aus dem Journal ins Postfach übernommen. Der Cooldown läuft bei Abbruch weiter. Plugin-YAML und Minecraft-Spielerdaten werden getrennt gespeichert; eine harte Prozess-/Datenträgerunterbrechung ist keine gemeinsame Datenbanktransaktion.
-
-`/raid ritual cancel` beendet eigene laufende Zeremonien und eigene Wächter. `/raid ritual cancel all` braucht Admin-Rechte. Entfernte Wächter geben keine Sieg-Beute. Eine Person und ein Kessel können jeweils nur eine Zeremonie gleichzeitig ausführen; insgesamt gilt `maximum-ritual-mobs` für Zeremonien/Wächter.
-
-## Lokal testen
-
-1. `/raid kit ritual`: Katalysator, echte Raidsplitter, Essenzen, Vanilla-Zutaten und Kessel bekommen. Überlauf mit `/raid loot` abholen.
-2. Kessel außerhalb der Dungeon-Welten platzieren. Chaosfragment halten, rechtsklicken, `warden_forge` wählen.
-3. Ergebnis nach acht Sekunden prüfen; Anzahl der bezahlten Materialien und erhaltenen Katalysatoren kontrollieren.
-4. `/raid kit gear`, beschädigte Ausrüstung in Hotbar/Rüstung/Nebenhand legen, dann `restoration` testen.
-5. `awakening` beziehungsweise `abyss_trial` starten und den Wächter besiegen.
-6. Für weitere Versuche: `/raid cooldown clear`. **Nur im Solo-Testmodus** löscht dieser Befehl auch Item-/Ritual-Cooldowns. Produktionsregeln bleiben bestehen. Aktive Zeremonien vorher abbrechen.
-
-## Wandererschmiede und übersichtliche Rezepte (1.6)
-
-`wanderer_forge`: 32 echte Raidsplitter, 6 Diamanten und 8 Eisenbarren. Chaosfragment in der Haupthand bleibt erhalten. Acht Sekunden Zeremonie, 60 Sekunden Abklingzeit. Ein zufälliges Alltagswerkzeug ist bei erfolgreichem Abschluss garantiert; alle acht Werkzeuge sind gleich wahrscheinlich.
-
-`/rezepte rituals`: kurze Ritual-Karten. Anklicken zeigt Ergebnis, Ablauf und Zutaten als eigene Karten. Im Kesselmenü: Linksklick startet, Rechtsklick öffnet die Beschreibung. Item-Karten enthalten keine langen Zutaten-/Drop-Listen mehr; sie stehen in der jeweiligen Detailansicht. Die angezeigte Sprache folgt `/raid language de|en`.
+Zum Testen: `/raid kit ritual`, Kessel aufstellen, Chaosfragment auswählen. `/raid ritual cancel` beendet eigene Rituale; `cancel all` benötigt Admin-Rechte. Im Solo-Demomodus leert `/raid cooldown clear` auch Item-/Ritualcooldowns. Eine Person und ein Kessel können jeweils nur ein Ritual durchführen. `maximum-ritual-mobs` begrenzt die Zahl gleichzeitig laufender Rituale.

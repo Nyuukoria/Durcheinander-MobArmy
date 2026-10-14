@@ -101,7 +101,7 @@ final class Protection implements Listener {
             }
         }
         if(e.getHand()==EquipmentSlot.HAND&&e.getAction()==Action.RIGHT_CLICK_BLOCK&&e.getClickedBlock()!=null&&e.getClickedBlock().getType().name().endsWith("CAULDRON")&&p.items.ritual(player,e.getClickedBlock(),item)){e.setCancelled(true);return;}
-        if(e.getHand()==EquipmentSlot.HAND&&(e.getAction()==Action.RIGHT_CLICK_AIR||e.getAction()==Action.RIGHT_CLICK_BLOCK)&&p.items.activate(player,item)){e.setCancelled(true);return;}
+        if(e.getHand()==EquipmentSlot.HAND&&(e.getAction()==Action.RIGHT_CLICK_AIR||e.getAction()==Action.RIGHT_CLICK_BLOCK)&&((p.utilitySkills!=null&&p.utilitySkills.activate(player,item))||p.items.activate(player,item))){e.setCancelled(true);return;}
         if(!raid(player.getWorld()))return;
         if(item!=null&&(item.getType()==Material.FIREWORK_ROCKET||item.getType()==Material.END_CRYSTAL||item.getType()==Material.TNT||item.getType()==Material.TNT_MINECART))e.setCancelled(true);
         if(e.getClickedBlock()!=null&&e.getClickedBlock().getType()==Material.RESPAWN_ANCHOR)e.setCancelled(true);

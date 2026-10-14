@@ -1,0 +1,74 @@
+{
+  "gui_light": "front",
+  "textures": {
+    "dark": "minecraft:block/black_concrete",
+    "ready": "minecraft:block/lime_concrete",
+    "particle": "minecraft:block/lime_concrete"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        1,
+        7.3
+      ],
+      "to": [
+        15,
+        3,
+        8.7
+      ],
+      "faces": {
+        "north": {
+          "texture": "#dark",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#dark",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        1,
+        7.3
+      ],
+      "to": [
+        2,
+        2,
+        8.7
+      ],
+      "faces": {
+        "north": {
+          "texture": "#ready",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#ready",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        }
+      }
+    }
+  ]
+}
